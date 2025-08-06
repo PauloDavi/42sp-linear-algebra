@@ -4,11 +4,9 @@ Uma biblioteca Rust para operações de álgebra linear, incluindo vetores, matr
 
 ## Características
 
-- **Vetores**: Operações de adição, subtração, multiplicação escalar e produto escalar
+- **Vetores**: Operações de adição, subtração e multiplicação escalar
 - **Matrizes**: Operações básicas de álgebra linear com matrizes
 - **Combinações Lineares**: Cálculo de combinações lineares de vetores
-- **Análise de Complexidade**: Ferramentas para análise Big O das operações
-- **Benchmarks**: Medição de performance com diferentes tamanhos de entrada
 - **Segurança de Tipos**: Aproveitando o sistema de tipos do Rust para operações seguras
 - **Genérico**: Funciona com qualquer tipo numérico que implemente os traits necessários
 
@@ -43,12 +41,6 @@ fn main() {
     // Multiplicação escalar
     v1.scalar(2);
     println!("2 * v1: {}", v1); // [10, 14, 18]
-    
-    // Produto escalar
-    let v3 = Vector::new(&[1, 0, 0]);
-    let v4 = Vector::new(&[0, 1, 0]);
-    let dot_product = v3.dot(&v4).unwrap();
-    println!("v3 · v4: {}", dot_product); // 0
 }
 ```
 
@@ -90,7 +82,7 @@ fn main() {
     println!("m1 + m2:\n{}", m1);
     
     // Multiplicação escalar
-    m1.scl(2);
+    m1.scalar(2);
     println!("2 * m1:\n{}", m1);
 }
 ```
@@ -106,14 +98,12 @@ fn main() {
 - `add(&mut self, other: &Vector<K>)` - Adiciona outro vetor (modifica o vetor atual)
 - `sub(&mut self, other: &Vector<K>)` - Subtrai outro vetor (modifica o vetor atual)
 - `scalar(&mut self, a: K)` - Multiplica por um escalar (modifica o vetor atual)
-- `dot(&self, other: &Vector<K>)` - Calcula o produto escalar
 
 #### Métodos Funcionais (Não Modificam o Original)
 
 - `add_new(&self, other: &Vector<K>)` - Retorna um novo vetor com a soma
 - `sub_new(&self, other: &Vector<K>)` - Retorna um novo vetor com a subtração
 - `scalar_new(&self, a: K)` - Retorna um novo vetor multiplicado por escalar
-- `norm_squared(&self)` - Calcula a norma ao quadrado
 
 #### Acesso a Elementos
 
@@ -129,7 +119,7 @@ fn main() {
 - `shape()` - Retorna as dimensões (linhas, colunas)
 - `add(&mut self, other: &Matrix<K>)` - Adiciona outra matriz
 - `sub(&mut self, other: &Matrix<K>)` - Subtrai outra matriz
-- `scl(&mut self, scalar: K)` - Multiplica por um escalar
+- `scalar(&mut self, scalar: K)` - Multiplica por um escalar
 
 ### Funções Utilitárias
 
@@ -175,65 +165,6 @@ Para verificar a documentação:
 cargo doc --open
 ```
 
-## Análise de Complexidade Big O
-
-Esta biblioteca inclui ferramentas para análise empírica da complexidade Big O das operações:
-
-### Executando Análise Big O
-
-```bash
-# Execute o exemplo de análise Big O
-cargo run --example big_o_analysis --features big_o_analysis
-```
-
-### Executando Benchmarks Detalhados
-
-```bash
-# Execute benchmarks com análise de scaling
-cargo bench
-
-# Gere relatórios HTML dos benchmarks
-cargo bench -- --output-format html
-```
-
-### Complexidades Esperadas
-
-| Operação | Complexidade | Descrição |
-|----------|-------------|-----------|
-| Adição de vetores | O(n) | Linear no tamanho do vetor |
-| Subtração de vetores | O(n) | Linear no tamanho do vetor |
-| Multiplicação escalar | O(n) | Linear no tamanho do vetor |
-| Produto escalar | O(n) | Linear no tamanho do vetor |
-| Combinação linear | O(k×n) | k = número de vetores, n = tamanho |
-
-### Exemplo de Análise
-
-```rust
-use big_o::{big_o, Name};
-use linear_algebra::Vector;
-
-let complexities = big_o(
-    Name::new("vector_addition"),
-    || {
-        move |n| {
-            let v1 = Vector::new(&vec![1.0; n]);
-            let v2 = Vector::new(&vec![2.0; n]);
-            (v1, v2)
-        }
-    },
-    |(mut v1, v2)| {
-        v1.add(&v2).unwrap();
-        v1
-    },
-);
-
-for (name, complexity) in complexities {
-    println!("{}: {}", name, complexity);
-}
-```
-
-## Desenvolvimento
-
 ## Licença
 
-Este projeto está licenciado sob as licenças MIT OU Apache-2.0.
+Este projeto está licenciado sob as licenças MIT.
