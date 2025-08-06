@@ -1,0 +1,48 @@
+[package]
+name = "linear_algebra"
+version = "0.1.0"
+edition = "2024"
+authors = ["Paulo Davi Alencar de Freitas Araújo <araujo.paulo.davi@gmail.com>"]
+description = "Uma biblioteca de álgebra linear em Rust"
+license = "MIT "
+readme = "README.md"
+repository = "https://github.com/paulodavi/42sp-linear-algebra"
+homepage = "https://github.com/paulodavi/42sp-linear-algebra"
+keywords = ["algebra", "linear", "math", "vector", "matrix"]
+categories = ["mathematics", "science"]
+rust-version = "1.85"
+exclude = [
+    "target/*",
+    ".git/*",
+    ".gitignore",
+    "*.md",
+]
+include = [
+    "src/**/*",
+    "Cargo.toml",
+    "LICENSE-MIT",
+    "README.md",
+]
+
+[lib]
+name = "linear_algebra"
+path = "src/lib.rs"
+
+[[bin]]
+name = "main"
+path = "src/main.rs"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+
+[profile.dev]
+opt-level = 0
+debug = true
+overflow-checks = true
+
+[profile.test]
+opt-level = 1
+debug = true
