@@ -175,4 +175,88 @@ mod vector_tests {
         assert_eq!(result[1], 4.0);
         assert_eq!(result[2], 6.0);
     }
+
+    #[test]
+    fn test_dot_product() {
+        let vector1 = Vector::from([1, 2, 3]);
+        let vector2 = Vector::from([4, 5, 6]);
+
+        let result = vector1.dot(&vector2);
+
+        assert_eq!(result, 32);
+    }
+
+    #[test]
+    fn test_dot_product_floats() {
+        let vector1 = Vector::from([1.0, 2.0, 3.0]);
+        let vector2 = Vector::from([2.0, 3.0, 4.0]);
+
+        let result = vector1.dot(&vector2);
+
+        assert_eq!(result, 20.0);
+    }
+
+    #[test]
+    fn test_dot_product_zero() {
+        let vector1 = Vector::from([1, 2, 3]);
+        let vector2 = Vector::from([0, 0, 0]);
+
+        let result = vector1.dot(&vector2);
+
+        assert_eq!(result, 0);
+    }
+
+    #[test]
+    fn test_norm_1() {
+        let vector = Vector::from([1i16, -2i16, 3i16]);
+
+        let result = vector.norm_1();
+
+        assert_eq!(result, 6.0);
+    }
+
+    #[test]
+    fn test_norm_1_floats() {
+        let vector = Vector::from([1.5, -2.5, 3.0]);
+
+        let result = vector.norm_1();
+
+        assert_eq!(result, 7.0);
+    }
+
+    #[test]
+    fn test_norm() {
+        let vector = Vector::from([3i16, 4i16]);
+
+        let result = vector.norm();
+
+        assert_eq!(result, 5.0);
+    }
+
+    #[test]
+    fn test_norm_floats() {
+        let vector = Vector::from([1.0, 2.0, 2.0]);
+
+        let result = vector.norm();
+
+        assert_eq!(result, 3.0);
+    }
+
+    #[test]
+    fn test_norm_inf() {
+        let vector = Vector::from([1i16, -5i16, 3i16]);
+
+        let result = vector.norm_inf();
+
+        assert_eq!(result, 5.0);
+    }
+
+    #[test]
+    fn test_norm_inf_floats() {
+        let vector = Vector::from([1.5, -2.8, 2.3]);
+
+        let result = vector.norm_inf();
+
+        assert_eq!(result, 2.8);
+    }
 }

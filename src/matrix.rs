@@ -141,8 +141,8 @@ impl<K> Add for Matrix<K>
 where
     K: Copy + Add<Output = K>,
 {
-    type Output = Matrix<K>;
-    fn add(self, other: Matrix<K>) -> Self::Output {
+    type Output = Self;
+    fn add(self, other: Self) -> Self::Output {
         self.add_new(&other)
     }
 }
@@ -151,8 +151,8 @@ impl<K> Sub for Matrix<K>
 where
     K: Copy + Sub<Output = K>,
 {
-    type Output = Matrix<K>;
-    fn sub(self, other: Matrix<K>) -> Self::Output {
+    type Output = Self;
+    fn sub(self, other: Self) -> Self::Output {
         self.sub_new(&other)
     }
 }
@@ -161,7 +161,7 @@ impl<K> Mul<K> for Matrix<K>
 where
     K: Copy + Mul<Output = K>,
 {
-    type Output = Matrix<K>;
+    type Output = Self;
     fn mul(self, scalar: K) -> Self::Output {
         self.scl_new(scalar)
     }

@@ -63,7 +63,7 @@ fn main() {
     println!("e3: {e3}");
 
     let coefficients = [10., -2., 0.5];
-    let result = linear_combination(&[e1, e2, e3], &coefficients).unwrap();
+    let result = linear_combination([e1, e2, e3], coefficients).unwrap();
     println!(
         "({} * e1) + ({} * e2) + ({} * e3) = {result}",
         coefficients[0], coefficients[1], coefficients[2]
@@ -75,7 +75,7 @@ fn main() {
     println!("v2: {v2}");
 
     let coefficients = [10., -2.];
-    let result = linear_combination(&[v1, v2], &coefficients).unwrap();
+    let result = linear_combination([v1, v2], coefficients).unwrap();
     println!(
         "({} * v1) + ({} * v2) = {result}",
         coefficients[0], coefficients[1]
@@ -99,5 +99,45 @@ fn main() {
     println!(
         "\nAplicando lerp em matriz:\n{}",
         lerp(matrix1, matrix2, 0.3).unwrap()
+    );
+
+    println!("\n=== Demonstração de Produto Escalar (Dot Product) ===");
+
+    let u = Vector::from([0., 0.]);
+    let v = Vector::from([1., 1.]);
+    println!("Produto escalar entre {u} e {v}: {}", u.dot(&v));
+
+    let u = Vector::from([1., 1.]);
+    let v = Vector::from([1., 1.]);
+    println!("Produto escalar entre {u} e {v}: {}", u.dot(&v));
+
+    let u = Vector::from([-1., 6.]);
+    let v = Vector::from([3., 2.]);
+    println!("Produto escalar entre {u} e {v}: {}", u.dot(&v));
+
+    println!("\n=== Demonstração de Normas de Vetores ===");
+
+    let u = Vector::from([0., 0., 0.]);
+    println!(
+        "Para o vetor {u}: norma-1 = {}, norma-2 = {}, norma-infinito = {}",
+        u.norm_1(),
+        u.norm(),
+        u.norm_inf()
+    );
+
+    let u = Vector::from([1., 2., 3.]);
+    println!(
+        "Para o vetor {u}: norma-1 = {}, norma-2 = {}, norma-infinito = {}",
+        u.norm_1(),
+        u.norm(),
+        u.norm_inf()
+    );
+
+    let u = Vector::from([-1., -2.]);
+    println!(
+        "Para o vetor {u}: norma-1 = {}, norma-2 = {}, norma-infinito = {}",
+        u.norm_1(),
+        u.norm(),
+        u.norm_inf()
     );
 }

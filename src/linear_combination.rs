@@ -2,9 +2,9 @@ use std::ops::{Add, Mul};
 
 use crate::{errors::LinearCombinationError, vector::Vector};
 
-pub fn linear_combination<K>(
-    vectors: &[Vector<K>],
-    coefficients: &[K],
+pub fn linear_combination<K, const N: usize>(
+    vectors: [Vector<K>; N],
+    coefficients: [K; N],
 ) -> Result<Vector<K>, LinearCombinationError>
 where
     K: Clone + Default + Copy + Add<Output = K> + Mul<Output = K>,
@@ -21,7 +21,7 @@ where
         None => return Ok(Vector::from([])),
     };
 
-    for vector in vectors {
+    for vector in vectors.iter() {
         if vector.len() != len {
             return Err(LinearCombinationError::VectorsDimensionMismatch {
                 expected_len: len,

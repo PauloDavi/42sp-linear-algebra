@@ -12,7 +12,7 @@ mod linear_combination_tests {
         let e2 = Vector::from([0.0, 1.0]);
         let coefficients = [2.0, 3.0];
 
-        let result = linear_combination(&[e1, e2], &coefficients).unwrap();
+        let result = linear_combination([e1, e2], coefficients).unwrap();
         assert_eq!(result, Vector::from([2.0, 3.0]));
     }
 
@@ -23,7 +23,7 @@ mod linear_combination_tests {
         let e3 = Vector::from([0.0, 0.0, 1.0]);
         let coefficients = [2.0, -1.0, 0.5];
 
-        let result = linear_combination(&[e1, e2, e3], &coefficients).unwrap();
+        let result = linear_combination([e1, e2, e3], coefficients).unwrap();
         assert_eq!(result, Vector::from([2.0, -1.0, 0.5]));
     }
 
@@ -33,7 +33,7 @@ mod linear_combination_tests {
         let v2 = Vector::from([4, 5, 6]);
         let coefficients = [2, 3];
 
-        let result = linear_combination(&[v1, v2], &coefficients).unwrap();
+        let result = linear_combination([v1, v2], coefficients).unwrap();
         assert_eq!(result, Vector::from([14, 19, 24]));
     }
 
@@ -42,7 +42,7 @@ mod linear_combination_tests {
         let v = Vector::from([1, 2, 3]);
         let coefficients = [5];
 
-        let result = linear_combination(&[v], &coefficients).unwrap();
+        let result = linear_combination([v], coefficients).unwrap();
         assert_eq!(result, Vector::from([5, 10, 15]));
     }
 
@@ -52,7 +52,7 @@ mod linear_combination_tests {
         let v2 = Vector::from([4, 5, 6]);
         let coefficients = [0, 1];
 
-        let result = linear_combination(&[v1, v2], &coefficients).unwrap();
+        let result = linear_combination([v1, v2], coefficients).unwrap();
         assert_eq!(result, Vector::from([4, 5, 6]));
     }
 
@@ -62,7 +62,7 @@ mod linear_combination_tests {
         let v2 = Vector::from([4, 5, 6]);
         let coefficients = [-1, -2];
 
-        let result = linear_combination(&[v1, v2], &coefficients).unwrap();
+        let result = linear_combination([v1, v2], coefficients).unwrap();
         assert_eq!(result, Vector::from([-9, -12, -15]));
     }
 
@@ -73,17 +73,8 @@ mod linear_combination_tests {
         let v3 = Vector::from([7, 8, 9]);
         let coefficients = [1, -1, 2];
 
-        let result = linear_combination(&[v1, v2, v3], &coefficients).unwrap();
+        let result = linear_combination([v1, v2, v3], coefficients).unwrap();
         assert_eq!(result, Vector::from([11, 13, 15]));
-    }
-
-    #[test]
-    fn test_linear_combination_empty_vectors() {
-        let vectors: Vec<Vector<f64>> = vec![];
-        let coefficients: Vec<f64> = vec![];
-
-        let result = linear_combination(&vectors, &coefficients).unwrap();
-        assert_eq!(result, Vector::from([]));
     }
 
     #[test]
@@ -92,41 +83,8 @@ mod linear_combination_tests {
         let v2: Vector<i32> = Vector::from([]);
         let coefficients = [1, 2];
 
-        let result = linear_combination(&[v1, v2], &coefficients).unwrap();
+        let result = linear_combination([v1, v2], coefficients).unwrap();
         assert_eq!(result, Vector::from([]));
-    }
-
-    #[test]
-    fn test_linear_combination_dimension_mismatch_vectors_coefficients() {
-        let v1 = Vector::from([1, 2, 3]);
-        let v2 = Vector::from([4, 5, 6]);
-        let coefficients = [1];
-
-        let result = linear_combination(&[v1, v2], &coefficients);
-        assert!(result.is_err());
-        assert!(matches!(
-            result.unwrap_err(),
-            LinearCombinationError::CoefficientsDimensionMismatch {
-                coefficients: 1,
-                vectors: 2
-            }
-        ));
-    }
-
-    #[test]
-    fn test_linear_combination_dimension_mismatch_more_coefficients() {
-        let v1 = Vector::from([1, 2, 3]);
-        let coefficients = [1, 2];
-
-        let result = linear_combination(&[v1], &coefficients);
-        assert!(result.is_err());
-        assert!(matches!(
-            result.unwrap_err(),
-            LinearCombinationError::CoefficientsDimensionMismatch {
-                coefficients: 2,
-                vectors: 1
-            }
-        ));
     }
 
     #[test]
@@ -135,7 +93,7 @@ mod linear_combination_tests {
         let v2 = Vector::from([4, 5]);
         let coefficients = [1, 2];
 
-        let result = linear_combination(&[v1, v2], &coefficients);
+        let result = linear_combination([v1, v2], coefficients);
         assert!(result.is_err());
         assert!(matches!(
             result.unwrap_err(),
@@ -153,7 +111,7 @@ mod linear_combination_tests {
         let v3 = Vector::from([7, 8]);
         let coefficients = [1, 2, 3];
 
-        let result = linear_combination(&[v1, v2, v3], &coefficients);
+        let result = linear_combination([v1, v2, v3], coefficients);
         assert!(result.is_err());
         assert!(matches!(
             result.unwrap_err(),
@@ -170,7 +128,7 @@ mod linear_combination_tests {
         let v2 = Vector::from([4i8, 5i8, 6i8]);
         let coefficients = [2i8, 1i8];
 
-        let result = linear_combination(&[v1, v2], &coefficients).unwrap();
+        let result = linear_combination([v1, v2], coefficients).unwrap();
         assert_eq!(result, Vector::from([6i8, 9i8, 12i8]));
     }
 
@@ -180,7 +138,7 @@ mod linear_combination_tests {
         let v2 = Vector::from([4000000i64, 5000000i64, 6000000i64]);
         let coefficients = [2i64, 1i64];
 
-        let result = linear_combination(&[v1, v2], &coefficients).unwrap();
+        let result = linear_combination([v1, v2], coefficients).unwrap();
         assert_eq!(result, Vector::from([6000000i64, 9000000i64, 12000000i64]));
     }
 
@@ -190,7 +148,7 @@ mod linear_combination_tests {
         let v2 = Vector::from([0.5f32, 1.5f32, 2.5f32]);
         let coefficients = [2.0f32, 4.0f32];
 
-        let result = linear_combination(&[v1, v2], &coefficients).unwrap();
+        let result = linear_combination([v1, v2], coefficients).unwrap();
         assert_eq!(result, Vector::from([5.0f32, 11.0f32, 17.0f32]));
     }
 
@@ -200,7 +158,7 @@ mod linear_combination_tests {
         let v2 = Vector::from([4.0, 5.0, 6.0]);
         let coefficients = [0.0, 0.0];
 
-        let result = linear_combination(&[v1, v2], &coefficients).unwrap();
+        let result = linear_combination([v1, v2], coefficients).unwrap();
         assert_eq!(result, Vector::from([0.0, 0.0, 0.0]));
     }
 
@@ -210,7 +168,7 @@ mod linear_combination_tests {
         let v2 = Vector::from([1.0, 2.0, 3.0]);
         let coefficients = [0.5, 0.25];
 
-        let result = linear_combination(&[v1, v2], &coefficients).unwrap();
+        let result = linear_combination([v1, v2], coefficients).unwrap();
         assert_eq!(result, Vector::from([1.25, 2.5, 3.75]));
     }
 
@@ -220,14 +178,14 @@ mod linear_combination_tests {
         let v2 = Vector::from([2; 1000]);
         let coefficients = [3, 4];
 
-        let result = linear_combination(&[v1, v2], &coefficients).unwrap();
+        let result = linear_combination([v1, v2], coefficients).unwrap();
         let expected = Vector::from([11; 1000]);
         assert_eq!(result, expected);
     }
 
     #[test]
     fn test_linear_combination_many_vectors() {
-        let vectors = vec![
+        let vectors = [
             Vector::from([1, 0, 0]),
             Vector::from([0, 1, 0]),
             Vector::from([0, 0, 1]),
@@ -236,7 +194,7 @@ mod linear_combination_tests {
         ];
         let coefficients = [1, 2, 3, 4, 5];
 
-        let result = linear_combination(&vectors, &coefficients).unwrap();
+        let result = linear_combination(vectors, coefficients).unwrap();
         assert_eq!(result, Vector::from([15, 21, 27]));
     }
 
@@ -247,16 +205,16 @@ mod linear_combination_tests {
         let v3 = Vector::from([7, 8, 9]);
 
         let result1 = {
-            let temp = linear_combination(&[v1.clone(), v2.clone()], &[2, 3]).unwrap();
-            linear_combination(&[temp, v3.clone()], &[1, 4]).unwrap()
+            let temp = linear_combination([v1.clone(), v2.clone()], [2, 3]).unwrap();
+            linear_combination([temp, v3.clone()], [1, 4]).unwrap()
         };
 
         let result2 = {
-            let temp = linear_combination(&[v2.clone(), v3.clone()], &[3, 4]).unwrap();
-            linear_combination(&[v1.clone(), temp], &[2, 1]).unwrap()
+            let temp = linear_combination([v2.clone(), v3.clone()], [3, 4]).unwrap();
+            linear_combination([v1.clone(), temp], [2, 1]).unwrap()
         };
 
-        let result3 = linear_combination(&[v1, v2, v3], &[2, 3, 4]).unwrap();
+        let result3 = linear_combination([v1, v2, v3], [2, 3, 4]).unwrap();
 
         assert_eq!(result1, result3);
         assert_eq!(result2, result3);
@@ -270,10 +228,10 @@ mod linear_combination_tests {
         let b = 3;
         let c = 5;
 
-        let temp = linear_combination(&[v1.clone(), v2.clone()], &[a, b]).unwrap();
-        let result1 = linear_combination(&[temp], &[c]).unwrap();
+        let temp = linear_combination([v1.clone(), v2.clone()], [a, b]).unwrap();
+        let result1 = linear_combination([temp], [c]).unwrap();
 
-        let result2 = linear_combination(&[v1, v2], &[c * a, c * b]).unwrap();
+        let result2 = linear_combination([v1, v2], [c * a, c * b]).unwrap();
 
         assert_eq!(result1, result2);
     }
@@ -282,7 +240,7 @@ mod linear_combination_tests {
     fn test_linear_combination_identity() {
         let v = Vector::from([1, 2, 3, 4, 5]);
 
-        let result = linear_combination(&[v.clone()], &[1]).unwrap();
+        let result = linear_combination([v.clone()], [1]).unwrap();
         assert_eq!(result, v);
     }
 
@@ -291,7 +249,7 @@ mod linear_combination_tests {
         let v1 = Vector::from([1, 2, 3]);
         let v2 = Vector::from([4, 5, 6]);
 
-        let result = linear_combination(&[v1, v2], &[0, 0]).unwrap();
+        let result = linear_combination([v1, v2], [0, 0]).unwrap();
         assert_eq!(result, Vector::from([0, 0, 0]));
     }
 
@@ -301,7 +259,7 @@ mod linear_combination_tests {
         let v2 = Vector::from([10]);
         let coefficients = [2, 3];
 
-        let result = linear_combination(&[v1, v2], &coefficients).unwrap();
+        let result = linear_combination([v1, v2], coefficients).unwrap();
         assert_eq!(result, Vector::from([40]));
     }
 
@@ -311,7 +269,7 @@ mod linear_combination_tests {
         let v2 = Vector::from([3000000.0, 4000000.0]);
         let coefficients = [0.000001, 0.000002];
 
-        let result = linear_combination(&[v1, v2], &coefficients).unwrap();
+        let result = linear_combination([v1, v2], coefficients).unwrap();
         assert_eq!(result, Vector::from([7.0, 10.0]));
     }
 }

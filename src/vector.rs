@@ -105,8 +105,8 @@ impl<K> Add for Vector<K>
 where
     K: Copy + Add<Output = K>,
 {
-    type Output = Vector<K>;
-    fn add(self, other: Vector<K>) -> Self::Output {
+    type Output = Self;
+    fn add(self, other: Self) -> Self::Output {
         self.add_new(&other)
     }
 }
@@ -115,8 +115,8 @@ impl<K> Sub for Vector<K>
 where
     K: Copy + Sub<Output = K>,
 {
-    type Output = Vector<K>;
-    fn sub(self, other: Vector<K>) -> Self::Output {
+    type Output = Self;
+    fn sub(self, other: Self) -> Self::Output {
         self.sub_new(&other)
     }
 }
@@ -125,7 +125,7 @@ impl<K> Mul<K> for Vector<K>
 where
     K: Copy + Mul<Output = K>,
 {
-    type Output = Vector<K>;
+    type Output = Self;
     fn mul(self, scalar: K) -> Self::Output {
         self.scl_new(scalar)
     }
@@ -142,5 +142,37 @@ impl<K> Index<usize> for Vector<K> {
 impl<K> IndexMut<usize> for Vector<K> {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
         &mut self.data[index]
+    }
+}
+
+impl<K> Vector<K>
+where
+    K: Copy + Default + Add<Output = K> + Mul<Output = K>,
+{
+    pub fn dot(&self, v: &Self) -> K {
+        self.iter()
+            .zip(v.iter())
+            .fold(K::default(), |acc, (&a, &b)| acc + (a * b))
+    }
+}
+
+impl<K> Vector<K>
+where
+    K: Copy + Into<f32>,
+{
+    pub fn norm_1(&self) -> f32 {
+        self.iter().fold(0.0, |acc, &x| acc + x.into().abs())
+    }
+
+    pub fn norm(&self) -> f32 {
+        self.iter()
+            .fold(0.0, |acc, &x| acc + x.into().powi(2))
+            .sqrt()
+    }
+
+    pub fn norm_inf(&self) -> f32 {
+        self.iter()
+            .map(|&x| x.into().abs())
+            .fold(f32::NEG_INFINITY, f32::max)
     }
 }
