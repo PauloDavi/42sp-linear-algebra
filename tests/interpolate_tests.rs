@@ -4,7 +4,6 @@ use linear_algebra::{InterpolationError, Matrix, Vector, lerp};
 mod interpolate_tests {
     use super::*;
 
-    // Vector interpolation tests
     #[test]
     fn test_lerp_vector_integers() {
         let u = Vector::from([0.0, 0.0, 0.0]);
@@ -59,7 +58,6 @@ mod interpolate_tests {
         assert_eq!(result, Vector::from([20.0]));
     }
 
-    // Matrix interpolation tests
     #[test]
     fn test_lerp_matrix_2x2() {
         let u = Matrix::from([[0.0, 0.0], [0.0, 0.0]]);
@@ -140,7 +138,6 @@ mod interpolate_tests {
         assert_eq!(result[1][3], 15.2);
     }
 
-    // Scalar interpolation tests
     #[test]
     fn test_lerp_scalar_integers() {
         let result = lerp(0.0, 10.0, 0.3).unwrap();
@@ -177,7 +174,6 @@ mod interpolate_tests {
         assert_eq!(result, 2.5);
     }
 
-    // Error cases
     #[test]
     fn test_lerp_vector_invalid_t_negative() {
         let u = Vector::from([1.0, 2.0, 3.0]);
@@ -227,7 +223,6 @@ mod interpolate_tests {
         ));
     }
 
-    // Edge cases with very small and large t values
     #[test]
     fn test_lerp_vector_t_very_small() {
         let u = Vector::from([100.0, 200.0, 300.0]);

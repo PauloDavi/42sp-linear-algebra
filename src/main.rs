@@ -1,4 +1,4 @@
-use linear_algebra::{Matrix, Vector, interpolate::lerp, linear_combination};
+use linear_algebra::{Matrix, Vector, angle_cos, interpolate::lerp, linear_combination};
 
 fn main() {
     println!("=== Demonstração de Vector ===");
@@ -116,7 +116,6 @@ fn main() {
     println!("Produto escalar entre {u} e {v}: {}", u.dot(&v));
 
     println!("\n=== Demonstração de Normas de Vetores ===");
-
     let u = Vector::from([0., 0., 0.]);
     println!(
         "Para o vetor {u}: norma-1 = {}, norma-2 = {}, norma-infinito = {}",
@@ -140,4 +139,25 @@ fn main() {
         u.norm(),
         u.norm_inf()
     );
+
+    println!("\n=== Demonstração do Cosseno do Ângulo entre Vetores ===");
+    let u = Vector::from([1., 0.]);
+    let v = Vector::from([1., 0.]);
+    println!("Cosseno do ângulo entre {u} e {v}: {}", angle_cos(&u, &v));
+
+    let u = Vector::from([1., 0.]);
+    let v = Vector::from([0., 1.]);
+    println!("Cosseno do ângulo entre {u} e {v}: {}", angle_cos(&u, &v));
+
+    let u = Vector::from([-1., 1.]);
+    let v = Vector::from([1., -1.]);
+    println!("Cosseno do ângulo entre {u} e {v}: {}", angle_cos(&u, &v));
+
+    let u = Vector::from([2., 1.]);
+    let v = Vector::from([4., 2.]);
+    println!("Cosseno do ângulo entre {u} e {v}: {}", angle_cos(&u, &v));
+
+    let u = Vector::from([1., 2., 3.]);
+    let v = Vector::from([4., 5., 6.]);
+    println!("Cosseno do ângulo entre {u} e {v}: {}", angle_cos(&u, &v));
 }
