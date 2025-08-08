@@ -1,8 +1,6 @@
-use linear_algebra::vector::Vector;
-
 #[cfg(test)]
 mod vector_tests {
-    use super::*;
+    use linear_algebra::vector::Vector;
 
     #[test]
     fn test_new() {

@@ -1,10 +1,6 @@
-use linear_algebra::vector::Vector;
-
 #[cfg(test)]
 mod angle_cos_tests {
-    use linear_algebra::angle_cos;
-
-    use super::*;
+    use linear_algebra::{angle_cos, vector::Vector};
 
     #[test]
     fn test_angle_cos_same_vectors() {

@@ -1,4 +1,4 @@
-use linear_algebra::{Matrix, Vector, angle_cos, interpolate::lerp, linear_combination};
+use linear_algebra::{Matrix, Vector, angle_cos, cross_product, lerp, linear_combination};
 
 fn main() {
     println!("=== Demonstração de Vector ===");
@@ -160,4 +160,26 @@ fn main() {
     let u = Vector::from([1., 2., 3.]);
     let v = Vector::from([4., 5., 6.]);
     println!("Cosseno do ângulo entre {u} e {v}: {}", angle_cos(&u, &v));
+
+    println!("\n=== Demonstração do Produto Vetorial (Cross Product) ===");
+    let u = Vector::from([0., 0., 1.]);
+    let v = Vector::from([1., 0., 0.]);
+    println!(
+        "Produto vetorial entre {u} e {v}: {}",
+        cross_product(&u, &v)
+    );
+
+    let u = Vector::from([1., 2., 3.]);
+    let v = Vector::from([4., 5., 6.]);
+    println!(
+        "Produto vetorial entre {u} e {v}: {}",
+        cross_product(&u, &v)
+    );
+
+    let u = Vector::from([4., 2., -3.]);
+    let v = Vector::from([-2., -5., 16.]);
+    println!(
+        "Produto vetorial entre {u} e {v}: {}",
+        cross_product(&u, &v)
+    );
 }

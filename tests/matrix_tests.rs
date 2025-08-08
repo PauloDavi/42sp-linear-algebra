@@ -1,8 +1,6 @@
-use linear_algebra::matrix::Matrix;
-
 #[cfg(test)]
 mod matrix_tests {
-    use super::*;
+    use linear_algebra::matrix::Matrix;
 
     #[test]
     fn test_new_success() {

@@ -1,8 +1,6 @@
-use linear_algebra::{InterpolationError, Matrix, Vector, lerp};
-
 #[cfg(test)]
 mod interpolate_tests {
-    use super::*;
+    use linear_algebra::{InterpolationError, Matrix, Vector, lerp};
 
     #[test]
     fn test_lerp_vector_integers() {

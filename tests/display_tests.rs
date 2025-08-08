@@ -1,8 +1,6 @@
-use linear_algebra::{Matrix, Vector};
-
 #[cfg(test)]
 mod display_tests {
-    use super::*;
+    use linear_algebra::{Matrix, Vector};
 
     #[test]
     fn test_vector_display_integers() {

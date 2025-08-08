@@ -1,10 +1,6 @@
-use linear_algebra::{Vector, linear_combination};
-
 #[cfg(test)]
 mod linear_combination_tests {
-    use linear_algebra::LinearCombinationError;
-
-    use super::*;
+    use linear_algebra::{LinearCombinationError, Vector, linear_combination};
 
     #[test]
     fn test_linear_combination_basic_2d() {
