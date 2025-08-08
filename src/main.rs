@@ -1,66 +1,63 @@
-use linear_algebra::{linear_combination, Matrix, Vector};
+use linear_algebra::{Matrix, Vector, interpolate::lerp, linear_combination};
 
 fn main() {
     println!("=== Demonstração de Vector ===");
-    let mut v1 = Vector::new(&[1, 2, 3]);
-    let v2 = Vector::new(&[4, 5, 6]);
+    let mut v1 = Vector::from([1, 2, 3]);
+    let v2 = Vector::from([4, 5, 6]);
 
     println!("Vector 1: {v1}");
     println!("Vector 2: {v2}");
 
-    v1.add(&v2).unwrap();
+    v1.add(&v2);
     println!("\nDepois da adição: {v1}");
 
-    v1.sub(&v2).unwrap();
+    v1.sub(&v2);
     println!("Depois da subtração: {v1}");
 
-    v1.scalar(3);
+    v1.scl(3);
     println!("Vetor 1 multiplicado por 3: {v1}");
 
-    println!("Adição retornando um novo: {}", v1.add_new(&v2).unwrap());
+    println!("Adição retornando um novo: {}", v1.add_new(&v2));
 
-    println!("Subtração retornando um novo: {}", v1.sub_new(&v2).unwrap());
+    println!("Subtração retornando um novo: {}", v1.sub_new(&v2));
 
-    println!(
-        "Multiplicada por 3 retornando um novo: {}",
-        v1.scalar_new(3)
-    );
+    println!("Multiplicada por 3 retornando um novo: {}", v1.scl_new(3));
 
     println!("\n=== Demonstração de Matrix ===");
-    let mut matrix1 = Matrix::new(&[&[1, 2], &[3, 4]]).unwrap();
-    let matrix2 = Matrix::new(&[&[5, 6], &[7, 8]]).unwrap();
+    let mut matrix1 = Matrix::from([[1, 2], [3, 4]]);
+    let matrix2 = Matrix::from([[5, 6], [7, 8]]);
 
     println!("Matrix 1:\n{matrix1}");
     println!("\nMatrix 2:\n{matrix2}");
 
-    matrix1.add(&matrix2).unwrap();
+    matrix1.add(&matrix2);
     println!("\nDepois da adição:\n{matrix1}");
 
-    matrix1.sub(&matrix2).unwrap();
+    matrix1.sub(&matrix2);
     println!("\nDepois da subtração:\n{matrix1}");
 
-    matrix1.scalar(3);
+    matrix1.scl(3);
     println!("\nMatrix 1 multiplicada por 3:\n{matrix1}");
 
     println!(
         "\nAdição retornando um novo:\n{}",
-        matrix1.add_new(&matrix2).unwrap()
+        matrix1.add_new(&matrix2)
     );
 
     println!(
         "\nSubtração retornando um novo:\n{}",
-        matrix1.sub_new(&matrix2).unwrap()
+        matrix1.sub_new(&matrix2)
     );
 
     println!(
         "\nMultiplicada por 3 retornando um novo:\n{}",
-        matrix1.scalar_new(3)
+        matrix1.scl_new(3)
     );
 
     println!("\n=== Demonstração de Combinação linear ===");
-    let e1 = Vector::new(&[1., 0., 0.]);
-    let e2 = Vector::new(&[0., 1., 0.]);
-    let e3 = Vector::new(&[0., 0., 1.]);
+    let e1 = Vector::from([1., 0., 0.]);
+    let e2 = Vector::from([0., 1., 0.]);
+    let e3 = Vector::from([0., 0., 1.]);
     println!("e1: {e1}");
     println!("e2: {e2}");
     println!("e3: {e3}");
@@ -72,8 +69,8 @@ fn main() {
         coefficients[0], coefficients[1], coefficients[2]
     );
 
-    let v1 = Vector::new(&[1., 2., 3.]);
-    let v2 = Vector::new(&[0., 10., -100.]);
+    let v1 = Vector::from([1., 2., 3.]);
+    let v2 = Vector::from([0., 10., -100.]);
     println!("\nv1: {v1}");
     println!("v2: {v2}");
 
@@ -82,5 +79,25 @@ fn main() {
     println!(
         "({} * v1) + ({} * v2) = {result}",
         coefficients[0], coefficients[1]
+    );
+
+    println!("\n=== Demonstração de Interpolação linear ===");
+    println!(
+        "Aplicando lerp em escalares: {}",
+        lerp(1.2, 1.4, 0.5).unwrap()
+    );
+
+    let v1 = Vector::from([1., 2., 3.]);
+    let v2 = Vector::from([0., 10., -100.]);
+    println!(
+        "\nAplicando lerp em vetores:\n{}",
+        lerp(v1, v2, 0.4).unwrap()
+    );
+
+    let matrix1 = Matrix::from([[1., 2.], [3., 4.]]);
+    let matrix2 = Matrix::from([[5., 6.], [7., 8.]]);
+    println!(
+        "\nAplicando lerp em matriz:\n{}",
+        lerp(matrix1, matrix2, 0.3).unwrap()
     );
 }

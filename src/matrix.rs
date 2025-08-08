@@ -1,6 +1,5 @@
-use std::ops::{Index, IndexMut};
-
-use crate::{errors::MatrixError, types::Scalar};
+use core::slice::{Iter, IterMut};
+use std::ops::{Add, Index, IndexMut, Mul, Sub};
 
 #[derive(Debug, PartialEq, Clone)]
 pub struct Matrix<K> {
@@ -9,114 +8,162 @@ pub struct Matrix<K> {
     data: Vec<Vec<K>>,
 }
 
-impl<K> Matrix<K>
-where
-    K: Scalar,
-{
-    pub fn new(data: &[&[K]]) -> Result<Self, MatrixError> {
-        let rows = data.len();
-        let columns = if rows == 0 { 0 } else { data[0].len() };
-
-        if !data.iter().all(|row| row.len() == columns) {
-            return Err(MatrixError::RowsLengthMismatch);
-        }
-
-        Ok(Self {
-            rows,
-            columns,
-            data: data.iter().map(|item| item.to_vec()).collect(),
-        })
-    }
-
+impl<K> Matrix<K> {
     pub fn shape(&self) -> (usize, usize) {
         (self.rows, self.columns)
     }
 
-    pub fn add(&mut self, other: &Matrix<K>) -> Result<(), MatrixError> {
-        if self.shape() != other.shape() {
-            return Err(MatrixError::DimensionMismatch);
-        }
-
-        self.data
-            .iter_mut()
-            .zip(other.data.iter())
-            .for_each(|(a, b)| {
-                a.iter_mut().zip(b.iter()).for_each(|(a, b)| *a += *b);
-            });
-
-        Ok(())
+    pub fn iter(&self) -> Iter<'_, Vec<K>> {
+        self.data.iter()
     }
 
-    pub fn sub(&mut self, other: &Matrix<K>) -> Result<(), MatrixError> {
-        if self.shape() != other.shape() {
-            return Err(MatrixError::DimensionMismatch);
-        }
+    pub fn iter_mut(&mut self) -> IterMut<'_, Vec<K>> {
+        self.data.iter_mut()
+    }
+}
 
-        self.data
-            .iter_mut()
-            .zip(other.data.iter())
-            .for_each(|(a, b)| {
-                a.iter_mut().zip(b.iter()).for_each(|(a, b)| *a -= *b);
-            });
-        Ok(())
+impl<K, const R: usize, const C: usize> From<[[K; C]; R]> for Matrix<K>
+where
+    K: Clone,
+{
+    fn from(arr: [[K; C]; R]) -> Self {
+        Self {
+            rows: R,
+            columns: C,
+            data: arr.map(|row| row.to_vec()).to_vec(),
+        }
+    }
+}
+
+impl<K> Matrix<K>
+where
+    K: Clone + Default,
+{
+    pub fn with_default(rows: usize, columns: usize) -> Self {
+        Self {
+            columns,
+            rows,
+            data: vec![vec![K::default(); columns]; rows],
+        }
+    }
+}
+
+impl<K> Matrix<K>
+where
+    K: Copy + Add<Output = K>,
+{
+    pub fn add(&mut self, other: &Self) {
+        for (row_a, row_b) in self.data.iter_mut().zip(&other.data) {
+            for (column_a, column_b) in row_a.iter_mut().zip(row_b) {
+                *column_a = *column_a + *column_b;
+            }
+        }
     }
 
-    pub fn scalar(&mut self, a: K) {
-        self.data.iter_mut().for_each(|row| {
-            row.iter_mut().for_each(|element| *element *= a);
-        });
-    }
-
-    pub fn add_new(&self, other: &Matrix<K>) -> Result<Matrix<K>, MatrixError> {
-        if self.shape() != other.shape() {
-            return Err(MatrixError::DimensionMismatch);
-        }
-
-        let data = self
-            .data
-            .iter()
-            .zip(other.data.iter())
-            .map(|(a, b)| a.iter().zip(b.iter()).map(|(&a, &b)| a + b).collect())
-            .collect();
-
-        Ok(Matrix {
-            rows: self.rows,
+    pub fn add_new(&self, other: &Self) -> Self {
+        Self {
             columns: self.columns,
-            data,
-        })
+            rows: self.rows,
+            data: self
+                .data
+                .iter()
+                .zip(&other.data)
+                .map(|(row_a, row_b)| {
+                    row_a
+                        .iter()
+                        .zip(row_b)
+                        .map(|(&column_a, &column_b)| column_a + column_b)
+                        .collect()
+                })
+                .collect(),
+        }
+    }
+}
+
+impl<K> Matrix<K>
+where
+    K: Copy + Sub<Output = K>,
+{
+    pub fn sub(&mut self, other: &Self) {
+        for (row_a, row_b) in self.data.iter_mut().zip(&other.data) {
+            for (column_a, column_b) in row_a.iter_mut().zip(row_b) {
+                *column_a = *column_a - *column_b;
+            }
+        }
     }
 
-    pub fn sub_new(&self, other: &Matrix<K>) -> Result<Matrix<K>, MatrixError> {
-        if self.shape() != other.shape() {
-            return Err(MatrixError::DimensionMismatch);
-        }
-
-        let data = self
-            .data
-            .iter()
-            .zip(other.data.iter())
-            .map(|(a, b)| a.iter().zip(b.iter()).map(|(&a, &b)| a - b).collect())
-            .collect();
-
-        Ok(Matrix {
-            rows: self.rows,
+    pub fn sub_new(&self, other: &Self) -> Self {
+        Self {
             columns: self.columns,
-            data,
-        })
+            rows: self.rows,
+            data: self
+                .data
+                .iter()
+                .zip(&other.data)
+                .map(|(row_a, row_b)| {
+                    row_a
+                        .iter()
+                        .zip(row_b)
+                        .map(|(&column_a, &column_b)| column_a - column_b)
+                        .collect()
+                })
+                .collect(),
+        }
+    }
+}
+
+impl<K> Matrix<K>
+where
+    K: Copy + Mul<Output = K>,
+{
+    pub fn scl(&mut self, scalar: K) {
+        for row in self.data.iter_mut() {
+            for column in row.iter_mut() {
+                *column = *column * scalar;
+            }
+        }
     }
 
-    pub fn scalar_new(&self, a: K) -> Matrix<K> {
-        let data = self
-            .data
-            .iter()
-            .map(|rows| rows.iter().map(|&element| element * a).collect())
-            .collect();
-
-        Matrix {
-            rows: self.rows,
+    pub fn scl_new(&self, scalar: K) -> Self {
+        Self {
             columns: self.columns,
-            data,
+            rows: self.rows,
+            data: self
+                .data
+                .iter()
+                .map(|row| row.iter().map(|column| *column * scalar).collect())
+                .collect(),
         }
+    }
+}
+
+impl<K> Add for Matrix<K>
+where
+    K: Copy + Add<Output = K>,
+{
+    type Output = Matrix<K>;
+    fn add(self, other: Matrix<K>) -> Self::Output {
+        self.add_new(&other)
+    }
+}
+
+impl<K> Sub for Matrix<K>
+where
+    K: Copy + Sub<Output = K>,
+{
+    type Output = Matrix<K>;
+    fn sub(self, other: Matrix<K>) -> Self::Output {
+        self.sub_new(&other)
+    }
+}
+
+impl<K> Mul<K> for Matrix<K>
+where
+    K: Copy + Mul<Output = K>,
+{
+    type Output = Matrix<K>;
+    fn mul(self, scalar: K) -> Self::Output {
+        self.scl_new(scalar)
     }
 }
 

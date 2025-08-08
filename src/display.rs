@@ -1,10 +1,10 @@
 use std::fmt::{Display, Formatter, Result};
 
-use crate::{matrix::Matrix, types::Scalar, vector::Vector};
+use crate::{Matrix, Vector};
 
 impl<K> Display for Vector<K>
 where
-    K: Scalar,
+    K: Display,
 {
     fn fmt(&self, f: &mut Formatter) -> Result {
         write!(f, "[")?;
@@ -20,7 +20,7 @@ where
 
 impl<K> Display for Matrix<K>
 where
-    K: Scalar,
+    K: Display,
 {
     fn fmt(&self, f: &mut Formatter) -> Result {
         let (rows, columns) = self.shape();

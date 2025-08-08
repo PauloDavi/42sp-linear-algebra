@@ -4,43 +4,57 @@ use std::{
 };
 
 #[derive(Debug)]
-pub enum VectorError {
-    LinearCombinationDimensionMismatch,
-    DimensionMismatch,
+pub enum LinearCombinationError {
+    CoefficientsDimensionMismatch {
+        vectors: usize,
+        coefficients: usize,
+    },
+    VectorsDimensionMismatch {
+        expected_len: usize,
+        founded_len: usize,
+    },
 }
 
-impl Display for VectorError {
+impl Display for LinearCombinationError {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
         match self {
-            VectorError::LinearCombinationDimensionMismatch => {
-                write!(f, "Número de vetores e coeficientes não coincidem")
+            LinearCombinationError::CoefficientsDimensionMismatch {
+                vectors,
+                coefficients,
+            } => {
+                write!(
+                    f,
+                    "Número de vetores ({vectors}) e coeficientes ({coefficients}) não coincidem"
+                )
             }
-            VectorError::DimensionMismatch => {
-                write!(f, "Dimensões dos vetores não coincidem")
+            LinearCombinationError::VectorsDimensionMismatch {
+                expected_len,
+                founded_len,
+            } => {
+                write!(
+                    f,
+                    "Os vetores possuem tamanhos diferentes: esperado {expected_len}, encontrado {founded_len}"
+                )
             }
         }
     }
 }
 
-impl Error for VectorError {}
+impl Error for LinearCombinationError {}
 
 #[derive(Debug)]
-pub enum MatrixError {
-    RowsLengthMismatch,
-    DimensionMismatch,
+pub enum InterpolationError {
+    InvalidParameterT { t: f32 },
 }
 
-impl Display for MatrixError {
+impl Display for InterpolationError {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
         match self {
-            MatrixError::RowsLengthMismatch => {
-                write!(f, "Tamanho das linhas deve ser sempre igual")
-            }
-            MatrixError::DimensionMismatch => {
-                write!(f, "Dimensões dos vetores não coincidem")
+            InterpolationError::InvalidParameterT { t } => {
+                write!(f, "Parâmetro t ({t}) deve estar no intervalo [0, 1]")
             }
         }
     }
 }
 
-impl Error for MatrixError {}
+impl Error for InterpolationError {}
