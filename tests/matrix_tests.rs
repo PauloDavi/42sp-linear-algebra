@@ -1072,4 +1072,234 @@ mod matrix_tests {
         assert!(product[1][0].abs() < 1e-6);
         assert!((product[1][1] - 1.0).abs() < 1e-6);
     }
+
+    #[test]
+    fn test_rank_identity_2x2() {
+        let mut matrix = Matrix::from([[1.0_f64, 0.0], [0.0, 1.0]]);
+
+        let rank = matrix.rank();
+
+        assert_eq!(rank, 2);
+    }
+
+    #[test]
+    fn test_rank_identity_3x3() {
+        let mut matrix = Matrix::from([[1.0_f64, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]);
+
+        let rank = matrix.rank();
+
+        assert_eq!(rank, 3);
+    }
+
+    #[test]
+    fn test_rank_full_rank_2x2() {
+        let mut matrix = Matrix::from([[1.0_f64, 2.0], [3.0, 4.0]]);
+
+        let rank = matrix.rank();
+
+        assert_eq!(rank, 2);
+    }
+
+    #[test]
+    fn test_rank_singular_2x2() {
+        let mut matrix = Matrix::from([[1.0_f64, 2.0], [2.0, 4.0]]);
+
+        let rank = matrix.rank();
+
+        assert_eq!(rank, 1);
+    }
+
+    #[test]
+    fn test_rank_zero_matrix() {
+        let mut matrix = Matrix::from([[0.0_f64, 0.0], [0.0, 0.0]]);
+
+        let rank = matrix.rank();
+
+        assert_eq!(rank, 0);
+    }
+
+    #[test]
+    fn test_rank_zero_row() {
+        let mut matrix = Matrix::from([[1.0_f64, 2.0, 3.0], [0.0, 0.0, 0.0], [4.0, 5.0, 6.0]]);
+
+        let rank = matrix.rank();
+
+        assert_eq!(rank, 2);
+    }
+
+    #[test]
+    fn test_rank_rectangular_full_row_rank() {
+        let mut matrix = Matrix::from([[1.0_f64, 2.0, 3.0], [4.0, 5.0, 6.0]]);
+
+        let rank = matrix.rank();
+
+        assert_eq!(rank, 2);
+    }
+
+    #[test]
+    fn test_rank_rectangular_full_column_rank() {
+        let mut matrix = Matrix::from([[1.0_f64, 0.0], [0.0, 1.0], [1.0, 1.0]]);
+
+        let rank = matrix.rank();
+
+        assert_eq!(rank, 2);
+    }
+
+    #[test]
+    fn test_rank_rectangular_reduced_rank() {
+        let mut matrix = Matrix::from([[1.0_f64, 2.0, 3.0], [2.0, 4.0, 6.0], [4.0, 5.0, 6.0]]);
+
+        let rank = matrix.rank();
+
+        assert_eq!(rank, 2);
+    }
+
+    #[test]
+    fn test_rank_single_row() {
+        let mut matrix = Matrix::from([[1.0_f64, 2.0, 3.0, 4.0]]);
+
+        let rank = matrix.rank();
+
+        assert_eq!(rank, 1);
+    }
+
+    #[test]
+    fn test_rank_single_column() {
+        let mut matrix = Matrix::from([[1.0_f64], [2.0], [3.0]]);
+
+        let rank = matrix.rank();
+
+        assert_eq!(rank, 1);
+    }
+
+    #[test]
+    fn test_rank_single_element() {
+        let mut matrix = Matrix::from([[5.0_f64]]);
+
+        let rank = matrix.rank();
+
+        assert_eq!(rank, 1);
+    }
+
+    #[test]
+    fn test_rank_single_element_zero() {
+        let mut matrix = Matrix::from([[0.0_f64]]);
+
+        let rank = matrix.rank();
+
+        assert_eq!(rank, 0);
+    }
+
+    #[test]
+    fn test_rank_diagonal_matrix() {
+        let mut matrix = Matrix::from([[2.0_f64, 0.0, 0.0], [0.0, 3.0, 0.0], [0.0, 0.0, 4.0]]);
+
+        let rank = matrix.rank();
+
+        assert_eq!(rank, 3);
+    }
+
+    #[test]
+    fn test_rank_diagonal_with_zero() {
+        let mut matrix = Matrix::from([[2.0_f64, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 4.0]]);
+
+        let rank = matrix.rank();
+
+        assert_eq!(rank, 2);
+    }
+
+    #[test]
+    fn test_rank_upper_triangular() {
+        let mut matrix = Matrix::from([[1.0_f64, 2.0, 3.0], [0.0, 4.0, 5.0], [0.0, 0.0, 6.0]]);
+
+        let rank = matrix.rank();
+
+        assert_eq!(rank, 3);
+    }
+
+    #[test]
+    fn test_rank_upper_triangular_with_zero() {
+        let mut matrix = Matrix::from([[1.0_f64, 2.0, 3.0], [0.0, 4.0, 5.0], [0.0, 0.0, 0.0]]);
+
+        let rank = matrix.rank();
+
+        assert_eq!(rank, 2);
+    }
+
+    #[test]
+    fn test_rank_all_same_rows() {
+        let mut matrix = Matrix::from([[1.0_f64, 2.0, 3.0], [1.0, 2.0, 3.0], [1.0, 2.0, 3.0]]);
+
+        let rank = matrix.rank();
+
+        assert_eq!(rank, 1);
+    }
+
+    #[test]
+    fn test_rank_complex_example() {
+        let mut matrix = Matrix::from([
+            [1.0_f64, 2.0, 1.0, 3.0],
+            [2.0, 4.0, 3.0, 7.0],
+            [1.0, 2.0, 2.0, 4.0],
+            [3.0, 6.0, 4.0, 10.0],
+        ]);
+
+        let rank = matrix.rank();
+
+        assert_eq!(rank, 2);
+    }
+
+    #[test]
+    fn test_rank_nearly_zero_elements() {
+        let mut matrix =
+            Matrix::from([[1.0_f64, 2.0, 3.0], [1e-15, 1e-14, 1e-13], [4.0, 5.0, 6.0]]);
+
+        let rank = matrix.rank();
+
+        assert_eq!(rank, 2);
+    }
+
+    #[test]
+    fn test_rank_precision_boundary() {
+        let mut matrix = Matrix::from([[1.0_f64, 2.0], [1e-11, 2e-11]]);
+
+        let rank = matrix.rank();
+
+        assert_eq!(rank, 1);
+    }
+
+    #[test]
+    fn test_rank_large_matrix() {
+        let mut matrix = Matrix::from([
+            [1.0_f64, 0.0, 0.0, 0.0, 0.0],
+            [0.0, 1.0, 0.0, 0.0, 0.0],
+            [0.0, 0.0, 1.0, 0.0, 0.0],
+            [0.0, 0.0, 0.0, 1.0, 0.0],
+            [0.0, 0.0, 0.0, 0.0, 1.0],
+        ]);
+
+        let rank = matrix.rank();
+
+        assert_eq!(rank, 5);
+    }
+
+    #[test]
+    fn test_rank_negative_values() {
+        let mut matrix = Matrix::from([[-1.0_f64, 2.0, -3.0], [4.0, -5.0, 6.0], [-7.0, 8.0, -9.0]]);
+
+        let rank = matrix.rank();
+
+        assert_eq!(rank, 2);
+    }
+
+    #[test]
+    fn test_rank_mutation_check() {
+        let original = Matrix::from([[1.0_f64, 2.0], [3.0, 4.0]]);
+        let mut matrix = original.clone();
+
+        let rank = matrix.rank();
+
+        assert_eq!(rank, 2);
+        assert_ne!(matrix, original);
+    }
 }

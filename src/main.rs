@@ -297,4 +297,14 @@ fn main() {
         "\nMatriz genérica:\n{u}\nInversa:\n{}",
         u.inverse().unwrap()
     );
+
+    println!("\n=== Demonstração do Rank de Matrizes ===");
+    let mut u = Matrix::from([[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]]);
+    println!("Matriz identidade:\n{u}\nRank: {}", u.rank());
+
+    let mut u = Matrix::from([[1., 2., 0., 0.], [2., 4., 0., 0.], [-1., 2., 1., 1.]]);
+    println!("\nMatriz 3x4:\n{u}\nRank: {}", u.rank());
+
+    let mut u = Matrix::from([[8., 5., -2.], [4., 7., 20.], [7., 6., 1.], [21., 18., 7.]]);
+    println!("\nMatriz 4x3:\n{u}\nRank: {}", u.rank());
 }

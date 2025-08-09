@@ -428,3 +428,50 @@ where
         })
     }
 }
+
+impl<K> Matrix<K>
+where
+    K: Copy
+        + Default
+        + PartialOrd
+        + Sub<Output = K>
+        + Div<Output = K>
+        + Mul<Output = K>
+        + From<f64>
+        + Into<f64>,
+{
+    pub fn rank(&mut self) -> usize {
+        let mut rank = 0;
+        let mut row = 0;
+
+        for col in 0..self.columns {
+            let mut pivot_row = row;
+            while pivot_row < self.rows && (self.data[pivot_row][col].into().abs() < 1e-10) {
+                pivot_row += 1;
+            }
+
+            if pivot_row < self.rows {
+                if pivot_row != row {
+                    self.data.swap(pivot_row, row);
+                }
+
+                let pivot_val = self.data[row][col];
+                for j in col..self.columns {
+                    self.data[row][j] = self.data[row][j] / pivot_val;
+                }
+
+                for i in (row + 1)..self.rows {
+                    let factor = self.data[i][col];
+                    for j in col..self.columns {
+                        self.data[i][j] = self.data[i][j] - factor * self.data[row][j];
+                    }
+                }
+
+                rank += 1;
+                row += 1;
+            }
+        }
+
+        rank
+    }
+}
