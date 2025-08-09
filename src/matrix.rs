@@ -308,3 +308,70 @@ where
         }
     }
 }
+
+impl<K> Matrix<K>
+where
+    K: Copy,
+{
+    pub fn sub_matrix(&self, remove_row: usize, remove_col: usize) -> Self {
+        let mut data = Vec::with_capacity(self.rows - 1);
+
+        for (i, row) in self.data.iter().enumerate() {
+            if i == remove_row {
+                continue;
+            }
+
+            let mut new_row = Vec::with_capacity(self.columns - 1);
+            for (j, &val) in row.iter().enumerate() {
+                if j == remove_col {
+                    continue;
+                }
+                new_row.push(val);
+            }
+            data.push(new_row);
+        }
+
+        Self {
+            rows: self.rows - 1,
+            columns: self.columns - 1,
+            data,
+        }
+    }
+}
+
+impl<K> Matrix<K>
+where
+    K: Copy + Default + Add<Output = K> + Sub<Output = K> + Mul<Output = K> + From<i8>,
+{
+    pub fn determinant(&self) -> K {
+        if !self.is_square() {
+            return K::default();
+        }
+
+        match self.rows {
+            1 => self[0][0],
+            2 => (self[0][0] * self[1][1]) - (self[0][1] * self[1][0]),
+            3 => {
+                self[0][0] * (self[1][1] * self[2][2] - self[1][2] * self[2][1])
+                    - self[0][1] * (self[1][0] * self[2][2] - self[1][2] * self[2][0])
+                    + self[0][2] * (self[1][0] * self[2][1] - self[1][1] * self[2][0])
+            }
+            4 => {
+                let mut det = K::from(0);
+
+                for col in 0..4 {
+                    let sub = self.sub_matrix(0, col);
+                    let sign = if col % 2 == 0 {
+                        K::from(1)
+                    } else {
+                        K::from(-1)
+                    };
+                    det = det + sign * self[0][col] * sub.determinant();
+                }
+
+                det
+            }
+            _ => K::default(),
+        }
+    }
+}

@@ -260,4 +260,22 @@ fn main() {
         [8., 5., 1., 4., 17.],
     ]);
     println!("\nMatriz original:\n{u}\nEchelon:\n{}", u.row_echelon());
+
+    println!("\n=== Demonstração do Determinante de Matrizes ===");
+    let u = Matrix::from([[1., -1.], [-1., 1.]]);
+    println!("Matriz:\n{u}\nDeterminante: {}", u.determinant());
+
+    let u = Matrix::from([[2., 0., 0.], [0., 2., 0.], [0., 0., 2.]]);
+    println!("\nMatriz:\n{u}\nDeterminante: {}", u.determinant());
+
+    let u = Matrix::from([[8., 5., -2.], [4., 7., 20.], [7., 6., 1.]]);
+    println!("\nMatriz:\n{u}\nDeterminante: {}", u.determinant());
+
+    let u = Matrix::from([
+        [8., 5., -2., 4.],
+        [4., 2.5, 20., 4.],
+        [8., 5., 1., 4.],
+        [28., -4., 17., 1.],
+    ]);
+    println!("\nMatriz:\n{u}\nDeterminante: {}", u.determinant());
 }

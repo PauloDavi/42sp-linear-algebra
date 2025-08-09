@@ -620,4 +620,236 @@ mod matrix_tests {
         assert_eq!(result.shape(), (3, 3));
         assert!((result[0][0].abs() - 1.0).abs() < 1e-10);
     }
+
+    #[test]
+    fn test_sub_matrix_remove_first_row_first_col() {
+        let matrix = Matrix::from([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
+
+        let result = matrix.sub_matrix(0, 0);
+
+        assert_eq!(result.shape(), (2, 2));
+        assert_eq!(result[0][0], 5);
+        assert_eq!(result[0][1], 6);
+        assert_eq!(result[1][0], 8);
+        assert_eq!(result[1][1], 9);
+    }
+
+    #[test]
+    fn test_sub_matrix_remove_middle_row_middle_col() {
+        let matrix = Matrix::from([
+            [1, 2, 3, 4],
+            [5, 6, 7, 8],
+            [9, 10, 11, 12],
+            [13, 14, 15, 16],
+        ]);
+
+        let result = matrix.sub_matrix(1, 2);
+
+        assert_eq!(result.shape(), (3, 3));
+        assert_eq!(result[0][0], 1);
+        assert_eq!(result[0][1], 2);
+        assert_eq!(result[0][2], 4);
+        assert_eq!(result[1][0], 9);
+        assert_eq!(result[1][1], 10);
+        assert_eq!(result[1][2], 12);
+        assert_eq!(result[2][0], 13);
+        assert_eq!(result[2][1], 14);
+        assert_eq!(result[2][2], 16);
+    }
+
+    #[test]
+    fn test_sub_matrix_remove_last_row_last_col() {
+        let matrix = Matrix::from([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
+
+        let result = matrix.sub_matrix(2, 2);
+
+        assert_eq!(result.shape(), (2, 2));
+        assert_eq!(result[0][0], 1);
+        assert_eq!(result[0][1], 2);
+        assert_eq!(result[1][0], 4);
+        assert_eq!(result[1][1], 5);
+    }
+
+    #[test]
+    fn test_sub_matrix_2x2_to_1x1() {
+        let matrix = Matrix::from([[1, 2], [3, 4]]);
+
+        let result = matrix.sub_matrix(0, 0);
+
+        assert_eq!(result.shape(), (1, 1));
+        assert_eq!(result[0][0], 4);
+    }
+
+    #[test]
+    fn test_sub_matrix_rectangular() {
+        let matrix = Matrix::from([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]]);
+
+        let result = matrix.sub_matrix(1, 1);
+
+        assert_eq!(result.shape(), (2, 3));
+        assert_eq!(result[0][0], 1);
+        assert_eq!(result[0][1], 3);
+        assert_eq!(result[0][2], 4);
+        assert_eq!(result[1][0], 9);
+        assert_eq!(result[1][1], 11);
+        assert_eq!(result[1][2], 12);
+    }
+
+    #[test]
+    fn test_determinant_1x1() {
+        let matrix = Matrix::from([[5]]);
+
+        let det = matrix.determinant();
+
+        assert_eq!(det, 5);
+    }
+
+    #[test]
+    fn test_determinant_2x2_simple() {
+        let matrix = Matrix::from([[1, 2], [3, 4]]);
+
+        let det = matrix.determinant();
+
+        // det = 1*4 - 2*3 = 4 - 6 = -2
+        assert_eq!(det, -2);
+    }
+
+    #[test]
+    fn test_determinant_2x2_identity() {
+        let matrix = Matrix::from([[1, 0], [0, 1]]);
+
+        let det = matrix.determinant();
+
+        assert_eq!(det, 1);
+    }
+
+    #[test]
+    fn test_determinant_2x2_zero() {
+        let matrix = Matrix::from([[1, 2], [2, 4]]);
+
+        let det = matrix.determinant();
+
+        assert_eq!(det, 0);
+    }
+
+    #[test]
+    fn test_determinant_3x3_identity() {
+        let matrix = Matrix::from([[1, 0, 0], [0, 1, 0], [0, 0, 1]]);
+
+        let det = matrix.determinant();
+
+        assert_eq!(det, 1);
+    }
+
+    #[test]
+    fn test_determinant_3x3_simple() {
+        let matrix = Matrix::from([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
+
+        let det = matrix.determinant();
+
+        assert_eq!(det, 0);
+    }
+
+    #[test]
+    fn test_determinant_3x3_non_singular() {
+        let matrix = Matrix::from([[1, 2, 3], [0, 1, 4], [5, 6, 0]]);
+
+        let det = matrix.determinant();
+
+        assert_eq!(det, 1);
+    }
+
+    #[test]
+    fn test_determinant_4x4_identity() {
+        let matrix = Matrix::from([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]);
+
+        let det = matrix.determinant();
+
+        assert_eq!(det, 1);
+    }
+
+    #[test]
+    fn test_determinant_4x4_simple() {
+        let matrix = Matrix::from([[2, 0, 0, 0], [0, 3, 0, 0], [0, 0, 4, 0], [0, 0, 0, 5]]);
+
+        let det = matrix.determinant();
+
+        assert_eq!(det, 120);
+    }
+
+    #[test]
+    fn test_determinant_non_square() {
+        let matrix = Matrix::from([[1, 2, 3], [4, 5, 6]]);
+
+        let det = matrix.determinant();
+
+        assert_eq!(det, 0);
+    }
+
+    #[test]
+    fn test_determinant_with_floats() {
+        let matrix = Matrix::from([[2.0, 1.0], [1.0, 2.0]]);
+
+        let det = matrix.determinant();
+
+        assert_eq!(det, 3.0);
+    }
+
+    #[test]
+    fn test_determinant_with_negatives() {
+        let matrix = Matrix::from([[-1, 2], [3, -4]]);
+
+        let det = matrix.determinant();
+
+        assert_eq!(det, -2);
+    }
+
+    #[test]
+    fn test_determinant_larger_than_4x4() {
+        let matrix = Matrix::from([
+            [1, 2, 3, 4, 5],
+            [6, 7, 8, 9, 10],
+            [11, 12, 13, 14, 15],
+            [16, 17, 18, 19, 20],
+            [21, 22, 23, 24, 25],
+        ]);
+
+        let det = matrix.determinant();
+
+        assert_eq!(det, 0);
+    }
+
+    #[test]
+    fn test_row_echelon_all_zeros_row() {
+        let matrix = Matrix::from([[1.0_f64, 2.0, 3.0], [0.0, 0.0, 0.0], [4.0, 5.0, 6.0]]);
+
+        let result = matrix.row_echelon();
+
+        assert_eq!(result.shape(), (3, 3));
+        assert!(result[0][0] != 0.0 || result[2][0] != 0.0);
+    }
+
+    #[test]
+    fn test_row_echelon_single_row() {
+        let matrix = Matrix::from([[2.0_f64, 4.0, 6.0]]);
+
+        let result = matrix.row_echelon();
+
+        assert_eq!(result.shape(), (1, 3));
+        assert!((result[0][0] - 1.0).abs() < 1e-10);
+        assert!((result[0][1] - 2.0).abs() < 1e-10);
+        assert!((result[0][2] - 3.0).abs() < 1e-10);
+    }
+
+    #[test]
+    fn test_row_echelon_single_column() {
+        let matrix = Matrix::from([[2.0_f64], [4.0], [6.0]]);
+
+        let result = matrix.row_echelon();
+
+        assert_eq!(result.shape(), (3, 1));
+        assert!((result[0][0] - 1.0).abs() < 1e-10);
+        assert!(result[1][0].abs() < 1e-10);
+        assert!(result[2][0].abs() < 1e-10);
+    }
 }
