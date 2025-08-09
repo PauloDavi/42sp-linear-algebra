@@ -567,4 +567,57 @@ mod matrix_tests {
         assert!(square_matrix.is_square());
         assert!(!rectangular_matrix.is_square());
     }
+
+    #[test]
+    fn test_row_echelon_simple_matrix() {
+        let matrix = Matrix::from([[2.0_f64, 4.0, 6.0], [1.0, 3.0, 5.0], [0.0, 2.0, 4.0]]);
+
+        let result = matrix.row_echelon();
+
+        assert!((result[0][0] - 1.0).abs() < 1e-10);
+        assert!(result[1][0].abs() < 1e-10);
+        assert!(result[2][0].abs() < 1e-10);
+    }
+
+    #[test]
+    fn test_row_echelon_identity_matrix() {
+        let matrix = Matrix::from([[1.0_f64, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]);
+
+        let result = matrix.row_echelon();
+
+        assert_eq!(result, matrix);
+    }
+
+    #[test]
+    fn test_row_echelon_with_zeros() {
+        let matrix = Matrix::from([[0.0_f64, 2.0, 4.0], [1.0, 3.0, 5.0], [2.0, 4.0, 6.0]]);
+
+        let result = matrix.row_echelon();
+
+        assert!(result[0][0] != 0.0 || result[1][0] != 0.0 || result[2][0] != 0.0);
+    }
+
+    #[test]
+    fn test_row_echelon_rectangular_matrix() {
+        let matrix = Matrix::from([
+            [1.0_f64, 2.0, 3.0, 4.0],
+            [2.0, 4.0, 6.0, 8.0],
+            [1.0, 1.0, 1.0, 1.0],
+        ]);
+
+        let result = matrix.row_echelon();
+
+        assert_eq!(result.shape(), (3, 4));
+        assert!((result[0][0] - 1.0).abs() < 1e-10);
+    }
+
+    #[test]
+    fn test_row_echelon_with_negative_values() {
+        let matrix = Matrix::from([[-2.0_f64, 4.0, -6.0], [1.0, -3.0, 5.0], [0.0, 2.0, -4.0]]);
+
+        let result = matrix.row_echelon();
+
+        assert_eq!(result.shape(), (3, 3));
+        assert!((result[0][0].abs() - 1.0).abs() < 1e-10);
+    }
 }

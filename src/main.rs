@@ -8,7 +8,7 @@ fn main() {
     println!("Vector 1: {v1}");
     println!("Vector 2: {v2}");
 
-    v1.add(&v2);
+    v1.add_inline(&v2);
     println!("\nDepois da adição: {v1}");
 
     v1.sub(&v2);
@@ -243,4 +243,21 @@ fn main() {
 
     let u = Matrix::from([[-2., -8.], [1., -23.], [0., 6.]]);
     println!("\nMatriz original:\n{u}\nTransposta:\n{}", u.transpose());
+
+    println!("\n=== Demonstração de Resolução de sistemas com Matrizes ===");
+    let u = Matrix::from([[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]]);
+    println!("\nMatriz original:\n{u}\nEchelon:\n{}", u.row_echelon());
+
+    let u = Matrix::from([[1., 2.], [3., 4.]]);
+    println!("\nMatriz original:\n{u}\nEchelon:\n{}", u.row_echelon());
+
+    let u = Matrix::from([[1., 2.], [2., 4.]]);
+    println!("\nMatriz original:\n{u}\nEchelon:\n{}", u.row_echelon());
+
+    let u = Matrix::from([
+        [8., 5., -2., 4., 28.],
+        [4., 2.5, 20., 4., -4.],
+        [8., 5., 1., 4., 17.],
+    ]);
+    println!("\nMatriz original:\n{u}\nEchelon:\n{}", u.row_echelon());
 }

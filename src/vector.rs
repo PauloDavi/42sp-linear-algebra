@@ -18,6 +18,10 @@ impl<K> Vector<K> {
     pub fn iter_mut(&mut self) -> IterMut<'_, K> {
         self.data.iter_mut()
     }
+
+    pub fn data(&self) -> &Vec<K> {
+        &self.data
+    }
 }
 
 impl<K, const N: usize> From<[K; N]> for Vector<K>
@@ -55,7 +59,7 @@ impl<K> Vector<K>
 where
     K: Copy + Add<Output = K>,
 {
-    pub fn add(&mut self, other: &Self) {
+    pub fn add_inline(&mut self, other: &Self) {
         for (a, b) in self.data.iter_mut().zip(&other.data) {
             *a = *a + *b;
         }
@@ -185,5 +189,14 @@ where
         self.iter()
             .map(|&x| x.into().abs())
             .fold(f32::NEG_INFINITY, f32::max)
+    }
+}
+
+impl<K> Vector<K>
+where
+    K: Copy,
+{
+    pub fn to_vec(&self) -> Vec<K> {
+        self.data.clone()
     }
 }

@@ -44,7 +44,7 @@ mod vector_tests {
         let mut vector1 = Vector::from([1, 2, 3]);
         let vector2 = Vector::from([4, 5, 6]);
 
-        vector1.add(&vector2);
+        vector1.add_inline(&vector2);
 
         assert_eq!(vector1[0], 5);
         assert_eq!(vector1[1], 7);

@@ -1,5 +1,5 @@
 use core::slice::{Iter, IterMut};
-use std::ops::{Add, Index, IndexMut, Mul, Sub};
+use std::ops::{Add, Div, Index, IndexMut, Mul, Neg, Sub};
 
 use crate::Vector;
 
@@ -254,5 +254,61 @@ where
         }
 
         acc
+    }
+}
+
+impl<K> Matrix<K>
+where
+    K: Copy
+        + Mul<Output = K>
+        + Default
+        + PartialEq
+        + Div<Output = K>
+        + From<u8>
+        + Neg<Output = K>
+        + Add<Output = K>,
+{
+    pub fn row_echelon(&self) -> Self {
+        let mut resp: Vec<Vector<K>> = self
+            .data
+            .iter()
+            .map(|row| Vector::from(row.as_slice()))
+            .collect();
+
+        for row in 0..self.rows {
+            let pivot_index = match Matrix::find_pivot_index(row, resp[row].data()) {
+                Option::Some(v) => v,
+                Option::None => break,
+            };
+            let pivot = resp[row][pivot_index];
+            resp[row].scl(K::from(1u8) / pivot);
+
+            for i in 0..self.rows {
+                if i == row {
+                    continue;
+                }
+                let row_pivot = resp[i][pivot_index];
+                if row_pivot != K::from(0u8) {
+                    let add = resp[row].scl_new(-row_pivot);
+                    resp[i].add_inline(&add);
+                }
+            }
+        }
+
+        Self {
+            columns: self.columns,
+            rows: self.rows,
+            data: resp.iter().map(|item| item.to_vec()).collect(),
+        }
+    }
+
+    fn find_pivot_index(initial: usize, row: &Vec<K>) -> Option<usize> {
+        for (index, &item) in row.iter().enumerate().skip(initial) {
+            if item != K::from(0u8) {
+                return Option::Some(index);
+            }
+        }
+
+        Option::None
     }
 }
