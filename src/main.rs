@@ -223,4 +223,24 @@ fn main() {
     let u = Matrix::from([[3., -5.], [6., 8.]]);
     let v = Matrix::from([[2., 1.], [4., 2.]]);
     println!("\nMultiplicando matrizes genéricas:\n{}", u.mul_mat(&v));
+
+    println!("\n=== Demonstração do Traço de Matrizes ===");
+    let u = Matrix::from([[1., 0.], [0., 1.]]);
+    println!("Traço da matriz identidade:\n{u}\nTraço: {}", u.trace());
+
+    let u = Matrix::from([[2., -5., 0.], [4., 3., 7.], [-2., 3., 4.]]);
+    println!("\nTraço da matriz 3x3:\n{u}\nTraço: {}", u.trace());
+
+    let u = Matrix::from([[-2., -8., 4.], [1., -23., 4.], [0., 6., 4.]]);
+    println!("\nTraço da matriz 3x3:\n{u}\nTraço: {}", u.trace());
+
+    println!("\n=== Demonstração de Transposição de Matrizes ===");
+    let u = Matrix::from([[1., 1.], [0., 0.]]);
+    println!("Matriz original:\n{u}\nTransposta:\n{}", u.transpose());
+
+    let u = Matrix::from([[2., -5., 0.], [4., 3., 7.]]);
+    println!("\nMatriz original:\n{u}\nTransposta:\n{}", u.transpose());
+
+    let u = Matrix::from([[-2., -8.], [1., -23.], [0., 6.]]);
+    println!("\nMatriz original:\n{u}\nTransposta:\n{}", u.transpose());
 }

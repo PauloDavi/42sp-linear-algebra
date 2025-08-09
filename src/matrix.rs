@@ -22,6 +22,10 @@ impl<K> Matrix<K> {
     pub fn iter_mut(&mut self) -> IterMut<'_, Vec<K>> {
         self.data.iter_mut()
     }
+
+    pub fn is_square(&self) -> bool {
+        self.rows == self.columns
+    }
 }
 
 impl<K, const R: usize, const C: usize> From<[[K; C]; R]> for Matrix<K>
@@ -232,5 +236,23 @@ where
             columns: self.rows,
             data,
         }
+    }
+}
+
+impl<K> Matrix<K>
+where
+    K: Copy + Default + Add<Output = K>,
+{
+    pub fn trace(&self) -> K {
+        let mut acc = K::default();
+        if !self.is_square() {
+            return acc;
+        }
+
+        for i in 0..self.rows {
+            acc = acc + self[i][i]
+        }
+
+        acc
     }
 }

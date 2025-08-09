@@ -485,4 +485,86 @@ mod matrix_tests {
 
         assert_eq!(matrix, double_transposed);
     }
+
+    #[test]
+    fn test_trace_square_matrix() {
+        let matrix = Matrix::from([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
+
+        let trace = matrix.trace();
+
+        assert_eq!(trace, 15);
+    }
+
+    #[test]
+    fn test_trace_identity_matrix() {
+        let matrix = Matrix::from([[1, 0, 0], [0, 1, 0], [0, 0, 1]]);
+
+        let trace = matrix.trace();
+
+        assert_eq!(trace, 3);
+    }
+
+    #[test]
+    fn test_trace_2x2_matrix() {
+        let matrix = Matrix::from([[5, 2], [3, 7]]);
+
+        let trace = matrix.trace();
+
+        assert_eq!(trace, 12);
+    }
+
+    #[test]
+    fn test_trace_single_element() {
+        let matrix = Matrix::from([[42]]);
+
+        let trace = matrix.trace();
+
+        assert_eq!(trace, 42);
+    }
+
+    #[test]
+    fn test_trace_with_floats() {
+        let matrix = Matrix::from([[1.5, 2.0], [3.5, 4.5]]);
+
+        let trace = matrix.trace();
+
+        // 1.5 + 4.5 = 6.0
+        assert_eq!(trace, 6.0);
+    }
+
+    #[test]
+    fn test_trace_with_negatives() {
+        let matrix = Matrix::from([[-1, 2], [3, -4]]);
+
+        let trace = matrix.trace();
+
+        assert_eq!(trace, -5);
+    }
+
+    #[test]
+    fn test_trace_rectangular_matrix() {
+        let matrix = Matrix::from([[1, 2, 3], [4, 5, 6]]);
+
+        let trace = matrix.trace();
+
+        assert_eq!(trace, 0);
+    }
+
+    #[test]
+    fn test_trace_zeros() {
+        let matrix = Matrix::from([[0, 1, 2], [3, 0, 5], [6, 7, 0]]);
+
+        let trace = matrix.trace();
+
+        assert_eq!(trace, 0);
+    }
+
+    #[test]
+    fn test_is_square() {
+        let square_matrix = Matrix::from([[1, 2], [3, 4]]);
+        let rectangular_matrix = Matrix::from([[1, 2, 3], [4, 5, 6]]);
+
+        assert!(square_matrix.is_square());
+        assert!(!rectangular_matrix.is_square());
+    }
 }
