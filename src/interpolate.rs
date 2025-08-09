@@ -6,11 +6,9 @@ pub fn lerp<K>(u: K, v: K, t: f32) -> Result<K, InterpolationError>
 where
     K: Add<Output = K> + Mul<f32, Output = K>,
 {
-    if t < 0.0 || t > 1.0 {
+    if !(0.0..=1.0).contains(&t) {
         return Err(InterpolationError::InvalidParameterT { t });
     }
 
-    let u_scaled = u * (1.0 - t);
-    let v_scaled = v * t;
-    Ok(u_scaled + v_scaled)
+    Ok(u * (1.0 - t) + v * t)
 }

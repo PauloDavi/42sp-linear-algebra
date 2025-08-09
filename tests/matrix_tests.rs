@@ -247,8 +247,8 @@ mod matrix_tests {
     }
 
     #[test]
-    fn test_with_default() {
-        let matrix: Matrix<i32> = Matrix::with_default(3, 2);
+    fn test_zeros() {
+        let matrix: Matrix<i32> = Matrix::zeros(3, 2);
 
         assert_eq!(matrix.shape(), (3, 2));
         assert_eq!(matrix[0][0], 0);
@@ -260,8 +260,8 @@ mod matrix_tests {
     }
 
     #[test]
-    fn test_with_default_floats() {
-        let matrix: Matrix<f64> = Matrix::with_default(2, 3);
+    fn test_zeros_floats() {
+        let matrix: Matrix<f64> = Matrix::zeros(2, 3);
 
         assert_eq!(matrix.shape(), (2, 3));
         assert_eq!(matrix[0][0], 0.0);

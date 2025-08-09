@@ -4,10 +4,10 @@ use crate::Vector;
 
 pub fn cross_product<K>(u: &Vector<K>, v: &Vector<K>) -> Vector<K>
 where
-    K: Clone + Copy + Sub<Output = K> + Mul<Output = K>,
+    K: Copy + Sub<Output = K> + Mul<Output = K>,
 {
     if u.len() != 3 || v.len() != 3 {
-        return u.clone();
+        return Vector::from(u.as_slice());
     }
 
     Vector::from([

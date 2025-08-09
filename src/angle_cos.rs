@@ -6,5 +6,15 @@ pub fn angle_cos<K>(u: &Vector<K>, v: &Vector<K>) -> f32
 where
     K: Copy + Default + Add<Output = K> + Mul<Output = K> + Into<f32>,
 {
-    u.dot(v).into() / (u.norm() * v.norm())
+    debug_assert_eq!(u.len(), v.len(), "Vectors must have same dimension");
+
+    let dot_product = u.dot(v).into();
+    let norm_u = u.norm();
+    let norm_v = v.norm();
+
+    if norm_u == 0.0 || norm_v == 0.0 {
+        return 0.0;
+    }
+
+    dot_product / (norm_u * norm_v)
 }

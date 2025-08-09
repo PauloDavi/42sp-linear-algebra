@@ -7,20 +7,13 @@ pub fn linear_combination<K, const N: usize>(
     coefficients: [K; N],
 ) -> Result<Vector<K>, LinearCombinationError>
 where
-    K: Clone + Default + Copy + Add<Output = K> + Mul<Output = K>,
+    K: Copy + Default + Add<Output = K> + Mul<Output = K>,
 {
-    if vectors.len() != coefficients.len() {
-        return Err(LinearCombinationError::CoefficientsDimensionMismatch {
-            coefficients: coefficients.len(),
-            vectors: vectors.len(),
-        });
+    if N == 0 {
+        return Ok(Vector::from(Vec::new()));
     }
 
-    let len = match vectors.first() {
-        Some(first) => first.len(),
-        None => return Ok(Vector::from([])),
-    };
-
+    let len = vectors[0].len();
     for vector in vectors.iter() {
         if vector.len() != len {
             return Err(LinearCombinationError::VectorsDimensionMismatch {
@@ -30,13 +23,12 @@ where
         }
     }
 
-    let mut result = Vector::with_default(len);
+    let mut result_data = vec![K::default(); len];
     for (vector, &coefficient) in vectors.iter().zip(coefficients.iter()) {
-        let scaled_vector = vector.scl_new(coefficient);
-        for (i, &value) in scaled_vector.iter().enumerate() {
-            result[i] = result[i] + value;
+        for (i, &value) in vector.as_slice().iter().enumerate() {
+            result_data[i] = result_data[i] + (value * coefficient);
         }
     }
 
-    Ok(result)
+    Ok(Vector::from(result_data))
 }

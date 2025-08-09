@@ -15,6 +15,14 @@ impl<K> Matrix<K> {
         (self.rows, self.columns)
     }
 
+    pub fn rows(&self) -> usize {
+        self.rows
+    }
+
+    pub fn columns(&self) -> usize {
+        self.columns
+    }
+
     pub fn iter(&self) -> Iter<'_, Vec<K>> {
         self.data.iter()
     }
@@ -26,32 +34,42 @@ impl<K> Matrix<K> {
     pub fn is_square(&self) -> bool {
         self.rows == self.columns
     }
+
+    pub fn as_slice(&self) -> &[Vec<K>] {
+        &self.data
+    }
+
+    pub fn into_inner(self) -> Vec<Vec<K>> {
+        self.data
+    }
 }
 
-impl<K, const R: usize, const C: usize> From<[[K; C]; R]> for Matrix<K>
-where
-    K: Clone,
-{
+impl<K, const R: usize, const C: usize> From<[[K; C]; R]> for Matrix<K> {
     fn from(arr: [[K; C]; R]) -> Self {
         Self {
             rows: R,
             columns: C,
-            data: arr.map(|row| row.to_vec()).to_vec(),
+            data: arr.into_iter().map(|row| row.into()).collect(),
         }
     }
 }
 
 impl<K> Matrix<K>
 where
-    K: Clone + Copy,
+    K: Copy,
 {
     pub fn transpose(&self) -> Self {
-        let mut transposed_data = vec![Vec::with_capacity(self.rows); self.columns];
+        let mut transposed_data = Vec::with_capacity(self.columns);
+        for _ in 0..self.columns {
+            transposed_data.push(Vec::with_capacity(self.rows));
+        }
+
         for row in &self.data {
-            for (j, val) in row.iter().enumerate() {
-                transposed_data[j].push(*val);
+            for (j, &val) in row.iter().enumerate() {
+                transposed_data[j].push(val);
             }
         }
+
         Self {
             columns: self.rows,
             rows: self.columns,
@@ -62,9 +80,9 @@ where
 
 impl<K> Matrix<K>
 where
-    K: Clone + Default,
+    K: Default + Clone,
 {
-    pub fn with_default(rows: usize, columns: usize) -> Self {
+    pub fn zeros(rows: usize, columns: usize) -> Self {
         Self {
             columns,
             rows,
@@ -78,29 +96,31 @@ where
     K: Copy + Add<Output = K>,
 {
     pub fn add(&mut self, other: &Self) {
+        debug_assert_eq!(self.shape(), other.shape(), "Matrix dimensions must match");
+
         for (row_a, row_b) in self.data.iter_mut().zip(&other.data) {
-            for (column_a, column_b) in row_a.iter_mut().zip(row_b) {
-                *column_a = *column_a + *column_b;
+            for (column_a, &column_b) in row_a.iter_mut().zip(row_b) {
+                *column_a = *column_a + column_b;
             }
         }
     }
 
     pub fn add_new(&self, other: &Self) -> Self {
+        debug_assert_eq!(self.shape(), other.shape(), "Matrix dimensions must match");
+
+        let mut data = Vec::with_capacity(self.rows);
+        for (row_a, row_b) in self.data.iter().zip(&other.data) {
+            let mut new_row = Vec::with_capacity(self.columns);
+            for (&column_a, &column_b) in row_a.iter().zip(row_b) {
+                new_row.push(column_a + column_b);
+            }
+            data.push(new_row);
+        }
+
         Self {
             columns: self.columns,
             rows: self.rows,
-            data: self
-                .data
-                .iter()
-                .zip(&other.data)
-                .map(|(row_a, row_b)| {
-                    row_a
-                        .iter()
-                        .zip(row_b)
-                        .map(|(&column_a, &column_b)| column_a + column_b)
-                        .collect()
-                })
-                .collect(),
+            data,
         }
     }
 }
@@ -110,29 +130,31 @@ where
     K: Copy + Sub<Output = K>,
 {
     pub fn sub(&mut self, other: &Self) {
+        debug_assert_eq!(self.shape(), other.shape(), "Matrix dimensions must match");
+
         for (row_a, row_b) in self.data.iter_mut().zip(&other.data) {
-            for (column_a, column_b) in row_a.iter_mut().zip(row_b) {
-                *column_a = *column_a - *column_b;
+            for (column_a, &column_b) in row_a.iter_mut().zip(row_b) {
+                *column_a = *column_a - column_b;
             }
         }
     }
 
     pub fn sub_new(&self, other: &Self) -> Self {
+        debug_assert_eq!(self.shape(), other.shape(), "Matrix dimensions must match");
+
+        let mut data = Vec::with_capacity(self.rows);
+        for (row_a, row_b) in self.data.iter().zip(&other.data) {
+            let mut new_row = Vec::with_capacity(self.columns);
+            for (&column_a, &column_b) in row_a.iter().zip(row_b) {
+                new_row.push(column_a - column_b);
+            }
+            data.push(new_row);
+        }
+
         Self {
             columns: self.columns,
             rows: self.rows,
-            data: self
-                .data
-                .iter()
-                .zip(&other.data)
-                .map(|(row_a, row_b)| {
-                    row_a
-                        .iter()
-                        .zip(row_b)
-                        .map(|(&column_a, &column_b)| column_a - column_b)
-                        .collect()
-                })
-                .collect(),
+            data,
         }
     }
 }
@@ -142,22 +164,27 @@ where
     K: Copy + Mul<Output = K>,
 {
     pub fn scl(&mut self, scalar: K) {
-        for row in self.data.iter_mut() {
-            for column in row.iter_mut() {
+        for row in &mut self.data {
+            for column in row {
                 *column = *column * scalar;
             }
         }
     }
 
     pub fn scl_new(&self, scalar: K) -> Self {
+        let mut data = Vec::with_capacity(self.rows);
+        for row in &self.data {
+            let mut new_row = Vec::with_capacity(self.columns);
+            for &column in row {
+                new_row.push(column * scalar);
+            }
+            data.push(new_row);
+        }
+
         Self {
             columns: self.columns,
             rows: self.rows,
-            data: self
-                .data
-                .iter()
-                .map(|row| row.iter().map(|column| *column * scalar).collect())
-                .collect(),
+            data,
         }
     }
 }
@@ -208,33 +235,48 @@ impl<K> IndexMut<usize> for Matrix<K> {
 
 impl<K> Matrix<K>
 where
-    K: Clone + Copy + Default + Add<Output = K> + Mul<Output = K>,
+    K: Copy + Default + Add<Output = K> + Mul<Output = K>,
 {
     pub fn mul_vec(&self, vec: &Vector<K>) -> Vector<K> {
-        let transposed = self.transpose();
-        let mut data = vec![K::default(); self.rows];
+        debug_assert_eq!(self.rows, vec.len(), "Matrix rows must match vector length");
 
-        for i in 0..self.rows {
-            data[i] = Vector::from(&transposed[i]).dot(vec);
+        let mut result = Vec::with_capacity(self.rows);
+
+        for column in 0..self.columns {
+            let mut sum = K::default();
+            for (row, &vec_val) in vec.iter().enumerate() {
+                sum = sum + (self.data[row][column] * vec_val)
+            }
+            result.push(sum);
         }
 
-        Vector::from(data.as_slice())
+        Vector::from(result)
     }
 
-    pub fn mul_mat(&self, mat: &Self) -> Self {
-        let transposed = mat.transpose();
-        let mut data = vec![vec![K::default(); self.rows]; self.columns];
+    pub fn mul_mat(&self, other: &Self) -> Self {
+        debug_assert_eq!(
+            self.columns, other.rows,
+            "Matrix dimensions must be compatible for multiplication"
+        );
+
+        let mut result_data = Vec::with_capacity(self.rows);
 
         for i in 0..self.rows {
-            for j in 0..self.columns {
-                data[i][j] = Vector::from(&transposed[j]).dot(&Vector::from(&self[i]));
+            let mut row = Vec::with_capacity(other.columns);
+            for j in 0..other.columns {
+                let mut sum = K::default();
+                for k in 0..self.columns {
+                    sum = sum + (self.data[i][k] * other.data[k][j]);
+                }
+                row.push(sum);
             }
+            result_data.push(row);
         }
 
         Self {
-            rows: self.columns,
-            columns: self.rows,
-            data,
+            rows: self.rows,
+            columns: other.columns,
+            data: result_data,
         }
     }
 }
@@ -244,15 +286,14 @@ where
     K: Copy + Default + Add<Output = K>,
 {
     pub fn trace(&self) -> K {
-        let mut acc = K::default();
         if !self.is_square() {
-            return acc;
+            return K::default();
         }
 
+        let mut acc = K::default();
         for i in 0..self.rows {
-            acc = acc + self[i][i]
+            acc = acc + self[i][i];
         }
-
         acc
     }
 }
@@ -277,7 +318,7 @@ where
 
         for row in 0..self.rows {
             match rows[row]
-                .data()
+                .as_slice()
                 .iter()
                 .enumerate()
                 .skip(row)
@@ -352,23 +393,26 @@ where
             1 => self[0][0],
             2 => (self[0][0] * self[1][1]) - (self[0][1] * self[1][0]),
             3 => {
-                self[0][0] * (self[1][1] * self[2][2] - self[1][2] * self[2][1])
-                    - self[0][1] * (self[1][0] * self[2][2] - self[1][2] * self[2][0])
-                    + self[0][2] * (self[1][0] * self[2][1] - self[1][1] * self[2][0])
+                let a = self[0][0] * self[1][1] * self[2][2];
+                let b = self[0][1] * self[1][2] * self[2][0];
+                let c = self[0][2] * self[1][0] * self[2][1];
+                let d = self[0][2] * self[1][1] * self[2][0];
+                let e = self[0][1] * self[1][0] * self[2][2];
+                let f = self[0][0] * self[1][2] * self[2][1];
+
+                (a + b + c) - (d + e + f)
             }
             4 => {
                 let mut det = K::from(0);
-
                 for col in 0..4 {
-                    let sub = self.sub_matrix(0, col);
+                    let minor = self.sub_matrix(0, col);
                     let sign = if col % 2 == 0 {
                         K::from(1)
                     } else {
                         K::from(-1)
                     };
-                    det = det + sign * self[0][col] * sub.determinant();
+                    det = det + sign * self[0][col] * minor.determinant();
                 }
-
                 det
             }
             _ => K::from(0),

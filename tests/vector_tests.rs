@@ -13,8 +13,8 @@ mod vector_tests {
     }
 
     #[test]
-    fn test_with_default() {
-        let vector: Vector<i32> = Vector::with_default(3);
+    fn test_zeros() {
+        let vector: Vector<i32> = Vector::zeros(3);
 
         assert_eq!(vector.len(), 3);
         assert_eq!(vector[0], 0);

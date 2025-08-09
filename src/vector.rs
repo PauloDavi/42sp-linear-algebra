@@ -11,6 +11,10 @@ impl<K> Vector<K> {
         self.data.len()
     }
 
+    pub fn is_empty(&self) -> bool {
+        self.data.is_empty()
+    }
+
     pub fn iter(&self) -> Iter<'_, K> {
         self.data.iter()
     }
@@ -19,23 +23,28 @@ impl<K> Vector<K> {
         self.data.iter_mut()
     }
 
-    pub fn data(&self) -> &Vec<K> {
+    pub fn as_slice(&self) -> &[K] {
         &self.data
+    }
+
+    pub fn as_mut_slice(&mut self) -> &mut [K] {
+        &mut self.data
+    }
+
+    pub fn into_inner(self) -> Vec<K> {
+        self.data
     }
 }
 
-impl<K, const N: usize> From<[K; N]> for Vector<K>
-where
-    K: Clone,
-{
+impl<K, const N: usize> From<[K; N]> for Vector<K> {
     fn from(arr: [K; N]) -> Self {
-        Self { data: arr.to_vec() }
+        Self { data: arr.into() }
     }
 }
 
 impl<K> From<&[K]> for Vector<K>
 where
-    K: Clone,
+    K: Copy,
 {
     fn from(data: &[K]) -> Self {
         Self {
@@ -44,11 +53,17 @@ where
     }
 }
 
+impl<K> From<Vec<K>> for Vector<K> {
+    fn from(data: Vec<K>) -> Self {
+        Self { data }
+    }
+}
+
 impl<K> Vector<K>
 where
-    K: Clone + Default,
+    K: Default + Clone,
 {
-    pub fn with_default(len: usize) -> Self {
+    pub fn zeros(len: usize) -> Self {
         Self {
             data: vec![K::default(); len],
         }
@@ -60,20 +75,21 @@ where
     K: Copy + Add<Output = K>,
 {
     pub fn add_inline(&mut self, other: &Self) {
-        for (a, b) in self.data.iter_mut().zip(&other.data) {
-            *a = *a + *b;
+        debug_assert_eq!(self.len(), other.len(), "Vector dimensions must match");
+
+        for (a, &b) in self.data.iter_mut().zip(&other.data) {
+            *a = *a + b;
         }
     }
 
     pub fn add_new(&self, other: &Self) -> Self {
-        Self {
-            data: self
-                .data
-                .iter()
-                .zip(&other.data)
-                .map(|(&a, &b)| a + b)
-                .collect(),
+        debug_assert_eq!(self.len(), other.len(), "Vector dimensions must match");
+
+        let mut data = Vec::with_capacity(self.len());
+        for (&a, &b) in self.data.iter().zip(&other.data) {
+            data.push(a + b);
         }
+        Self { data }
     }
 }
 
@@ -82,20 +98,21 @@ where
     K: Copy + Sub<Output = K>,
 {
     pub fn sub(&mut self, other: &Self) {
-        for (a, b) in self.data.iter_mut().zip(&other.data) {
-            *a = *a - *b;
+        debug_assert_eq!(self.len(), other.len(), "Vector dimensions must match");
+
+        for (a, &b) in self.data.iter_mut().zip(&other.data) {
+            *a = *a - b;
         }
     }
 
     pub fn sub_new(&self, other: &Self) -> Self {
-        Self {
-            data: self
-                .data
-                .iter()
-                .zip(&other.data)
-                .map(|(&a, &b)| a - b)
-                .collect(),
+        debug_assert_eq!(self.len(), other.len(), "Vector dimensions must match");
+
+        let mut data = Vec::with_capacity(self.len());
+        for (&a, &b) in self.data.iter().zip(&other.data) {
+            data.push(a - b);
         }
+        Self { data }
     }
 }
 
@@ -104,15 +121,17 @@ where
     K: Copy + Mul<Output = K>,
 {
     pub fn scl(&mut self, scalar: K) {
-        for x in self.data.iter_mut() {
+        for x in &mut self.data {
             *x = *x * scalar;
         }
     }
 
     pub fn scl_new(&self, scalar: K) -> Self {
-        Self {
-            data: self.data.iter().map(|&x| x * scalar).collect(),
+        let mut data = Vec::with_capacity(self.len());
+        for &x in &self.data {
+            data.push(x * scalar);
         }
+        Self { data }
     }
 }
 
@@ -165,9 +184,17 @@ where
     K: Copy + Default + Add<Output = K> + Mul<Output = K>,
 {
     pub fn dot(&self, v: &Self) -> K {
-        self.iter()
-            .zip(v.iter())
-            .fold(K::default(), |acc, (&a, &b)| acc + (a * b))
+        debug_assert_eq!(
+            self.len(),
+            v.len(),
+            "Vector dimensions must match for dot product"
+        );
+
+        let mut acc = K::default();
+        for (&a, &b) in self.data.iter().zip(&v.data) {
+            acc = acc + (a * b);
+        }
+        acc
     }
 }
 
@@ -176,19 +203,31 @@ where
     K: Copy + Into<f32>,
 {
     pub fn norm_1(&self) -> f32 {
-        self.iter().fold(0.0, |acc, &x| acc + x.into().abs())
+        let mut sum = 0.0f32;
+        for &x in &self.data {
+            sum += x.into().abs();
+        }
+        sum
     }
 
     pub fn norm(&self) -> f32 {
-        self.iter()
-            .fold(0.0, |acc, &x| acc + x.into().powi(2))
-            .sqrt()
+        let mut sum = 0.0f32;
+        for &x in &self.data {
+            let val = x.into();
+            sum += val * val;
+        }
+        sum.sqrt()
     }
 
     pub fn norm_inf(&self) -> f32 {
-        self.iter()
-            .map(|&x| x.into().abs())
-            .fold(f32::NEG_INFINITY, f32::max)
+        let mut max_val = 0.0f32;
+        for &x in &self.data {
+            let abs_val = x.into().abs();
+            if abs_val > max_val {
+                max_val = abs_val;
+            }
+        }
+        max_val
     }
 }
 

@@ -5,10 +5,6 @@ use std::{
 
 #[derive(Debug)]
 pub enum LinearCombinationError {
-    CoefficientsDimensionMismatch {
-        vectors: usize,
-        coefficients: usize,
-    },
     VectorsDimensionMismatch {
         expected_len: usize,
         founded_len: usize,
@@ -18,15 +14,6 @@ pub enum LinearCombinationError {
 impl Display for LinearCombinationError {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
         match self {
-            LinearCombinationError::CoefficientsDimensionMismatch {
-                vectors,
-                coefficients,
-            } => {
-                write!(
-                    f,
-                    "Número de vetores ({vectors}) e coeficientes ({coefficients}) não coincidem"
-                )
-            }
             LinearCombinationError::VectorsDimensionMismatch {
                 expected_len,
                 founded_len,
