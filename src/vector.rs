@@ -29,6 +29,17 @@ where
     }
 }
 
+impl<K> From<&[K]> for Vector<K>
+where
+    K: Clone,
+{
+    fn from(data: &[K]) -> Self {
+        Self {
+            data: data.to_vec(),
+        }
+    }
+}
+
 impl<K> Vector<K>
 where
     K: Clone + Default,

@@ -1,6 +1,8 @@
 use core::slice::{Iter, IterMut};
 use std::ops::{Add, Index, IndexMut, Mul, Sub};
 
+use crate::Vector;
+
 #[derive(Debug, PartialEq, Clone)]
 pub struct Matrix<K> {
     rows: usize,
@@ -31,6 +33,25 @@ where
             rows: R,
             columns: C,
             data: arr.map(|row| row.to_vec()).to_vec(),
+        }
+    }
+}
+
+impl<K> Matrix<K>
+where
+    K: Clone + Copy,
+{
+    pub fn transpose(&self) -> Self {
+        let mut transposed_data = vec![Vec::with_capacity(self.rows); self.columns];
+        for row in &self.data {
+            for (j, val) in row.iter().enumerate() {
+                transposed_data[j].push(*val);
+            }
+        }
+        Self {
+            columns: self.rows,
+            rows: self.columns,
+            data: transposed_data,
         }
     }
 }
@@ -178,5 +199,38 @@ impl<K> Index<usize> for Matrix<K> {
 impl<K> IndexMut<usize> for Matrix<K> {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
         &mut self.data[index]
+    }
+}
+
+impl<K> Matrix<K>
+where
+    K: Clone + Copy + Default + Add<Output = K> + Mul<Output = K>,
+{
+    pub fn mul_vec(&self, vec: &Vector<K>) -> Vector<K> {
+        let transposed = self.transpose();
+        let mut data = vec![K::default(); self.rows];
+
+        for i in 0..self.rows {
+            data[i] = Vector::from(&transposed[i]).dot(vec);
+        }
+
+        Vector::from(data.as_slice())
+    }
+
+    pub fn mul_mat(&self, mat: &Self) -> Self {
+        let transposed = mat.transpose();
+        let mut data = vec![vec![K::default(); self.rows]; self.columns];
+
+        for i in 0..self.rows {
+            for j in 0..self.columns {
+                data[i][j] = Vector::from(&transposed[j]).dot(&Vector::from(&self[i]));
+            }
+        }
+
+        Self {
+            rows: self.columns,
+            columns: self.rows,
+            data,
+        }
     }
 }

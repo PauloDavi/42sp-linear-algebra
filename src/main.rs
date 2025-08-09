@@ -182,4 +182,45 @@ fn main() {
         "Produto vetorial entre {u} e {v}: {}",
         cross_product(&u, &v)
     );
+
+    println!("\n=== Demonstração de Multiplicação Matrix x Vector ===");
+    let u = Matrix::from([[1., 0.], [0., 1.]]);
+    let v = Vector::from([4., 2.]);
+    println!(
+        "Multiplicando a matriz identidade por {v}:\n{}",
+        u.mul_vec(&v)
+    );
+
+    let u = Matrix::from([[2., 0.], [0., 2.]]);
+    let v = Vector::from([4., 2.]);
+    println!(
+        "\nMultiplicando matriz de escala por {v}:\n{}",
+        u.mul_vec(&v)
+    );
+
+    let u = Matrix::from([[2., -2.], [-2., 2.]]);
+    let v = Vector::from([4., 2.]);
+    println!(
+        "\nMultiplicando matriz com elementos negativos por {v}:\n{}",
+        u.mul_vec(&v)
+    );
+
+    println!("\n=== Demonstração de Multiplicação Matrix x Matrix ===");
+    let u = Matrix::from([[1., 0.], [0., 1.]]);
+    let v = Matrix::from([[1., 0.], [0., 1.]]);
+    println!(
+        "Multiplicando matriz identidade por matriz identidade:\n{}",
+        u.mul_mat(&v)
+    );
+
+    let u = Matrix::from([[1., 0.], [0., 1.]]);
+    let v = Matrix::from([[2., 1.], [4., 2.]]);
+    println!(
+        "\nMultiplicando matriz identidade por outra matriz:\n{}",
+        u.mul_mat(&v)
+    );
+
+    let u = Matrix::from([[3., -5.], [6., 8.]]);
+    let v = Matrix::from([[2., 1.], [4., 2.]]);
+    println!("\nMultiplicando matrizes genéricas:\n{}", u.mul_mat(&v));
 }
