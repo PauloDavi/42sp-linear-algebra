@@ -341,11 +341,11 @@ where
 
 impl<K> Matrix<K>
 where
-    K: Copy + Default + Add<Output = K> + Sub<Output = K> + Mul<Output = K> + From<i8>,
+    K: Copy + Add<Output = K> + Sub<Output = K> + Mul<Output = K> + From<i8>,
 {
     pub fn determinant(&self) -> K {
         if !self.is_square() {
-            return K::default();
+            return K::from(0);
         }
 
         match self.rows {
@@ -371,7 +371,60 @@ where
 
                 det
             }
-            _ => K::default(),
+            _ => K::from(0),
         }
+    }
+}
+
+impl<K> Matrix<K>
+where
+    K: Copy
+        + Default
+        + Add<Output = K>
+        + Sub<Output = K>
+        + Div<Output = K>
+        + Mul<Output = K>
+        + From<i8>
+        + PartialEq,
+{
+    pub fn inverse(&self) -> Result<Self, ()> {
+        if !self.is_square() {
+            return Err(());
+        }
+
+        let n = self.rows;
+        let mut a = self.data.clone();
+        let mut inv = vec![vec![K::default(); n]; n];
+        for i in 0..n {
+            inv[i][i] = K::from(1);
+        }
+
+        for i in 0..n {
+            let pivot = a[i][i];
+            if pivot == K::default() {
+                return Err(());
+            }
+
+            for j in 0..n {
+                a[i][j] = a[i][j] / pivot;
+                inv[i][j] = inv[i][j] / pivot;
+            }
+
+            for k in 0..n {
+                if k != i {
+                    let factor = a[k][i];
+                    for j in 0..n {
+                        a[k][j] = a[k][j] - factor * a[i][j];
+                        inv[k][j] = inv[k][j] - factor * inv[i][j];
+                    }
+                }
+            }
+        }
+
+        Ok(Self {
+            rows: n,
+            columns: n,
+            data: inv,
+        })
     }
 }

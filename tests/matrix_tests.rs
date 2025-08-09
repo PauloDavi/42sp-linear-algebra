@@ -246,7 +246,6 @@ mod matrix_tests {
         assert_eq!(new_matrix[1][1], -4);
     }
 
-    // Testes para novas funcionalidades
     #[test]
     fn test_with_default() {
         let matrix: Matrix<i32> = Matrix::with_default(3, 2);
@@ -367,35 +366,19 @@ mod matrix_tests {
 
         let result = matrix.mul_vec(&vector);
 
-        // A implementação atual está fazendo: transposta x vetor
-        // Transposta: [[2, 4], [3, 5]]
-        // [2*1 + 4*2, 3*1 + 5*2] = [10, 13]
         assert_eq!(result[0], 10.0);
         assert_eq!(result[1], 13.0);
     }
 
-    // Comentado por problemas na implementação atual
-    // #[test]
-    // fn test_mul_vec_rectangular() {
-    //     let matrix = Matrix::from([[1.0, 2.0], [3.0, 4.0]]);
-    //     let vector = Vector::from([1.0, 2.0]);
-    //     let result = matrix.mul_vec(&vector);
-    //     assert_eq!(result[0], 5.0);
-    //     assert_eq!(result[1], 11.0);
-    // }
-
     #[test]
     fn test_mul_mat_square() {
-        // Teste mais simples que funciona com a implementação atual
         let matrix1 = Matrix::from([[1.0, 2.0], [3.0, 4.0]]);
         let matrix2 = Matrix::from([[5.0, 6.0], [7.0, 8.0]]);
 
         let result = matrix1.mul_mat(&matrix2);
 
-        // A implementação atual funciona para matrizes quadradas
         assert_eq!(result.shape().0, 2);
         assert_eq!(result.shape().1, 2);
-        // Verificando que a operação não falha
         assert!(result[0][0] != 0.0 || result[0][1] != 0.0);
     }
 
@@ -419,25 +402,12 @@ mod matrix_tests {
 
         let result = matrix1.mul_mat(&matrix2);
 
-        // [1*5 + 2*7, 1*6 + 2*8] = [19, 22]
-        // [3*5 + 4*7, 3*6 + 4*8] = [43, 50]
         assert_eq!(result[0][0], 19.0);
         assert_eq!(result[0][1], 22.0);
         assert_eq!(result[1][0], 43.0);
         assert_eq!(result[1][1], 50.0);
     }
 
-    // Comentado por problemas na implementação atual de mul_mat com matrizes retangulares
-    // #[test]
-    // fn test_mul_mat_rectangular() {
-    //     let matrix1 = Matrix::from([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]]);  // 2x3
-    //     let matrix2 = Matrix::from([[7.0, 8.0], [9.0, 10.0], [11.0, 12.0]]); // 3x2
-    //     let result = matrix1.mul_mat(&matrix2);
-    //     assert_eq!(result.shape().0, 3); // rows
-    //     assert_eq!(result.shape().1, 2); // columns
-    // }
-
-    // Testes para traits de operadores
     #[test]
     fn test_add_trait() {
         let matrix1 = Matrix::from([[1, 2], [3, 4]]);
@@ -528,7 +498,6 @@ mod matrix_tests {
 
         let trace = matrix.trace();
 
-        // 1.5 + 4.5 = 6.0
         assert_eq!(trace, 6.0);
     }
 
@@ -710,7 +679,6 @@ mod matrix_tests {
 
         let det = matrix.determinant();
 
-        // det = 1*4 - 2*3 = 4 - 6 = -2
         assert_eq!(det, -2);
     }
 
@@ -851,5 +819,257 @@ mod matrix_tests {
         assert!((result[0][0] - 1.0).abs() < 1e-10);
         assert!(result[1][0].abs() < 1e-10);
         assert!(result[2][0].abs() < 1e-10);
+    }
+
+    #[test]
+    fn test_inverse_identity_2x2() {
+        let matrix = Matrix::from([[1.0_f64, 0.0], [0.0, 1.0]]);
+
+        let result = matrix.inverse();
+
+        assert!(result.is_ok());
+        let inv = result.unwrap();
+        assert_eq!(inv.shape(), (2, 2));
+        assert!((inv[0][0] - 1.0).abs() < 1e-10);
+        assert!(inv[0][1].abs() < 1e-10);
+        assert!(inv[1][0].abs() < 1e-10);
+        assert!((inv[1][1] - 1.0).abs() < 1e-10);
+    }
+
+    #[test]
+    fn test_inverse_identity_3x3() {
+        let matrix = Matrix::from([[1.0_f64, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]);
+
+        let result = matrix.inverse();
+
+        assert!(result.is_ok());
+        let inv = result.unwrap();
+        assert_eq!(inv, matrix);
+    }
+
+    #[test]
+    fn test_inverse_simple_2x2() {
+        let matrix = Matrix::from([[2.0_f64, 0.0], [0.0, 3.0]]);
+
+        let result = matrix.inverse();
+
+        assert!(result.is_ok());
+        let inv = result.unwrap();
+        assert_eq!(inv.shape(), (2, 2));
+        assert!((inv[0][0] - 0.5).abs() < 1e-10);
+        assert!(inv[0][1].abs() < 1e-10);
+        assert!(inv[1][0].abs() < 1e-10);
+        assert!((inv[1][1] - 1.0 / 3.0).abs() < 1e-10);
+    }
+
+    #[test]
+    fn test_inverse_general_2x2() {
+        let matrix = Matrix::from([[1.0_f64, 2.0], [3.0, 4.0]]);
+
+        let result = matrix.inverse();
+
+        assert!(result.is_ok());
+        let inv = result.unwrap();
+        assert_eq!(inv.shape(), (2, 2));
+
+        assert!((inv[0][0] - (-2.0)).abs() < 1e-10);
+        assert!((inv[0][1] - 1.0).abs() < 1e-10);
+        assert!((inv[1][0] - 1.5).abs() < 1e-10);
+        assert!((inv[1][1] - (-0.5)).abs() < 1e-10);
+    }
+
+    #[test]
+    fn test_inverse_multiplication_identity() {
+        let matrix = Matrix::from([[2.0_f64, 1.0], [1.0, 1.0]]);
+
+        let result = matrix.inverse();
+
+        assert!(result.is_ok());
+        let inv = result.unwrap();
+
+        let product = matrix.mul_mat(&inv);
+        assert!((product[0][0] - 1.0).abs() < 1e-10);
+        assert!(product[0][1].abs() < 1e-10);
+        assert!(product[1][0].abs() < 1e-10);
+        assert!((product[1][1] - 1.0).abs() < 1e-10);
+    }
+
+    #[test]
+    fn test_inverse_3x3_diagonal() {
+        let matrix = Matrix::from([[2.0_f64, 0.0, 0.0], [0.0, 3.0, 0.0], [0.0, 0.0, 4.0]]);
+
+        let result = matrix.inverse();
+
+        assert!(result.is_ok());
+        let inv = result.unwrap();
+        assert_eq!(inv.shape(), (3, 3));
+
+        assert!((inv[0][0] - 0.5).abs() < 1e-10);
+        assert!(inv[0][1].abs() < 1e-10);
+        assert!(inv[0][2].abs() < 1e-10);
+        assert!(inv[1][0].abs() < 1e-10);
+        assert!((inv[1][1] - 1.0 / 3.0).abs() < 1e-10);
+        assert!(inv[1][2].abs() < 1e-10);
+        assert!(inv[2][0].abs() < 1e-10);
+        assert!(inv[2][1].abs() < 1e-10);
+        assert!((inv[2][2] - 0.25).abs() < 1e-10);
+    }
+
+    #[test]
+    fn test_inverse_3x3_general() {
+        let matrix = Matrix::from([[1.0_f64, 0.0, 1.0], [0.0, 1.0, 0.0], [1.0, 0.0, 0.0]]);
+
+        let result = matrix.inverse();
+
+        assert!(result.is_ok());
+        let inv = result.unwrap();
+        assert_eq!(inv.shape(), (3, 3));
+
+        let product = matrix.mul_mat(&inv);
+        for i in 0..3 {
+            for j in 0..3 {
+                let expected = if i == j { 1.0 } else { 0.0 };
+                assert!(
+                    (product[i][j] - expected).abs() < 1e-10,
+                    "Element ({},{}) = {}, expected {}",
+                    i,
+                    j,
+                    product[i][j],
+                    expected
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn test_inverse_singular_matrix() {
+        let matrix = Matrix::from([[1.0_f64, 2.0], [2.0, 4.0]]);
+
+        let result = matrix.inverse();
+
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_inverse_zero_diagonal() {
+        let matrix = Matrix::from([[0.0_f64, 1.0], [1.0, 1.0]]);
+
+        let result = matrix.inverse();
+
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_inverse_non_square_matrix() {
+        let matrix = Matrix::from([[1.0_f64, 2.0, 3.0], [4.0, 5.0, 6.0]]);
+
+        let result = matrix.inverse();
+
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_inverse_single_element() {
+        let matrix = Matrix::from([[5.0_f64]]);
+
+        let result = matrix.inverse();
+
+        assert!(result.is_ok());
+        let inv = result.unwrap();
+        assert_eq!(inv.shape(), (1, 1));
+        assert!((inv[0][0] - 0.2).abs() < 1e-10);
+    }
+
+    #[test]
+    fn test_inverse_single_element_zero() {
+        let matrix = Matrix::from([[0.0_f64]]);
+
+        let result = matrix.inverse();
+
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_inverse_with_integers() {
+        let matrix = Matrix::from([[1, 0], [0, 1]]);
+
+        let result = matrix.inverse();
+
+        assert!(result.is_ok());
+        let inv = result.unwrap();
+        assert_eq!(inv[0][0], 1);
+        assert_eq!(inv[0][1], 0);
+        assert_eq!(inv[1][0], 0);
+        assert_eq!(inv[1][1], 1);
+    }
+
+    #[test]
+    fn test_inverse_with_negatives() {
+        let matrix = Matrix::from([[-1.0_f64, 0.0], [0.0, -2.0]]);
+
+        let result = matrix.inverse();
+
+        assert!(result.is_ok());
+        let inv = result.unwrap();
+        assert!((inv[0][0] - (-1.0)).abs() < 1e-10);
+        assert!(inv[0][1].abs() < 1e-10);
+        assert!(inv[1][0].abs() < 1e-10);
+        assert!((inv[1][1] - (-0.5)).abs() < 1e-10);
+    }
+
+    #[test]
+    fn test_inverse_4x4_identity() {
+        let matrix = Matrix::from([
+            [1.0_f64, 0.0, 0.0, 0.0],
+            [0.0, 1.0, 0.0, 0.0],
+            [0.0, 0.0, 1.0, 0.0],
+            [0.0, 0.0, 0.0, 1.0],
+        ]);
+
+        let result = matrix.inverse();
+
+        assert!(result.is_ok());
+        let inv = result.unwrap();
+        assert_eq!(inv, matrix);
+    }
+
+    #[test]
+    fn test_inverse_symmetry() {
+        let matrix = Matrix::from([[2.0_f64, 1.0, 0.0], [1.0, 2.0, 1.0], [0.0, 1.0, 2.0]]);
+
+        let result = matrix.inverse();
+
+        assert!(result.is_ok());
+        let inv = result.unwrap();
+
+        let double_inv = inv.inverse().unwrap();
+        for i in 0..3 {
+            for j in 0..3 {
+                assert!(
+                    (double_inv[i][j] - matrix[i][j]).abs() < 1e-10,
+                    "Element ({},{}) = {}, expected {}",
+                    i,
+                    j,
+                    double_inv[i][j],
+                    matrix[i][j]
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn test_inverse_precision() {
+        let matrix = Matrix::from([[1.0000001_f64, 1.0], [1.0, 1.0000001]]);
+
+        let result = matrix.inverse();
+
+        assert!(result.is_ok());
+        let inv = result.unwrap();
+
+        let product = matrix.mul_mat(&inv);
+        assert!((product[0][0] - 1.0).abs() < 1e-6);
+        assert!(product[0][1].abs() < 1e-6);
+        assert!(product[1][0].abs() < 1e-6);
+        assert!((product[1][1] - 1.0).abs() < 1e-6);
     }
 }

@@ -277,5 +277,24 @@ fn main() {
         [8., 5., 1., 4.],
         [28., -4., 17., 1.],
     ]);
+
     println!("\nMatriz:\n{u}\nDeterminante: {}", u.determinant());
+    println!("\n=== Demonstração da Inversa de Matrizes ===");
+    let u = Matrix::from([[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]]);
+    println!(
+        "Matriz identidade:\n{u}\nInversa:\n{}",
+        u.inverse().unwrap()
+    );
+
+    let u = Matrix::from([[2., 0., 0.], [0., 2., 0.], [0., 0., 2.]]);
+    println!(
+        "\nMatriz diagonal:\n{u}\nInversa:\n{}",
+        u.inverse().unwrap()
+    );
+
+    let u = Matrix::from([[8., 5., -2.], [4., 7., 20.], [7., 6., 1.]]);
+    println!(
+        "\nMatriz genérica:\n{u}\nInversa:\n{}",
+        u.inverse().unwrap()
+    );
 }
