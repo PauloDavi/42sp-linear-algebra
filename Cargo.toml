@@ -1,24 +1,21 @@
 [package]
 name = "linear_algebra"
 version = "0.1.0"
-edition = "2024"
+edition = "2021"
 authors = ["Paulo Davi Alencar de Freitas Araújo <araujo.paulo.davi@gmail.com>"]
-description = "Uma biblioteca de álgebra linear em Rust"
+description = "A linear algebra library in Rust"
 license = "MIT"
 readme = "README.md"
 repository = "https://github.com/paulodavi/42sp-linear-algebra"
 homepage = "https://github.com/paulodavi/42sp-linear-algebra"
+documentation = "https://docs.rs/linear_algebra"
 keywords = ["algebra", "linear", "math", "vector", "matrix", "complex"]
-categories = ["mathematics", "science", "algorithms"]
-rust-version = "1.85"
-exclude = [
-    "target/*",
-    ".git/*",
-    ".gitignore",
-    "*.md",
-]
+categories = ["science", "algorithms"]
+rust-version = "1.70"
 include = [
     "src/**/*",
+    "examples/**/*",
+    "tests/**/*",
     "Cargo.toml",
     "LICENSE-MIT",
     "README.md",
@@ -38,15 +35,18 @@ path = "examples/complex.rs"
 
 [profile.release]
 opt-level = 3
-lto = "fat"
+lto = "thin"
 codegen-units = 1
 panic = "abort"
 strip = true
+incremental = false
+rpath = false
 
 [profile.dev]
 opt-level = 0
 debug = true
 overflow-checks = true
+debug-assertions = true
 
 [profile.test]
 opt-level = 1
