@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod display_tests {
-    use linear_algebra::{Matrix, Vector};
+    use linear_algebra::{Complex, Matrix, Vector};
 
     #[test]
     fn test_vector_display_integers() {
@@ -209,5 +209,78 @@ mod display_tests {
         let m = Matrix::from([[1, 22, 333], [4444, 5, 66]]);
         let expected = "[   1, 22, 333]\n[4444,  5,  66]";
         assert_eq!(format!("{}", m), expected);
+    }
+
+    // Testes para Complex Display
+    #[test]
+    fn test_complex_display_zero() {
+        let c = Complex::new(0.0, 0.0);
+        assert_eq!(format!("{}", c), "0");
+    }
+
+    #[test]
+    fn test_complex_display_real_only() {
+        let c = Complex::new(5.0, 0.0);
+        assert_eq!(format!("{}", c), "5");
+    }
+
+    #[test]
+    fn test_complex_display_imaginary_only() {
+        let c = Complex::new(0.0, 3.0);
+        assert_eq!(format!("{}", c), "3i");
+    }
+
+    #[test]
+    fn test_complex_display_imaginary_one() {
+        let c = Complex::new(0.0, 1.0);
+        assert_eq!(format!("{}", c), "i");
+    }
+
+    #[test]
+    fn test_complex_display_imaginary_negative_one() {
+        let c = Complex::new(0.0, -1.0);
+        assert_eq!(format!("{}", c), "-i");
+    }
+
+    #[test]
+    fn test_complex_display_positive_both() {
+        let c = Complex::new(3.0, 4.0);
+        assert_eq!(format!("{}", c), "3 + 4i");
+    }
+
+    #[test]
+    fn test_complex_display_negative_imaginary() {
+        let c = Complex::new(3.0, -4.0);
+        assert_eq!(format!("{}", c), "3 - 4i");
+    }
+
+    #[test]
+    fn test_complex_display_with_positive_one() {
+        let c = Complex::new(2.0, 1.0);
+        assert_eq!(format!("{}", c), "2 + i");
+    }
+
+    #[test]
+    fn test_complex_display_with_negative_one() {
+        let c = Complex::new(2.0, -1.0);
+        assert_eq!(format!("{}", c), "2 - i");
+    }
+
+    #[test]
+    fn test_complex_display_negative_real_positive_imaginary() {
+        let c = Complex::new(-3.0, 2.0);
+        assert_eq!(format!("{}", c), "-3 + 2i");
+    }
+
+    #[test]
+    fn test_complex_display_negative_real_negative_imaginary() {
+        let c = Complex::new(-3.0, -2.0);
+        assert_eq!(format!("{}", c), "-3 - 2i");
+    }
+
+    #[test]
+    fn test_complex_display_floats() {
+        let c = Complex::new(1.5, 2.7);
+        assert_eq!(format!("{}", c), "1.5 + 2.7i");
     }
 }

@@ -1,4 +1,5 @@
 pub mod angle_cos;
+pub mod complex;
 pub mod cross_product;
 pub mod display;
 pub mod errors;
@@ -9,6 +10,7 @@ pub mod traits;
 pub mod vector;
 
 pub use angle_cos::angle_cos;
+pub use complex::Complex;
 pub use cross_product::cross_product;
 pub use errors::{InterpolationError, LinearCombinationError, MatrixInverseError};
 pub use interpolate::lerp;

@@ -14,7 +14,7 @@ pub trait Negative {
 
 pub trait Magnitude {
     type Output;
-    
+
     fn magnitude(&self) -> Self::Output;
 }
 
@@ -204,10 +204,9 @@ impl Negative for f64 {
     }
 }
 
-// Implementations for Magnitude trait
 impl Magnitude for i8 {
     type Output = f32;
-    
+
     fn magnitude(&self) -> Self::Output {
         (*self as f32).abs()
     }
@@ -215,7 +214,7 @@ impl Magnitude for i8 {
 
 impl Magnitude for i16 {
     type Output = f32;
-    
+
     fn magnitude(&self) -> Self::Output {
         (*self as f32).abs()
     }
@@ -223,7 +222,7 @@ impl Magnitude for i16 {
 
 impl Magnitude for i32 {
     type Output = f32;
-    
+
     fn magnitude(&self) -> Self::Output {
         (*self as f32).abs()
     }
@@ -231,7 +230,7 @@ impl Magnitude for i32 {
 
 impl Magnitude for i64 {
     type Output = f32;
-    
+
     fn magnitude(&self) -> Self::Output {
         (*self as f32).abs()
     }
@@ -239,7 +238,7 @@ impl Magnitude for i64 {
 
 impl Magnitude for u8 {
     type Output = f32;
-    
+
     fn magnitude(&self) -> Self::Output {
         *self as f32
     }
@@ -247,7 +246,7 @@ impl Magnitude for u8 {
 
 impl Magnitude for u16 {
     type Output = f32;
-    
+
     fn magnitude(&self) -> Self::Output {
         *self as f32
     }
@@ -255,7 +254,7 @@ impl Magnitude for u16 {
 
 impl Magnitude for u32 {
     type Output = f32;
-    
+
     fn magnitude(&self) -> Self::Output {
         *self as f32
     }
@@ -263,7 +262,7 @@ impl Magnitude for u32 {
 
 impl Magnitude for u64 {
     type Output = f32;
-    
+
     fn magnitude(&self) -> Self::Output {
         *self as f32
     }
@@ -271,7 +270,7 @@ impl Magnitude for u64 {
 
 impl Magnitude for f32 {
     type Output = f32;
-    
+
     fn magnitude(&self) -> Self::Output {
         self.abs()
     }
@@ -279,7 +278,7 @@ impl Magnitude for f32 {
 
 impl Magnitude for f64 {
     type Output = f32;
-    
+
     fn magnitude(&self) -> Self::Output {
         (*self as f32).abs()
     }

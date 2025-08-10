@@ -1,6 +1,8 @@
 use std::fmt::{Display, Formatter, Result};
 
-use crate::{InterpolationError, LinearCombinationError, Matrix, MatrixInverseError, Vector};
+use crate::{
+    Complex, InterpolationError, LinearCombinationError, Matrix, MatrixInverseError, Vector,
+};
 
 impl<K> Display for Vector<K>
 where
@@ -93,6 +95,39 @@ impl Display for InterpolationError {
         match self {
             InterpolationError::InvalidParameterT { t } => {
                 write!(f, "Parâmetro t ({t}) deve estar no intervalo [0, 1]")
+            }
+        }
+    }
+}
+
+impl Display for Complex {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+        let real = self.real();
+        let imaginary = self.imaginary();
+
+        if imaginary == 0.0 {
+            write!(f, "{}", real)
+        } else if real == 0.0 {
+            if imaginary == 1.0 {
+                write!(f, "i")
+            } else if imaginary == -1.0 {
+                write!(f, "-i")
+            } else {
+                write!(f, "{}i", imaginary)
+            }
+        } else {
+            if imaginary > 0.0 {
+                if imaginary == 1.0 {
+                    write!(f, "{} + i", real)
+                } else {
+                    write!(f, "{} + {}i", real, imaginary)
+                }
+            } else {
+                if imaginary == -1.0 {
+                    write!(f, "{} - i", real)
+                } else {
+                    write!(f, "{} - {}i", real, -imaginary)
+                }
             }
         }
     }

@@ -28,9 +28,13 @@ include = [
 name = "linear_algebra"
 path = "src/lib.rs"
 
-[[bin]]
-name = "main"
-path = "src/main.rs"
+[[example]]
+name = "basic"
+path = "examples/basic.rs"
+
+[[example]]
+name = "complex"
+path = "examples/complex.rs"
 
 [profile.release]
 opt-level = 3
