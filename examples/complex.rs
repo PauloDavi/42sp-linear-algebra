@@ -12,18 +12,18 @@ fn main() {
     let z4 = Complex::new(5.0, 0.0);
     let z5 = Complex::new(0.0, 3.0);
 
-    println!("z1 = {}", z1);
-    println!("z2 = {}", z2);
-    println!("z3 = {}", z3);
-    println!("z4 = {}", z4);
-    println!("z5 = {}", z5);
+    println!("z1 = {z1}");
+    println!("z2 = {z2}");
+    println!("z3 = {z3}");
+    println!("z4 = {z4}");
+    println!("z5 = {z5}");
 
     println!("\n=== Operações Aritméticas com Complexos ===");
-    println!("z1 + z2 = {} + {} = {}", z1, z2, z1 + z2);
+    println!("z1 + z2 = {z1} + {z2} = {}", z1 + z2);
 
-    println!("z1 * z2 = {} * {} = {}", z1, z2, z1 * z2);
+    println!("z1 * z2 = {z1} * {z2} = {}", z1 * z2);
 
-    println!("z1 / z2 = {} / {} = {}", z1, z2, z1 / z2);
+    println!("z1 / z2 = {z1} / {z2} = {}", z1 / z2);
 
     println!("|z1| = |{}| = {}", z1, z1.magnitude());
     println!("conj(z1) = conj({}) = {}", z1, z1.conjugate());
@@ -34,12 +34,12 @@ fn main() {
 
     println!("Vetor v1 com componentes complexas:");
     for (i, &z) in v1.iter().enumerate() {
-        println!("  v1[{}] = {}", i, z);
+        println!("  v1[{i}] = {z}");
     }
 
     println!("\nVetor v2 com componentes complexas:");
     for (i, &z) in v2.iter().enumerate() {
-        println!("  v2[{}] = {}", i, z);
+        println!("  v2[{i}] = {z}");
     }
 
     println!("\n=== Operações com Vetores Complexos ===");
@@ -47,18 +47,18 @@ fn main() {
     let v_sum = v1.add_new(&v2);
     println!("Soma v1 + v2:");
     for (i, &z) in v_sum.iter().enumerate() {
-        println!("  (v1 + v2)[{}] = {}", i, z);
+        println!("  (v1 + v2)[{i}] = {z}");
     }
 
     v1.scl(Complex::new(2.0, 0.0));
     println!("\ntor v1 multiplicado por 2:");
     for (i, &z) in v1.iter().enumerate() {
-        println!("  (2 * v1)[{}] = {}", i, z);
+        println!("  (2 * v1)[{i}] = {z}");
     }
 
     println!("\n=== Produto Escalar Complexo ===");
     let dot_product = v1.dot(&v2);
-    println!("Produto escalar v1 · v2 = {}", dot_product);
+    println!("Produto escalar v1 · v2 = {dot_product}");
     println!("Magnitude do produto escalar: {}", dot_product.magnitude());
 
     println!("\n=== Normas de Vetores Complexos ===");
@@ -70,7 +70,7 @@ fn main() {
 
     println!("Vetor de teste:");
     for (i, &z) in v_test.iter().enumerate() {
-        println!("  v[{}] = {} (magnitude: {})", i, z, z.magnitude());
+        println!("  v[{i}] = {z} (magnitude: {})", z.magnitude());
     }
 
     println!("Norma-1 do vetor: {}", v_test.norm_1());
@@ -83,16 +83,16 @@ fn main() {
 
     println!("Vetor u:");
     for (i, &z) in u_complex.iter().enumerate() {
-        println!("  u[{}] = {}", i, z);
+        println!("  u[{i}] = {z}");
     }
 
     println!("Vetor v:");
     for (i, &z) in v_complex.iter().enumerate() {
-        println!("  v[{}] = {}", i, z);
+        println!("  v[{i}] = {z}");
     }
 
     let cos_angle = angle_cos(&u_complex, &v_complex);
-    println!("Cosseno do ângulo entre u e v: {}", cos_angle);
+    println!("Cosseno do ângulo entre u e v: {cos_angle}");
 
     println!("\n=== Combinação Linear com Complexos ===");
     let e1 = Vector::from([Complex::new(1.0, 0.0), Complex::new(0.0, 0.0)]);
@@ -106,13 +106,13 @@ fn main() {
     println!("  e2 = [{}, {}]", e2[0], e2[1]);
 
     println!("Coeficientes:");
-    println!("  c1 = {}", coeff1);
-    println!("  c2 = {}", coeff2);
+    println!("  c1 = {coeff1}");
+    println!("  c2 = {coeff2}");
 
     let combination = linear_combination([e1, e2], [coeff1, coeff2]).unwrap();
     println!("Combinação c1*e1 + c2*e2:");
     for (i, &z) in combination.iter().enumerate() {
-        println!("  resultado[{}] = {}", i, z);
+        println!("  resultado[{i}] = {z}");
     }
 
     println!("\n=== Matrizes de Números Complexos ===");
@@ -131,7 +131,7 @@ fn main() {
         print!("  [");
         for j in 0..m1.columns() {
             let z = m1[i][j];
-            print!("{}", z);
+            print!("{z}");
             if j < m1.columns() - 1 {
                 print!(", ");
             }
@@ -144,7 +144,7 @@ fn main() {
         print!("  [");
         for j in 0..m2.columns() {
             let z = m2[i][j];
-            print!("{}", z);
+            print!("{z}");
             if j < m2.columns() - 1 {
                 print!(", ");
             }
@@ -160,7 +160,7 @@ fn main() {
         print!("  [");
         for j in 0..m_sum.columns() {
             let z = m_sum[i][j];
-            print!("{}", z);
+            print!("{z}");
             if j < m_sum.columns() - 1 {
                 print!(", ");
             }
@@ -187,19 +187,19 @@ fn main() {
 
     println!("Vetor:");
     for (i, &z) in complex_vector.iter().enumerate() {
-        println!("  v[{}] = {}", i, z);
+        println!("  v[{i}] = {z}");
     }
 
     let result_vector = m1.mul_vec(&complex_vector);
     println!("Resultado m1 * v:");
     for (i, &z) in result_vector.iter().enumerate() {
-        println!("  resultado[{}] = {}", i, z);
+        println!("  resultado[{i}] = {z}");
     }
 
     println!("\n=== Propriedades de Matrizes Complexas ===");
 
     let trace = m1.trace();
-    println!("Traço de m1: {}", trace);
+    println!("Traço de m1: {trace}");
 
     let m1_transpose = m1.transpose();
     println!("Transposta de m1:");
@@ -207,7 +207,7 @@ fn main() {
         print!("  [");
         for j in 0..m1_transpose.columns() {
             let z = m1_transpose[i][j];
-            print!("{}", z);
+            print!("{z}");
             if j < m1_transpose.columns() - 1 {
                 print!(", ");
             }
@@ -216,7 +216,7 @@ fn main() {
     }
 
     let determinant = m1.determinant();
-    println!("Determinante de m1: {}", determinant);
+    println!("Determinante de m1: {determinant}");
     println!("Magnitude do determinante: {}", determinant.magnitude());
 
     println!("\n=== Matriz Identidade Complexa ===");
@@ -230,7 +230,7 @@ fn main() {
         print!("  [");
         for j in 0..identity.columns() {
             let z = identity[i][j];
-            print!("{}", z);
+            print!("{z}");
             if j < identity.columns() - 1 {
                 print!(", ");
             }

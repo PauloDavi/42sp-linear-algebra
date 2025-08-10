@@ -134,8 +134,8 @@ impl PartialOrd for Complex {
     }
 }
 
-impl Into<f32> for Complex {
-    fn into(self) -> f32 {
-        self.r
+impl From<Complex> for f32 {
+    fn from(val: Complex) -> Self {
+        val.r
     }
 }

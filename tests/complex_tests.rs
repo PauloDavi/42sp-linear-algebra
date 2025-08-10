@@ -114,7 +114,7 @@ mod complex_tests {
     fn test_complex_clone_copy() {
         let c1 = Complex::new(2.0, 3.0);
         let c2 = c1;
-        let c3 = c1.clone();
+        let c3 = c1;
 
         assert_eq!(c1, c2);
         assert_eq!(c1, c3);

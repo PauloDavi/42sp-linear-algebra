@@ -446,8 +446,8 @@ where
         let n = self.rows;
         let mut a = self.data.clone();
         let mut inv = vec![vec![K::zero(); n]; n];
-        for i in 0..n {
-            inv[i][i] = K::one();
+        for (i, row) in inv.iter_mut().enumerate().take(n) {
+            row[i] = K::one();
         }
 
         for i in 0..n {

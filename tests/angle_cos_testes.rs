@@ -1,5 +1,7 @@
 #[cfg(test)]
 mod angle_cos_tests {
+    use std::f32::consts::FRAC_1_SQRT_2;
+
     use linear_algebra::{angle_cos, vector::Vector};
 
     #[test]
@@ -56,11 +58,11 @@ mod angle_cos_tests {
     #[test]
     fn test_angle_cos_unit_vectors() {
         let u = Vector::from([1.0, 0.0]);
-        let v = Vector::from([0.70710678, 0.70710678]);
+        let v = Vector::from([FRAC_1_SQRT_2, FRAC_1_SQRT_2]);
 
         let result = angle_cos(&u, &v);
 
-        let expected = 0.70710678;
+        let expected = FRAC_1_SQRT_2;
         assert!((result - expected).abs() < 1e-6);
     }
 }

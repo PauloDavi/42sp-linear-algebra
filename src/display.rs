@@ -28,25 +28,25 @@ where
         let (rows, columns) = self.shape();
 
         let mut col_widths = vec![0; columns];
-        for j in 0..columns {
+        for (j, item) in col_widths.iter_mut().enumerate().take(columns) {
             for i in 0..rows {
                 let len = format!("{}", self[i][j]).len();
-                if len > col_widths[j] {
-                    col_widths[j] = len;
+                if len > *item {
+                    *item = len;
                 }
             }
         }
 
         for i in 0..rows {
             if i > 0 {
-                write!(f, "\n")?;
+                writeln!(f)?;
             }
             write!(f, "[")?;
-            for j in 0..columns {
+            for (j, item) in col_widths.iter().enumerate().take(columns) {
                 if j > 0 {
                     write!(f, ", ")?;
                 }
-                write!(f, "{:>width$}", self[i][j], width = col_widths[j])?;
+                write!(f, "{:>width$}", self[i][j], width = item)?;
             }
             write!(f, "]")?;
         }
@@ -76,8 +76,7 @@ impl Display for MatrixInverseError {
             MatrixInverseError::NotSquare { rows, columns } => {
                 write!(
                     f,
-                    "Matriz deve ser quadrada para calcular a inversa: encontrada {}x{}",
-                    rows, columns
+                    "Matriz deve ser quadrada para calcular a inversa: encontrada {rows}x{columns}",
                 )
             }
             MatrixInverseError::Singular => {
@@ -106,29 +105,25 @@ impl Display for Complex {
         let imaginary = self.imaginary();
 
         if imaginary == 0.0 {
-            write!(f, "{}", real)
+            write!(f, "{real}")
         } else if real == 0.0 {
             if imaginary == 1.0 {
                 write!(f, "i")
             } else if imaginary == -1.0 {
                 write!(f, "-i")
             } else {
-                write!(f, "{}i", imaginary)
+                write!(f, "{imaginary}i")
             }
-        } else {
-            if imaginary > 0.0 {
-                if imaginary == 1.0 {
-                    write!(f, "{} + i", real)
-                } else {
-                    write!(f, "{} + {}i", real, imaginary)
-                }
+        } else if imaginary > 0.0 {
+            if imaginary == 1.0 {
+                write!(f, "{real} + i")
             } else {
-                if imaginary == -1.0 {
-                    write!(f, "{} - i", real)
-                } else {
-                    write!(f, "{} - {}i", real, -imaginary)
-                }
+                write!(f, "{real} + {imaginary}i")
             }
+        } else if imaginary == -1.0 {
+            write!(f, "{real} - i",)
+        } else {
+            write!(f, "{real} - {}i", -imaginary)
         }
     }
 }
