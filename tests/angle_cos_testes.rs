@@ -2,7 +2,7 @@
 mod angle_cos_tests {
     use std::f32::consts::FRAC_1_SQRT_2;
 
-    use linear_algebra::{angle_cos, vector::Vector};
+    use linear_algebra_42::{angle_cos, vector::Vector};
 
     #[test]
     fn test_angle_cos_same_vectors() {

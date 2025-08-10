@@ -1,4 +1,4 @@
-use linear_algebra::{Matrix, Vector, angle_cos, cross_product, lerp, linear_combination};
+use linear_algebra_42::{Matrix, Vector, angle_cos, cross_product, lerp, linear_combination};
 
 fn main() {
     println!("=== Vector Demonstration ===");

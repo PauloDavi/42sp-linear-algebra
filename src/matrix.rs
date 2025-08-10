@@ -2,9 +2,9 @@ use core::slice::{Iter, IterMut};
 use std::ops::{Add, Div, Index, IndexMut, Mul, Neg, Sub};
 
 use crate::{
-    Vector,
     errors::MatrixInverseError,
     traits::{Conjugate, Magnitude, Negative, One, Zero},
+    Vector,
 };
 
 /// Represents a generic mathematical matrix with elements of type `K`.
@@ -15,7 +15,7 @@ use crate::{
 /// # Examples
 ///
 /// ```rust
-/// use linear_algebra::Matrix;
+/// use linear_algebra_42::Matrix;
 ///
 /// // Creating a 2x2 matrix
 /// let matrix = Matrix::from([
@@ -46,7 +46,7 @@ impl<K> Matrix<K> {
     /// # Examples
     ///
     /// ```rust
-    /// use linear_algebra::Matrix;
+    /// use linear_algebra_42::Matrix;
     ///
     /// let matrix = Matrix::from([[1, 2, 3], [4, 5, 6]]);
     /// assert_eq!(matrix.shape(), (2, 3));
@@ -80,7 +80,7 @@ impl<K> Matrix<K> {
     /// # Examples
     ///
     /// ```rust
-    /// use linear_algebra::Matrix;
+    /// use linear_algebra_42::Matrix;
     ///
     /// let square = Matrix::from([[1, 2], [3, 4]]);
     /// assert!(square.is_square());

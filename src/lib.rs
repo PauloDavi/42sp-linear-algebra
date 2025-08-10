@@ -17,7 +17,7 @@
 //! ### Vector Operations
 //!
 //! ```rust
-//! use linear_algebra::Vector;
+//! use linear_algebra_42::Vector;
 //!
 //! let v1 = Vector::from(vec![1.0, 2.0, 3.0]);
 //! let v2 = Vector::from(vec![4.0, 5.0, 6.0]);
@@ -35,7 +35,7 @@
 //! ### Matrix Operations
 //!
 //! ```rust
-//! use linear_algebra::Matrix;
+//! use linear_algebra_42::Matrix;
 //!
 //! let matrix = Matrix::from([
 //!     [1.0, 2.0],
@@ -52,7 +52,7 @@
 //! ### Complex Numbers
 //!
 //! ```rust
-//! use linear_algebra::{Complex, traits::Magnitude};
+//! use linear_algebra_42::{Complex, traits::Magnitude};
 //!
 //! let z1 = Complex::new(3.0, 4.0);
 //! let z2 = Complex::new(1.0, 2.0);

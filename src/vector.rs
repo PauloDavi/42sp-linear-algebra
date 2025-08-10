@@ -11,7 +11,7 @@ use crate::traits::{Conjugate, Magnitude, Zero};
 /// # Examples
 ///
 /// ```rust
-/// use linear_algebra::Vector;
+/// use linear_algebra_42::Vector;
 ///
 /// // Creating a vector
 /// let v = Vector::from([1.0, 2.0, 3.0]);
@@ -36,7 +36,7 @@ impl<K> Vector<K> {
     /// # Examples
     ///
     /// ```rust
-    /// use linear_algebra::Vector;
+    /// use linear_algebra_42::Vector;
     ///
     /// let v = Vector::from([1, 2, 3]);
     /// assert_eq!(v.len(), 3);
@@ -50,7 +50,7 @@ impl<K> Vector<K> {
     /// # Examples
     ///
     /// ```rust
-    /// use linear_algebra::Vector;
+    /// use linear_algebra_42::Vector;
     ///
     /// let v: Vector<i32> = Vector::from([]);
     /// assert!(v.is_empty());

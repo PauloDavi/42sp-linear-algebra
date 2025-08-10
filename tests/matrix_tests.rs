@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod matrix_tests {
-    use linear_algebra::{matrix::Matrix, vector::Vector};
+    use linear_algebra_42::{matrix::Matrix, vector::Vector};
 
     #[test]
     fn test_new_success() {

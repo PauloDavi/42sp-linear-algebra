@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod cross_product_tests {
-    use linear_algebra::{cross_product, vector::Vector};
+    use linear_algebra_42::{cross_product, vector::Vector};
 
     #[test]
     fn test_cross_product_basic() {

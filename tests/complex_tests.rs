@@ -1,4 +1,4 @@
-use linear_algebra::{Complex, Magnitude, Negative, One, Zero};
+use linear_algebra_42::{Complex, Magnitude, Negative, One, Zero};
 
 #[cfg(test)]
 mod complex_tests {

@@ -27,13 +27,13 @@ A complete Rust library for linear algebra operations, based on the 42 School Ma
 Add to your `Cargo.toml`:
 ```toml
 [dependencies]
-linear_algebra = "0.1.0"
+linear_algebra_42 = "0.1.0"
 ```
 
 ### Basic Examples
 
 ```rust
-use linear_algebra::{Vector, Matrix, Complex, linear_combination, lerp};
+use linear_algebra_42::{Vector, Matrix, Complex, linear_combination, lerp};
 
 // Vectors
 let mut v1 = Vector::from([1, 2, 3]);

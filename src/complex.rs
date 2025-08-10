@@ -9,7 +9,7 @@ use std::ops::{Add, Div, Mul, Neg, Sub};
 /// # Examples
 ///
 /// ```rust
-/// use linear_algebra::{Complex, traits::Magnitude};
+/// use linear_algebra_42::{Complex, traits::Magnitude};
 ///
 /// // Creating complex numbers
 /// let z1 = Complex::new(3.0, 4.0);  // 3 + 4i
@@ -38,7 +38,7 @@ impl Complex {
     /// # Examples
     ///
     /// ```rust
-    /// use linear_algebra::Complex;
+    /// use linear_algebra_42::Complex;
     ///
     /// let z = Complex::new(3.0, 4.0);
     /// assert_eq!(z.real(), 3.0);
@@ -68,7 +68,7 @@ impl Complex {
     /// # Examples
     ///
     /// ```rust
-    /// use linear_algebra::Complex;
+    /// use linear_algebra_42::Complex;
     ///
     /// let z = Complex::new(3.0, 4.0);
     /// let conj = z.conjugate();

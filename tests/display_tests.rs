@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod display_tests {
-    use linear_algebra::{Complex, Matrix, Vector};
+    use linear_algebra_42::{Complex, Matrix, Vector};
 
     #[test]
     fn test_vector_display_integers() {

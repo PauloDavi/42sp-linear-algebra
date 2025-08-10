@@ -1,5 +1,5 @@
 [package]
-name = "linear_algebra"
+name = "linear_algebra_42"
 version = "0.1.0"
 edition = "2021"
 authors = ["Paulo Davi Alencar de Freitas Araújo <araujo.paulo.davi@gmail.com>"]
@@ -8,8 +8,8 @@ license = "MIT"
 readme = "README.md"
 repository = "https://github.com/paulodavi/42sp-linear-algebra"
 homepage = "https://github.com/paulodavi/42sp-linear-algebra"
-documentation = "https://docs.rs/linear_algebra"
-keywords = ["algebra", "linear", "math", "vector", "matrix", "complex"]
+documentation = "https://docs.rs/linear_algebra_42"
+keywords = ["algebra", "math", "vector", "matrix", "complex"]
 categories = ["science", "algorithms"]
 rust-version = "1.70"
 include = [
@@ -22,7 +22,7 @@ include = [
 ]
 
 [lib]
-name = "linear_algebra"
+name = "linear_algebra_42"
 path = "src/lib.rs"
 
 [[example]]

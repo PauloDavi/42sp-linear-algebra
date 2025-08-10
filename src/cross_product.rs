@@ -28,7 +28,7 @@ use crate::Vector;
 /// # Examples
 ///
 /// ```rust
-/// use linear_algebra::{Vector, cross_product};
+/// use linear_algebra_42::{Vector, cross_product};
 ///
 /// // Unit vectors of x and y axes
 /// let i = Vector::from([1.0, 0.0, 0.0]);

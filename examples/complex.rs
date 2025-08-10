@@ -1,5 +1,5 @@
-use linear_algebra::traits::{Magnitude, One, Zero};
-use linear_algebra::{Complex, Matrix, Vector, angle_cos, linear_combination};
+use linear_algebra_42::traits::{Magnitude, One, Zero};
+use linear_algebra_42::{Complex, Matrix, Vector, angle_cos, linear_combination};
 
 fn main() {
     println!("=== DEMONSTRATION WITH COMPLEX NUMBERS ===");

@@ -27,7 +27,7 @@ use crate::errors::InterpolationError;
 /// # Examples
 ///
 /// ```rust
-/// use linear_algebra::lerp;
+/// use linear_algebra_42::lerp;
 ///
 /// // Simple interpolation between two numbers
 /// let result = lerp(0.0, 10.0, 0.5).unwrap();

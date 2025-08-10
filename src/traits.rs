@@ -53,14 +53,14 @@ pub trait Magnitude {
 ///
 /// For real numbers, the conjugate is the number itself:
 /// ```rust
-/// use linear_algebra::traits::Conjugate;
+/// use linear_algebra_42::traits::Conjugate;
 ///
 /// assert_eq!(5.0_f32.conjugate(), 5.0);
 /// ```
 ///
 /// For complex numbers, the conjugate changes the sign of the imaginary part:
 /// ```rust
-/// use linear_algebra::{Complex, traits::Conjugate};
+/// use linear_algebra_42::{Complex, traits::Conjugate};
 ///
 /// let z = Complex::new(3.0, 4.0);
 /// let conj = z.conjugate();

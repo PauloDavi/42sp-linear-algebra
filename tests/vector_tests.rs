@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod vector_tests {
-    use linear_algebra::vector::Vector;
+    use linear_algebra_42::vector::Vector;
 
     #[test]
     fn test_new() {
