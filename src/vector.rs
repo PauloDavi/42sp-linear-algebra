@@ -1,6 +1,8 @@
 use core::slice::{Iter, IterMut};
 use std::ops::{Add, Index, IndexMut, Mul, Sub};
 
+use crate::traits::{Magnitude, Zero};
+
 #[derive(Debug, Clone, PartialEq)]
 pub struct Vector<K> {
     data: Vec<K>,
@@ -61,11 +63,11 @@ impl<K> From<Vec<K>> for Vector<K> {
 
 impl<K> Vector<K>
 where
-    K: Default + Clone,
+    K: Zero + Clone,
 {
     pub fn zeros(len: usize) -> Self {
         Self {
-            data: vec![K::default(); len],
+            data: vec![K::zero(); len],
         }
     }
 }
@@ -181,7 +183,7 @@ impl<K> IndexMut<usize> for Vector<K> {
 
 impl<K> Vector<K>
 where
-    K: Copy + Default + Add<Output = K> + Mul<Output = K>,
+    K: Copy + Zero + Add<Output = K> + Mul<Output = K>,
 {
     pub fn dot(&self, v: &Self) -> K {
         debug_assert_eq!(
@@ -190,7 +192,7 @@ where
             "Vector dimensions must match for dot product"
         );
 
-        let mut acc = K::default();
+        let mut acc = K::zero();
         for (&a, &b) in self.data.iter().zip(&v.data) {
             acc = acc + (a * b);
         }
@@ -200,29 +202,29 @@ where
 
 impl<K> Vector<K>
 where
-    K: Copy + Into<f32>,
+    K: Copy + Magnitude<Output = f32>,
 {
     pub fn norm_1(&self) -> f32 {
-        let mut sum = 0.0f32;
+        let mut sum = 0.;
         for &x in &self.data {
-            sum += x.into().abs();
+            sum += x.magnitude();
         }
         sum
     }
 
     pub fn norm(&self) -> f32 {
-        let mut sum = 0.0f32;
+        let mut sum = 0.;
         for &x in &self.data {
-            let val = x.into();
+            let val = x.magnitude();
             sum += val * val;
         }
         sum.sqrt()
     }
 
     pub fn norm_inf(&self) -> f32 {
-        let mut max_val = 0.0f32;
+        let mut max_val = 0.;
         for &x in &self.data {
-            let abs_val = x.into().abs();
+            let abs_val = x.magnitude();
             if abs_val > max_val {
                 max_val = abs_val;
             }

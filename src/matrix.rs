@@ -1,7 +1,11 @@
 use core::slice::{Iter, IterMut};
 use std::ops::{Add, Div, Index, IndexMut, Mul, Neg, Sub};
 
-use crate::{Vector, errors::MatrixInverseError};
+use crate::{
+    Vector,
+    errors::MatrixInverseError,
+    traits::{Magnitude, Negative, One, Zero},
+};
 
 #[derive(Debug, PartialEq, Clone)]
 pub struct Matrix<K> {
@@ -80,13 +84,13 @@ where
 
 impl<K> Matrix<K>
 where
-    K: Default + Clone,
+    K: Zero + Clone,
 {
     pub fn zeros(rows: usize, columns: usize) -> Self {
         Self {
             columns,
             rows,
-            data: vec![vec![K::default(); columns]; rows],
+            data: vec![vec![K::zero(); columns]; rows],
         }
     }
 }
@@ -235,7 +239,7 @@ impl<K> IndexMut<usize> for Matrix<K> {
 
 impl<K> Matrix<K>
 where
-    K: Copy + Default + Add<Output = K> + Mul<Output = K>,
+    K: Copy + Zero + Add<Output = K> + Mul<Output = K>,
 {
     pub fn mul_vec(&self, vec: &Vector<K>) -> Vector<K> {
         debug_assert_eq!(self.rows, vec.len(), "Matrix rows must match vector length");
@@ -243,7 +247,7 @@ where
         let mut result = Vec::with_capacity(self.rows);
 
         for column in 0..self.columns {
-            let mut sum = K::default();
+            let mut sum = K::zero();
             for (row, &vec_val) in vec.iter().enumerate() {
                 sum = sum + (self.data[row][column] * vec_val)
             }
@@ -264,7 +268,7 @@ where
         for i in 0..self.rows {
             let mut row = Vec::with_capacity(other.columns);
             for j in 0..other.columns {
-                let mut sum = K::default();
+                let mut sum = K::zero();
                 for k in 0..self.columns {
                     sum = sum + (self.data[i][k] * other.data[k][j]);
                 }
@@ -283,14 +287,14 @@ where
 
 impl<K> Matrix<K>
 where
-    K: Copy + Default + Add<Output = K>,
+    K: Copy + Zero + Add<Output = K>,
 {
     pub fn trace(&self) -> K {
         if !self.is_square() {
-            return K::default();
+            return K::zero();
         }
 
-        let mut acc = K::default();
+        let mut acc = K::zero();
         for i in 0..self.rows {
             acc = acc + self[i][i];
         }
@@ -302,10 +306,10 @@ impl<K> Matrix<K>
 where
     K: Copy
         + Mul<Output = K>
-        + Default
+        + Zero
+        + One
         + PartialEq
         + Div<Output = K>
-        + From<u8>
         + Neg<Output = K>
         + Add<Output = K>,
 {
@@ -322,15 +326,15 @@ where
                 .iter()
                 .enumerate()
                 .skip(row)
-                .find_map(|(i, &val)| if val != K::from(0u8) { Some(i) } else { None })
+                .find_map(|(i, &val)| if val != K::zero() { Some(i) } else { None })
             {
                 Some(pivot_idx) => {
                     let pivot = rows[row][pivot_idx];
-                    rows[row].scl(K::from(1u8) / pivot);
+                    rows[row].scl(K::one() / pivot);
 
                     for i in 0..self.rows {
                         let factor = rows[i][pivot_idx];
-                        if i == row || factor == K::from(0u8) {
+                        if i == row || factor == K::zero() {
                             continue;
                         }
 
@@ -382,11 +386,11 @@ where
 
 impl<K> Matrix<K>
 where
-    K: Copy + Add<Output = K> + Sub<Output = K> + Mul<Output = K> + From<i8>,
+    K: Copy + Add<Output = K> + Sub<Output = K> + Mul<Output = K> + Zero + One + Negative,
 {
     pub fn determinant(&self) -> K {
         if !self.is_square() {
-            return K::from(0);
+            return K::zero();
         }
 
         match self.rows {
@@ -403,19 +407,19 @@ where
                 (a + b + c) - (d + e + f)
             }
             4 => {
-                let mut det = K::from(0);
+                let mut det = K::zero();
                 for col in 0..4 {
                     let minor = self.sub_matrix(0, col);
                     let sign = if col % 2 == 0 {
-                        K::from(1)
+                        K::one()
                     } else {
-                        K::from(-1)
+                        K::negative_one()
                     };
                     det = det + sign * self[0][col] * minor.determinant();
                 }
                 det
             }
-            _ => K::from(0),
+            _ => K::zero(),
         }
     }
 }
@@ -423,12 +427,12 @@ where
 impl<K> Matrix<K>
 where
     K: Copy
-        + Default
+        + Zero
+        + One
         + Add<Output = K>
         + Sub<Output = K>
         + Div<Output = K>
         + Mul<Output = K>
-        + From<i8>
         + PartialEq,
 {
     pub fn inverse(&self) -> Result<Self, MatrixInverseError> {
@@ -441,14 +445,14 @@ where
 
         let n = self.rows;
         let mut a = self.data.clone();
-        let mut inv = vec![vec![K::default(); n]; n];
+        let mut inv = vec![vec![K::zero(); n]; n];
         for i in 0..n {
-            inv[i][i] = K::from(1);
+            inv[i][i] = K::one();
         }
 
         for i in 0..n {
             let pivot = a[i][i];
-            if pivot == K::default() {
+            if pivot == K::zero() {
                 return Err(MatrixInverseError::Singular);
             }
 
@@ -479,13 +483,11 @@ where
 impl<K> Matrix<K>
 where
     K: Copy
-        + Default
         + PartialOrd
         + Sub<Output = K>
         + Div<Output = K>
         + Mul<Output = K>
-        + From<f64>
-        + Into<f64>,
+        + Magnitude<Output = f32>,
 {
     pub fn rank(&mut self) -> usize {
         let mut rank = 0;
@@ -493,7 +495,7 @@ where
 
         for col in 0..self.columns {
             let mut pivot_row = row;
-            while pivot_row < self.rows && (self.data[pivot_row][col].into().abs() < 1e-10) {
+            while pivot_row < self.rows && (self.data[pivot_row][col].magnitude() < 1e-10) {
                 pivot_row += 1;
             }
 

@@ -1,10 +1,13 @@
 use std::ops::{Add, Mul};
 
-use crate::Vector;
+use crate::{
+    Vector,
+    traits::{Magnitude, Zero},
+};
 
 pub fn angle_cos<K>(u: &Vector<K>, v: &Vector<K>) -> f32
 where
-    K: Copy + Default + Add<Output = K> + Mul<Output = K> + Into<f32>,
+    K: Copy + Zero + Add<Output = K> + Mul<Output = K> + Magnitude<Output = f32> + Into<f32>,
 {
     debug_assert_eq!(u.len(), v.len(), "Vectors must have same dimension");
 

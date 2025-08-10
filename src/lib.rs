@@ -5,6 +5,7 @@ pub mod errors;
 pub mod interpolate;
 pub mod linear_combination;
 pub mod matrix;
+pub mod traits;
 pub mod vector;
 
 pub use angle_cos::angle_cos;
@@ -13,4 +14,5 @@ pub use errors::{InterpolationError, LinearCombinationError, MatrixInverseError}
 pub use interpolate::lerp;
 pub use linear_combination::linear_combination;
 pub use matrix::Matrix;
+pub use traits::{Magnitude, Negative, One, Zero};
 pub use vector::Vector;

@@ -1,13 +1,13 @@
 use std::ops::{Add, Mul};
 
-use crate::{errors::LinearCombinationError, vector::Vector};
+use crate::{errors::LinearCombinationError, traits::Zero, vector::Vector};
 
 pub fn linear_combination<K, const N: usize>(
     vectors: [Vector<K>; N],
     coefficients: [K; N],
 ) -> Result<Vector<K>, LinearCombinationError>
 where
-    K: Copy + Default + Add<Output = K> + Mul<Output = K>,
+    K: Copy + Zero + Add<Output = K> + Mul<Output = K>,
 {
     if N == 0 {
         return Ok(Vector::from(Vec::new()));
@@ -23,7 +23,7 @@ where
         }
     }
 
-    let mut result_data = vec![K::default(); len];
+    let mut result_data = vec![K::zero(); len];
     for (vector, &coefficient) in vectors.iter().zip(coefficients.iter()) {
         for (i, &value) in vector.as_slice().iter().enumerate() {
             result_data[i] = result_data[i] + (value * coefficient);
