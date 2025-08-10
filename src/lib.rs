@@ -16,5 +16,5 @@ pub use errors::{InterpolationError, LinearCombinationError, MatrixInverseError}
 pub use interpolate::lerp;
 pub use linear_combination::linear_combination;
 pub use matrix::Matrix;
-pub use traits::{Magnitude, Negative, One, Zero};
+pub use traits::{Magnitude, Negative, One, Zero, Conjugate};
 pub use vector::Vector;

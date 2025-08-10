@@ -1,7 +1,7 @@
 use core::slice::{Iter, IterMut};
 use std::ops::{Add, Index, IndexMut, Mul, Sub};
 
-use crate::traits::{Magnitude, Zero};
+use crate::traits::{Conjugate, Magnitude, Zero};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Vector<K> {
@@ -195,6 +195,25 @@ where
         let mut acc = K::zero();
         for (&a, &b) in self.data.iter().zip(&v.data) {
             acc = acc + (a * b);
+        }
+        acc
+    }
+}
+
+impl<K> Vector<K>
+where
+    K: Copy + Zero + Add<Output = K> + Mul<Output = K> + Conjugate,
+{
+    pub fn complex_dot(&self, v: &Self) -> K {
+        debug_assert_eq!(
+            self.len(),
+            v.len(),
+            "Vector dimensions must match for complex inner product"
+        );
+
+        let mut acc = K::zero();
+        for (&a, &b) in self.data.iter().zip(&v.data) {
+            acc = acc + (a.conjugate() * b);
         }
         acc
     }

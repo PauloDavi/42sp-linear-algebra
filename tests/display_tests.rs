@@ -211,7 +211,6 @@ mod display_tests {
         assert_eq!(format!("{m}"), expected);
     }
 
-    // Testes para Complex Display
     #[test]
     fn test_complex_display_zero() {
         let c = Complex::new(0.0, 0.0);

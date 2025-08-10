@@ -4,7 +4,7 @@ use std::ops::{Add, Div, Index, IndexMut, Mul, Neg, Sub};
 use crate::{
     Vector,
     errors::MatrixInverseError,
-    traits::{Magnitude, Negative, One, Zero},
+    traits::{Conjugate, Magnitude, Negative, One, Zero},
 };
 
 #[derive(Debug, PartialEq, Clone)]
@@ -71,6 +71,30 @@ where
         for row in &self.data {
             for (j, &val) in row.iter().enumerate() {
                 transposed_data[j].push(val);
+            }
+        }
+
+        Self {
+            columns: self.rows,
+            rows: self.columns,
+            data: transposed_data,
+        }
+    }
+}
+
+impl<K> Matrix<K>
+where
+    K: Copy + Conjugate,
+{
+    pub fn conjugate_transpose(&self) -> Self {
+        let mut transposed_data = Vec::with_capacity(self.columns);
+        for _ in 0..self.columns {
+            transposed_data.push(Vec::with_capacity(self.rows));
+        }
+
+        for row in &self.data {
+            for (j, &val) in row.iter().enumerate() {
+                transposed_data[j].push(val.conjugate());
             }
         }
 

@@ -1,4 +1,4 @@
-use crate::{Magnitude, Negative, One, Zero};
+use crate::traits::{Conjugate, Magnitude, Negative, One, Zero};
 use std::ops::{Add, Div, Mul, Neg, Sub};
 
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -58,6 +58,15 @@ impl Magnitude for Complex {
 
     fn magnitude(&self) -> Self::Output {
         (self.r.powi(2) + self.i.powi(2)).sqrt()
+    }
+}
+
+impl Conjugate for Complex {
+    fn conjugate(&self) -> Self {
+        Complex {
+            r: self.r,
+            i: -self.i,
+        }
     }
 }
 

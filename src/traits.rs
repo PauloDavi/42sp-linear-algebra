@@ -18,6 +18,10 @@ pub trait Magnitude {
     fn magnitude(&self) -> Self::Output;
 }
 
+pub trait Conjugate {
+    fn conjugate(&self) -> Self;
+}
+
 impl Zero for i8 {
     fn zero() -> Self {
         0
@@ -281,5 +285,65 @@ impl Magnitude for f64 {
 
     fn magnitude(&self) -> Self::Output {
         (*self as f32).abs()
+    }
+}
+
+impl Conjugate for i8 {
+    fn conjugate(&self) -> Self {
+        *self
+    }
+}
+
+impl Conjugate for i16 {
+    fn conjugate(&self) -> Self {
+        *self
+    }
+}
+
+impl Conjugate for i32 {
+    fn conjugate(&self) -> Self {
+        *self
+    }
+}
+
+impl Conjugate for i64 {
+    fn conjugate(&self) -> Self {
+        *self
+    }
+}
+
+impl Conjugate for u8 {
+    fn conjugate(&self) -> Self {
+        *self
+    }
+}
+
+impl Conjugate for u16 {
+    fn conjugate(&self) -> Self {
+        *self
+    }
+}
+
+impl Conjugate for u32 {
+    fn conjugate(&self) -> Self {
+        *self
+    }
+}
+
+impl Conjugate for u64 {
+    fn conjugate(&self) -> Self {
+        *self
+    }
+}
+
+impl Conjugate for f32 {
+    fn conjugate(&self) -> Self {
+        *self
+    }
+}
+
+impl Conjugate for f64 {
+    fn conjugate(&self) -> Self {
+        *self
     }
 }
