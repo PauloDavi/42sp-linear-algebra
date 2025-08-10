@@ -2,10 +2,10 @@ use linear_algebra::traits::{Magnitude, One, Zero};
 use linear_algebra::{Complex, Matrix, Vector, angle_cos, linear_combination};
 
 fn main() {
-    println!("=== DEMONSTRAÇÃO COM NÚMEROS COMPLEXOS ===");
-    println!("Este exemplo mostra todas as operações usando apenas números complexos!\n");
+    println!("=== DEMONSTRATION WITH COMPLEX NUMBERS ===");
+    println!("This example shows all operations using only complex numbers!\n");
 
-    println!("=== Criação de Números Complexos ===");
+    println!("=== Creating Complex Numbers ===");
     let z1 = Complex::new(3.0, 4.0);
     let z2 = Complex::new(1.0, -2.0);
     let z3 = Complex::new(-2.0, 1.0);
@@ -18,7 +18,7 @@ fn main() {
     println!("z4 = {z4}");
     println!("z5 = {z5}");
 
-    println!("\n=== Operações Aritméticas com Complexos ===");
+    println!("\n=== Arithmetic Operations with Complex Numbers ===");
     println!("z1 + z2 = {z1} + {z2} = {}", z1 + z2);
 
     println!("z1 * z2 = {z1} * {z2} = {}", z1 * z2);
@@ -28,94 +28,94 @@ fn main() {
     println!("|z1| = |{}| = {}", z1, z1.magnitude());
     println!("conj(z1) = conj({}) = {}", z1, z1.conjugate());
 
-    println!("\n=== Vetores de Números Complexos ===");
+    println!("\n=== Vectors of Complex Numbers ===");
     let mut v1 = Vector::from([z1, z2, z3]);
     let v2 = Vector::from([z4, z5, Complex::new(1.0, 1.0)]);
 
-    println!("Vetor v1 com componentes complexas:");
+    println!("Vector v1 with complex components:");
     for (i, &z) in v1.iter().enumerate() {
         println!("  v1[{i}] = {z}");
     }
 
-    println!("\nVetor v2 com componentes complexas:");
+    println!("\nVector v2 with complex components:");
     for (i, &z) in v2.iter().enumerate() {
         println!("  v2[{i}] = {z}");
     }
 
-    println!("\n=== Operações com Vetores Complexos ===");
+    println!("\n=== Operations with Complex Vectors ===");
 
     let v_sum = v1.add_new(&v2);
-    println!("Soma v1 + v2:");
+    println!("Sum v1 + v2:");
     for (i, &z) in v_sum.iter().enumerate() {
         println!("  (v1 + v2)[{i}] = {z}");
     }
 
     v1.scl(Complex::new(2.0, 0.0));
-    println!("\ntor v1 multiplicado por 2:");
+    println!("\nVector v1 multiplied by 2:");
     for (i, &z) in v1.iter().enumerate() {
         println!("  (2 * v1)[{i}] = {z}");
     }
 
-    println!("\n=== Produto Escalar Complexo ===");
+    println!("\n=== Complex Dot Product ===");
     let dot_product = v1.dot(&v2);
-    println!("Produto escalar v1 · v2 = {dot_product}");
-    println!("Magnitude do produto escalar: {}", dot_product.magnitude());
+    println!("Dot product v1 · v2 = {dot_product}");
+    println!("Magnitude of the dot product: {}", dot_product.magnitude());
 
-    println!("\n=== Normas de Vetores Complexos ===");
+    println!("\n=== Norms of Complex Vectors ===");
     let v_test = Vector::from([
         Complex::new(3.0, 4.0),
         Complex::new(0.0, 5.0),
         Complex::new(-1.0, 1.0),
     ]);
 
-    println!("Vetor de teste:");
+    println!("Test vector:");
     for (i, &z) in v_test.iter().enumerate() {
         println!("  v[{i}] = {z} (magnitude: {})", z.magnitude());
     }
 
-    println!("Norma-1 do vetor: {}", v_test.norm_1());
-    println!("Norma-2 do vetor: {}", v_test.norm());
-    println!("Norma-infinito do vetor: {}", v_test.norm_inf());
+    println!("Vector 1-norm: {}", v_test.norm_1());
+    println!("Vector 2-norm: {}", v_test.norm());
+    println!("Vector infinity norm: {}", v_test.norm_inf());
 
-    println!("\n=== Ângulo entre Vetores Complexos ===");
+    println!("\n=== Angle Between Complex Vectors ===");
     let u_complex = Vector::from([Complex::new(1.0, 0.0), Complex::new(0.0, 1.0)]);
     let v_complex = Vector::from([Complex::new(0.0, 1.0), Complex::new(1.0, 0.0)]);
 
-    println!("Vetor u:");
+    println!("Vector u:");
     for (i, &z) in u_complex.iter().enumerate() {
         println!("  u[{i}] = {z}");
     }
 
-    println!("Vetor v:");
+    println!("Vector v:");
     for (i, &z) in v_complex.iter().enumerate() {
         println!("  v[{i}] = {z}");
     }
 
     let cos_angle = angle_cos(&u_complex, &v_complex);
-    println!("Cosseno do ângulo entre u e v: {cos_angle}");
+    println!("Cosine of the angle between u and v: {cos_angle}");
 
-    println!("\n=== Combinação Linear com Complexos ===");
+    println!("\n=== Linear Combination with Complex Numbers ===");
     let e1 = Vector::from([Complex::new(1.0, 0.0), Complex::new(0.0, 0.0)]);
     let e2 = Vector::from([Complex::new(0.0, 0.0), Complex::new(1.0, 0.0)]);
 
     let coeff1 = Complex::new(2.0, 3.0);
     let coeff2 = Complex::new(-1.0, 2.0);
 
-    println!("Base complexa:");
+    println!("Complex basis:");
     println!("  e1 = [{}, {}]", e1[0], e1[1]);
     println!("  e2 = [{}, {}]", e2[0], e2[1]);
 
-    println!("Coeficientes:");
+    println!("Coefficients:");
     println!("  c1 = {coeff1}");
     println!("  c2 = {coeff2}");
 
     let combination = linear_combination([e1, e2], [coeff1, coeff2]).unwrap();
-    println!("Combinação c1*e1 + c2*e2:");
+    println!("Combination c1*e1 + c2*e2:");
     for (i, &z) in combination.iter().enumerate() {
-        println!("  resultado[{i}] = {z}");
+        println!("  result[{i}] = {z}");
     }
 
-    println!("\n=== Matrizes de Números Complexos ===");
+    println!("\n=== Complex Number Matrices ===");
     let m1 = Matrix::from([
         [Complex::new(1.0, 2.0), Complex::new(3.0, -1.0)],
         [Complex::new(0.0, 1.0), Complex::new(2.0, 0.0)],
@@ -126,7 +126,7 @@ fn main() {
         [Complex::new(1.0, -1.0), Complex::new(0.0, 2.0)],
     ]);
 
-    println!("Matriz m1:");
+    println!("Matrix m1:");
     for i in 0..m1.rows() {
         print!("  [");
         for j in 0..m1.columns() {
@@ -139,7 +139,7 @@ fn main() {
         println!("]");
     }
 
-    println!("Matriz m2:");
+    println!("Matrix m2:");
     for i in 0..m2.rows() {
         print!("  [");
         for j in 0..m2.columns() {
@@ -152,10 +152,10 @@ fn main() {
         println!("]");
     }
 
-    println!("\n=== Operações com Matrizes Complexas ===");
+    println!("\n=== Operations with Complex Matrices ===");
 
     let m_sum = m1.add_new(&m2);
-    println!("Soma m1 + m2:");
+    println!("Sum m1 + m2:");
     for i in 0..m_sum.rows() {
         print!("  [");
         for j in 0..m_sum.columns() {
@@ -169,7 +169,7 @@ fn main() {
     }
 
     let m_product = m1.mul_mat(&m2);
-    println!("Produto m1 * m2:");
+    println!("Product m1 * m2:");
     for i in 0..m_product.rows() {
         print!("  [");
         for j in 0..m_product.columns() {
@@ -182,27 +182,27 @@ fn main() {
         println!("]");
     }
 
-    println!("\n=== Matriz X Vetor Complexo ===");
+    println!("\n=== Matrix × Complex Vector ===");
     let complex_vector = Vector::from([Complex::new(1.0, 1.0), Complex::new(2.0, -1.0)]);
 
-    println!("Vetor:");
+    println!("Vector:");
     for (i, &z) in complex_vector.iter().enumerate() {
         println!("  v[{i}] = {z}");
     }
 
     let result_vector = m1.mul_vec(&complex_vector);
-    println!("Resultado m1 * v:");
+    println!("Result m1 * v:");
     for (i, &z) in result_vector.iter().enumerate() {
-        println!("  resultado[{i}] = {z}");
+        println!("  result[{i}] = {z}");
     }
 
-    println!("\n=== Propriedades de Matrizes Complexas ===");
+    println!("\n=== Properties of Complex Matrices ===");
 
     let trace = m1.trace();
-    println!("Traço de m1: {trace}");
+    println!("Trace of m1: {trace}");
 
     let m1_transpose = m1.transpose();
-    println!("Transposta de m1:");
+    println!("Transpose of m1:");
     for i in 0..m1_transpose.rows() {
         print!("  [");
         for j in 0..m1_transpose.columns() {
@@ -216,16 +216,16 @@ fn main() {
     }
 
     let determinant = m1.determinant();
-    println!("Determinante de m1: {determinant}");
-    println!("Magnitude do determinante: {}", determinant.magnitude());
+    println!("Determinant of m1: {determinant}");
+    println!("Magnitude of determinant: {}", determinant.magnitude());
 
-    println!("\n=== Matriz Identidade Complexa ===");
+    println!("\n=== Complex Identity Matrix ===");
     let identity = Matrix::from([
         [Complex::one(), Complex::zero()],
         [Complex::zero(), Complex::one()],
     ]);
 
-    println!("Matriz identidade complexa:");
+    println!("Complex identity matrix:");
     for i in 0..identity.rows() {
         print!("  [");
         for j in 0..identity.columns() {
@@ -239,5 +239,5 @@ fn main() {
     }
 
     let identity_product = m1.mul_mat(&identity);
-    println!("Verificação: m1 * I = m1? {}", m1 == identity_product);
+    println!("Check: m1 * I = m1? {}", m1 == identity_product);
 }

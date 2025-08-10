@@ -3,36 +3,83 @@ use std::ops::{Add, Index, IndexMut, Mul, Sub};
 
 use crate::traits::{Conjugate, Magnitude, Zero};
 
+/// Represents a generic mathematical vector with elements of type `K`.
+///
+/// The `Vector<K>` type provides fundamental linear algebra operations,
+/// including addition, scalar multiplication, dot product, and norms.
+///
+/// # Examples
+///
+/// ```rust
+/// use linear_algebra::Vector;
+///
+/// // Creating a vector
+/// let v = Vector::from([1.0, 2.0, 3.0]);
+///
+/// // Accessing elements
+/// assert_eq!(v[0], 1.0);
+/// assert_eq!(v.len(), 3);
+///
+/// // Basic operations
+/// let v2 = Vector::from([4.0, 5.0, 6.0]);
+/// let sum = v.add_new(&v2);
+/// let dot_product = v.dot(&v2);
+/// ```
 #[derive(Debug, Clone, PartialEq)]
 pub struct Vector<K> {
     data: Vec<K>,
 }
 
 impl<K> Vector<K> {
+    /// Returns the number of elements in the vector.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use linear_algebra::Vector;
+    ///
+    /// let v = Vector::from([1, 2, 3]);
+    /// assert_eq!(v.len(), 3);
+    /// ```
     pub fn len(&self) -> usize {
         self.data.len()
     }
 
+    /// Checks if the vector is empty.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use linear_algebra::Vector;
+    ///
+    /// let v: Vector<i32> = Vector::from([]);
+    /// assert!(v.is_empty());
+    /// ```
     pub fn is_empty(&self) -> bool {
         self.data.is_empty()
     }
 
+    /// Returns an iterator over the vector elements.
     pub fn iter(&self) -> Iter<'_, K> {
         self.data.iter()
     }
 
+    /// Returns a mutable iterator over the vector elements.
     pub fn iter_mut(&mut self) -> IterMut<'_, K> {
         self.data.iter_mut()
     }
 
+    /// Returns a reference to the internal data as a slice.
     pub fn as_slice(&self) -> &[K] {
         &self.data
     }
 
+    /// Returns a mutable reference to the internal data as a slice.
     pub fn as_mut_slice(&mut self) -> &mut [K] {
         &mut self.data
     }
 
+    /// Consumes the vector and returns the internal Vec.
     pub fn into_inner(self) -> Vec<K> {
         self.data
     }

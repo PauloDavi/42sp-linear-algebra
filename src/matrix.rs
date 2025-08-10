@@ -7,6 +7,32 @@ use crate::{
     traits::{Conjugate, Magnitude, Negative, One, Zero},
 };
 
+/// Represents a generic mathematical matrix with elements of type `K`.
+///
+/// The `Matrix<K>` structure implements fundamental linear algebra operations,
+/// including matrix multiplication, transposition, determinants, and inversion.
+///
+/// # Examples
+///
+/// ```rust
+/// use linear_algebra::Matrix;
+///
+/// // Creating a 2x2 matrix
+/// let matrix = Matrix::from([
+///     [1.0, 2.0],
+///     [3.0, 4.0]
+/// ]);
+///
+/// // Accessing elements
+/// assert_eq!(matrix[0][1], 2.0);
+/// assert_eq!(matrix.shape(), (2, 2));
+///
+/// // Transposition
+/// let transposed = matrix.transpose();
+///
+/// // Multiplication
+/// let result = matrix.mul_mat(&transposed);
+/// ```
 #[derive(Debug, PartialEq, Clone)]
 pub struct Matrix<K> {
     rows: usize,
@@ -15,34 +41,63 @@ pub struct Matrix<K> {
 }
 
 impl<K> Matrix<K> {
+    /// Returns the matrix dimensions as a tuple (rows, columns).
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use linear_algebra::Matrix;
+    ///
+    /// let matrix = Matrix::from([[1, 2, 3], [4, 5, 6]]);
+    /// assert_eq!(matrix.shape(), (2, 3));
+    /// ```
     pub fn shape(&self) -> (usize, usize) {
         (self.rows, self.columns)
     }
 
+    /// Returns the number of rows in the matrix.
     pub fn rows(&self) -> usize {
         self.rows
     }
 
+    /// Returns the number of columns in the matrix.
     pub fn columns(&self) -> usize {
         self.columns
     }
 
+    /// Returns an iterator over the matrix rows.
     pub fn iter(&self) -> Iter<'_, Vec<K>> {
         self.data.iter()
     }
 
+    /// Returns a mutable iterator over the matrix rows.
     pub fn iter_mut(&mut self) -> IterMut<'_, Vec<K>> {
         self.data.iter_mut()
     }
 
+    /// Checks if the matrix is square (same number of rows and columns).
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use linear_algebra::Matrix;
+    ///
+    /// let square = Matrix::from([[1, 2], [3, 4]]);
+    /// assert!(square.is_square());
+    ///
+    /// let rect = Matrix::from([[1, 2, 3], [4, 5, 6]]);
+    /// assert!(!rect.is_square());
+    /// ```
     pub fn is_square(&self) -> bool {
         self.rows == self.columns
     }
 
+    /// Returns a reference to the internal data as a slice.
     pub fn as_slice(&self) -> &[Vec<K>] {
         &self.data
     }
 
+    /// Consumes the matrix and returns the internal two-dimensional Vec.
     pub fn into_inner(self) -> Vec<Vec<K>> {
         self.data
     }

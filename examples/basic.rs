@@ -1,7 +1,7 @@
 use linear_algebra::{Matrix, Vector, angle_cos, cross_product, lerp, linear_combination};
 
 fn main() {
-    println!("=== Demonstração de Vector ===");
+    println!("=== Vector Demonstration ===");
     let mut v1 = Vector::from([1, 2, 3]);
     let v2 = Vector::from([4, 5, 6]);
 
@@ -9,21 +9,21 @@ fn main() {
     println!("Vector 2: {v2}");
 
     v1.add_inline(&v2);
-    println!("\nDepois da adição: {v1}");
+    println!("\nAfter addition: {v1}");
 
     v1.sub(&v2);
-    println!("Depois da subtração: {v1}");
+    println!("After subtraction: {v1}");
 
     v1.scl(3);
-    println!("Vetor 1 multiplicado por 3: {v1}");
+    println!("Vector 1 multiplied by 3: {v1}");
 
-    println!("Adição retornando um novo: {}", v1.add_new(&v2));
+    println!("Addition returning a new: {}", v1.add_new(&v2));
 
-    println!("Subtração retornando um novo: {}", v1.sub_new(&v2));
+    println!("Subtraction returning a new: {}", v1.sub_new(&v2));
 
-    println!("Multiplicada por 3 retornando um novo: {}", v1.scl_new(3));
+    println!("Multiplied by 3 returning a new: {}", v1.scl_new(3));
 
-    println!("\n=== Demonstração de Matrix ===");
+    println!("\n=== Matrix Demonstration ===");
     let mut matrix1 = Matrix::from([[1, 2], [3, 4]]);
     let matrix2 = Matrix::from([[5, 6], [7, 8]]);
 
@@ -31,30 +31,24 @@ fn main() {
     println!("\nMatrix 2:\n{matrix2}");
 
     matrix1.add(&matrix2);
-    println!("\nDepois da adição:\n{matrix1}");
+    println!("\nAfter addition:\n{matrix1}");
 
     matrix1.sub(&matrix2);
-    println!("\nDepois da subtração:\n{matrix1}");
+    println!("\nAfter subtraction:\n{matrix1}");
 
     matrix1.scl(3);
-    println!("\nMatrix 1 multiplicada por 3:\n{matrix1}");
+    println!("\nMatrix 1 multiplied by 3:\n{matrix1}");
+
+    println!("\nAddition returning a new:\n{}", matrix1.add_new(&matrix2));
 
     println!(
-        "\nAdição retornando um novo:\n{}",
-        matrix1.add_new(&matrix2)
-    );
-
-    println!(
-        "\nSubtração retornando um novo:\n{}",
+        "\nSubtraction returning a new:\n{}",
         matrix1.sub_new(&matrix2)
     );
 
-    println!(
-        "\nMultiplicada por 3 retornando um novo:\n{}",
-        matrix1.scl_new(3)
-    );
+    println!("\nMultiplied by 3 returning a new:\n{}", matrix1.scl_new(3));
 
-    println!("\n=== Demonstração de Combinação linear ===");
+    println!("\n=== Linear Combination Demonstration ===");
     let e1 = Vector::from([1., 0., 0.]);
     let e2 = Vector::from([0., 1., 0.]);
     let e3 = Vector::from([0., 0., 1.]);
@@ -81,44 +75,41 @@ fn main() {
         coefficients[0], coefficients[1]
     );
 
-    println!("\n=== Demonstração de Interpolação linear ===");
-    println!(
-        "Aplicando lerp em escalares: {}",
-        lerp(1.2, 1.4, 0.5).unwrap()
-    );
+    println!("\n=== Linear Interpolation Demonstration ===");
+    println!("Applying lerp on scalars: {}", lerp(1.2, 1.4, 0.5).unwrap());
 
     let v1 = Vector::from([1., 2., 3.]);
     let v2 = Vector::from([0., 10., -100.]);
     println!(
-        "\nAplicando lerp em vetores:\n{}",
+        "\nApplying lerp on vectors:\n{}",
         lerp(v1, v2, 0.4).unwrap()
     );
 
     let matrix1 = Matrix::from([[1., 2.], [3., 4.]]);
     let matrix2 = Matrix::from([[5., 6.], [7., 8.]]);
     println!(
-        "\nAplicando lerp em matriz:\n{}",
+        "\nApplying lerp on matrices:\n{}",
         lerp(matrix1, matrix2, 0.3).unwrap()
     );
 
-    println!("\n=== Demonstração de Produto Escalar (Dot Product) ===");
+    println!("\n=== Dot Product Demonstration ===");
 
     let u = Vector::from([0., 0.]);
     let v = Vector::from([1., 1.]);
-    println!("Produto escalar entre {u} e {v}: {}", u.dot(&v));
+    println!("Dot product between {u} and {v}: {}", u.dot(&v));
 
     let u = Vector::from([1., 1.]);
     let v = Vector::from([1., 1.]);
-    println!("Produto escalar entre {u} e {v}: {}", u.dot(&v));
+    println!("Dot product between {u} and {v}: {}", u.dot(&v));
 
     let u = Vector::from([-1., 6.]);
     let v = Vector::from([3., 2.]);
-    println!("Produto escalar entre {u} e {v}: {}", u.dot(&v));
+    println!("Dot product between {u} and {v}: {}", u.dot(&v));
 
-    println!("\n=== Demonstração de Normas de Vetores ===");
+    println!("\n=== Vector Norms Demonstration ===");
     let u = Vector::from([0., 0., 0.]);
     println!(
-        "Para o vetor {u}: norma-1 = {}, norma-2 = {}, norma-infinito = {}",
+        "For vector {u}: norm-1 = {}, norm-2 = {}, norm-infinity = {}",
         u.norm_1(),
         u.norm(),
         u.norm_inf()
@@ -126,7 +117,7 @@ fn main() {
 
     let u = Vector::from([1., 2., 3.]);
     println!(
-        "Para o vetor {u}: norma-1 = {}, norma-2 = {}, norma-infinito = {}",
+        "For vector {u}: norm-1 = {}, norm-2 = {}, norm-infinity = {}",
         u.norm_1(),
         u.norm(),
         u.norm_inf()
@@ -134,142 +125,136 @@ fn main() {
 
     let u = Vector::from([-1., -2.]);
     println!(
-        "Para o vetor {u}: norma-1 = {}, norma-2 = {}, norma-infinito = {}",
+        "For vector {u}: norm-1 = {}, norm-2 = {}, norm-infinity = {}",
         u.norm_1(),
         u.norm(),
         u.norm_inf()
     );
 
-    println!("\n=== Demonstração do Cosseno do Ângulo entre Vetores ===");
+    println!("\n=== Cosine of Angle Between Vectors Demonstration ===");
     let u = Vector::from([1., 0.]);
     let v = Vector::from([1., 0.]);
-    println!("Cosseno do ângulo entre {u} e {v}: {}", angle_cos(&u, &v));
+    println!("Cosine of angle between {u} and {v}: {}", angle_cos(&u, &v));
 
     let u = Vector::from([1., 0.]);
     let v = Vector::from([0., 1.]);
-    println!("Cosseno do ângulo entre {u} e {v}: {}", angle_cos(&u, &v));
+    println!("Cosine of angle between {u} and {v}: {}", angle_cos(&u, &v));
 
     let u = Vector::from([-1., 1.]);
     let v = Vector::from([1., -1.]);
-    println!("Cosseno do ângulo entre {u} e {v}: {}", angle_cos(&u, &v));
+    println!("Cosine of angle between {u} and {v}: {}", angle_cos(&u, &v));
 
     let u = Vector::from([2., 1.]);
     let v = Vector::from([4., 2.]);
-    println!("Cosseno do ângulo entre {u} e {v}: {}", angle_cos(&u, &v));
+    println!("Cosine of angle between {u} and {v}: {}", angle_cos(&u, &v));
 
     let u = Vector::from([1., 2., 3.]);
     let v = Vector::from([4., 5., 6.]);
-    println!("Cosseno do ângulo entre {u} e {v}: {}", angle_cos(&u, &v));
+    println!("Cosine of angle between {u} and {v}: {}", angle_cos(&u, &v));
 
-    println!("\n=== Demonstração do Produto Vetorial (Cross Product) ===");
+    println!("\n=== Cross Product Demonstration ===");
     let u = Vector::from([0., 0., 1.]);
     let v = Vector::from([1., 0., 0.]);
     println!(
-        "Produto vetorial entre {u} e {v}: {}",
+        "Cross product between {u} and {v}: {}",
         cross_product(&u, &v)
     );
 
     let u = Vector::from([1., 2., 3.]);
     let v = Vector::from([4., 5., 6.]);
     println!(
-        "Produto vetorial entre {u} e {v}: {}",
+        "Cross product between {u} and {v}: {}",
         cross_product(&u, &v)
     );
 
     let u = Vector::from([4., 2., -3.]);
     let v = Vector::from([-2., -5., 16.]);
     println!(
-        "Produto vetorial entre {u} e {v}: {}",
+        "Cross product between {u} and {v}: {}",
         cross_product(&u, &v)
     );
 
-    println!("\n=== Demonstração de Multiplicação Matrix x Vector ===");
+    println!("\n=== Matrix x Vector Multiplication Demonstration ===");
     let u = Matrix::from([[1., 0.], [0., 1.]]);
     let v = Vector::from([4., 2.]);
-    println!(
-        "Multiplicando a matriz identidade por {v}:\n{}",
-        u.mul_vec(&v)
-    );
+    println!("Multiplying identity matrix by {v}:\n{}", u.mul_vec(&v));
 
     let u = Matrix::from([[2., 0.], [0., 2.]]);
     let v = Vector::from([4., 2.]);
-    println!(
-        "\nMultiplicando matriz de escala por {v}:\n{}",
-        u.mul_vec(&v)
-    );
+    println!("\nMultiplying scaling matrix by {v}:\n{}", u.mul_vec(&v));
 
     let u = Matrix::from([[2., -2.], [-2., 2.]]);
     let v = Vector::from([4., 2.]);
     println!(
-        "\nMultiplicando matriz com elementos negativos por {v}:\n{}",
+        "\nMultiplying matrix with negative elements by {v}:\n{}",
         u.mul_vec(&v)
     );
 
-    println!("\n=== Demonstração de Multiplicação Matrix x Matrix ===");
+    println!("\n=== Matrix x Matrix Multiplication Demonstration ===");
     let u = Matrix::from([[1., 0.], [0., 1.]]);
     let v = Matrix::from([[1., 0.], [0., 1.]]);
     println!(
-        "Multiplicando matriz identidade por matriz identidade:\n{}",
+        "Multiplying identity matrix by identity matrix:\n{}",
         u.mul_mat(&v)
     );
 
     let u = Matrix::from([[1., 0.], [0., 1.]]);
     let v = Matrix::from([[2., 1.], [4., 2.]]);
     println!(
-        "\nMultiplicando matriz identidade por outra matriz:\n{}",
+        "\nMultiplying identity matrix by another matrix:\n{}",
         u.mul_mat(&v)
     );
 
     let u = Matrix::from([[3., -5.], [6., 8.]]);
     let v = Matrix::from([[2., 1.], [4., 2.]]);
-    println!("\nMultiplicando matrizes genéricas:\n{}", u.mul_mat(&v));
+    println!("\nMultiplying generic matrices:\n{}", u.mul_mat(&v));
 
-    println!("\n=== Demonstração do Traço de Matrizes ===");
+    println!("\n=== Matrix Trace Demonstration ===");
     let u = Matrix::from([[1., 0.], [0., 1.]]);
-    println!("Traço da matriz identidade:\n{u}\nTraço: {}", u.trace());
+    println!("Trace of identity matrix:\n{u}\nTrace: {}", u.trace());
 
     let u = Matrix::from([[2., -5., 0.], [4., 3., 7.], [-2., 3., 4.]]);
-    println!("\nTraço da matriz 3x3:\n{u}\nTraço: {}", u.trace());
+    println!("\nTrace of 3x3 matrix:\n{u}\nTrace: {}", u.trace());
 
     let u = Matrix::from([[-2., -8., 4.], [1., -23., 4.], [0., 6., 4.]]);
-    println!("\nTraço da matriz 3x3:\n{u}\nTraço: {}", u.trace());
+    println!("\nTrace of 3x3 matrix:\n{u}\nTrace: {}", u.trace());
 
-    println!("\n=== Demonstração de Transposição de Matrizes ===");
+    println!("\n=== Matrix Transposition Demonstration ===");
     let u = Matrix::from([[1., 1.], [0., 0.]]);
-    println!("Matriz original:\n{u}\nTransposta:\n{}", u.transpose());
+    println!("Original matrix:\n{u}\nTranspose:\n{}", u.transpose());
 
     let u = Matrix::from([[2., -5., 0.], [4., 3., 7.]]);
-    println!("\nMatriz original:\n{u}\nTransposta:\n{}", u.transpose());
+    println!("\nOriginal matrix:\n{u}\nTranspose:\n{}", u.transpose());
 
     let u = Matrix::from([[-2., -8.], [1., -23.], [0., 6.]]);
-    println!("\nMatriz original:\n{u}\nTransposta:\n{}", u.transpose());
+    println!("\nOriginal matrix:\n{u}\nTranspose:\n{}", u.transpose());
 
-    println!("\n=== Demonstração de Resolução de sistemas com Matrizes ===");
+    println!("\n=== Solving Systems with Matrices Demonstration ===");
     let u = Matrix::from([[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]]);
-    println!("\nMatriz original:\n{u}\nEchelon:\n{}", u.row_echelon());
+    println!("\nOriginal matrix:\n{u}\nEchelon:\n{}", u.row_echelon());
 
     let u = Matrix::from([[1., 2.], [3., 4.]]);
-    println!("\nMatriz original:\n{u}\nEchelon:\n{}", u.row_echelon());
+    println!("\nOriginal matrix:\n{u}\nEchelon:\n{}", u.row_echelon());
 
     let u = Matrix::from([[1., 2.], [2., 4.]]);
-    println!("\nMatriz original:\n{u}\nEchelon:\n{}", u.row_echelon());
+    println!("\nOriginal matrix:\n{u}\nEchelon:\n{}", u.row_echelon());
 
     let u = Matrix::from([
         [8., 5., -2., 4., 28.],
         [4., 2.5, 20., 4., -4.],
         [8., 5., 1., 4., 17.],
     ]);
-    println!("\nMatriz original:\n{u}\nEchelon:\n{}", u.row_echelon());
+    println!("\nOriginal matrix:\n{u}\nEchelon:\n{}", u.row_echelon());
 
-    println!("\n=== Demonstração do Determinante de Matrizes ===");
+    println!("\n=== Matrix Determinant Demonstration ===");
     let u = Matrix::from([[1., -1.], [-1., 1.]]);
-    println!("Matriz:\n{u}\nDeterminante: {}", u.determinant());
+    println!("Matrix:\n{u}\nDeterminant: {}", u.determinant());
 
     let u = Matrix::from([[2., 0., 0.], [0., 2., 0.], [0., 0., 2.]]);
-    println!("\nMatriz:\n{u}\nDeterminante: {}", u.determinant());
+    println!("\nMatrix:\n{u}\nDeterminant: {}", u.determinant());
 
     let u = Matrix::from([[8., 5., -2.], [4., 7., 20.], [7., 6., 1.]]);
-    println!("\nMatriz:\n{u}\nDeterminante: {}", u.determinant());
+    println!("\nMatrix:\n{u}\nDeterminant: {}", u.determinant());
 
     let u = Matrix::from([
         [8., 5., -2., 4.],
@@ -278,33 +263,27 @@ fn main() {
         [28., -4., 17., 1.],
     ]);
 
-    println!("\nMatriz:\n{u}\nDeterminante: {}", u.determinant());
-    println!("\n=== Demonstração da Inversa de Matrizes ===");
+    println!("\nMatrix:\n{u}\nDeterminant: {}", u.determinant());
+    println!("\n=== Matrix Inverse Demonstration ===");
     let u = Matrix::from([[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]]);
-    println!(
-        "Matriz identidade:\n{u}\nInversa:\n{}",
-        u.inverse().unwrap()
-    );
+    println!("Identity matrix:\n{u}\nInverse:\n{}", u.inverse().unwrap());
 
     let u = Matrix::from([[2., 0., 0.], [0., 2., 0.], [0., 0., 2.]]);
     println!(
-        "\nMatriz diagonal:\n{u}\nInversa:\n{}",
+        "\nDiagonal matrix:\n{u}\nInverse:\n{}",
         u.inverse().unwrap()
     );
 
     let u = Matrix::from([[8., 5., -2.], [4., 7., 20.], [7., 6., 1.]]);
-    println!(
-        "\nMatriz genérica:\n{u}\nInversa:\n{}",
-        u.inverse().unwrap()
-    );
+    println!("\nGeneric matrix:\n{u}\nInverse:\n{}", u.inverse().unwrap());
 
-    println!("\n=== Demonstração do Rank de Matrizes ===");
+    println!("\n=== Matrix Rank Demonstration ===");
     let mut u = Matrix::from([[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]]);
-    println!("Matriz identidade:\n{u}\nRank: {}", u.rank());
+    println!("Identity matrix:\n{u}\nRank: {}", u.rank());
 
     let mut u = Matrix::from([[1., 2., 0., 0.], [2., 4., 0., 0.], [-1., 2., 1., 1.]]);
-    println!("\nMatriz 3x4:\n{u}\nRank: {}", u.rank());
+    println!("\nMatrix 3x4:\n{u}\nRank: {}", u.rank());
 
     let mut u = Matrix::from([[8., 5., -2.], [4., 7., 20.], [7., 6., 1.], [21., 18., 7.]]);
-    println!("\nMatriz 4x3:\n{u}\nRank: {}", u.rank());
+    println!("\nMatrix 4x3:\n{u}\nRank: {}", u.rank());
 }

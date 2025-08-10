@@ -8,8 +8,8 @@ license = "MIT"
 readme = "README.md"
 repository = "https://github.com/paulodavi/42sp-linear-algebra"
 homepage = "https://github.com/paulodavi/42sp-linear-algebra"
-keywords = ["algebra", "linear", "math", "vector", "matrix"]
-categories = ["mathematics", "science"]
+keywords = ["algebra", "linear", "math", "vector", "matrix", "complex"]
+categories = ["mathematics", "science", "algorithms"]
 rust-version = "1.85"
 exclude = [
     "target/*",
@@ -38,9 +38,10 @@ path = "examples/complex.rs"
 
 [profile.release]
 opt-level = 3
-lto = true
+lto = "fat"
 codegen-units = 1
 panic = "abort"
+strip = true
 
 [profile.dev]
 opt-level = 0

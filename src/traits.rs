@@ -1,24 +1,73 @@
+//! # Fundamental Traits for Linear Algebra
+//!
+//! This module defines essential traits that enable generic operations
+//! over different numeric types in the linear algebra library.
+
+/// Trait for types that have an additive zero element.
+///
+/// This trait defines the additive identity and allows checking
+/// whether a value equals zero.
 pub trait Zero {
+    /// Returns the zero element of the type.
     fn zero() -> Self;
 
+    /// Checks if the value equals the zero element.
     fn is_zero(&self) -> bool;
 }
 
+/// Trait for types that have a multiplicative one element.
+///
+/// This trait defines the multiplicative identity.
 pub trait One {
+    /// Returns the one element of the type.
     fn one() -> Self;
 }
 
+/// Trait for types that have a negative one element.
+///
+/// This trait is useful for defining the multiplicative opposite element.
 pub trait Negative {
+    /// Returns the negative one element of the type.
     fn negative_one() -> Self;
 }
 
+/// Trait for types that have a defined magnitude or norm.
+///
+/// This trait allows calculating the magnitude (modulus) of a value,
+/// essential for linear algebra operations like vector norms.
 pub trait Magnitude {
+    /// The return type of the magnitude.
     type Output;
 
+    /// Calculates the magnitude of the value.
     fn magnitude(&self) -> Self::Output;
 }
 
+/// Trait for types that support conjugation operation.
+///
+/// This trait is fundamental for working with complex numbers
+/// and operations that require complex conjugation, such as
+/// inner products in complex spaces.
+///
+/// # Examples
+///
+/// For real numbers, the conjugate is the number itself:
+/// ```rust
+/// use linear_algebra::traits::Conjugate;
+///
+/// assert_eq!(5.0_f32.conjugate(), 5.0);
+/// ```
+///
+/// For complex numbers, the conjugate changes the sign of the imaginary part:
+/// ```rust
+/// use linear_algebra::{Complex, traits::Conjugate};
+///
+/// let z = Complex::new(3.0, 4.0);
+/// let conj = z.conjugate();
+/// assert_eq!(conj, Complex::new(3.0, -4.0));
+/// ```
 pub trait Conjugate {
+    /// Returns the conjugate of the value.
     fn conjugate(&self) -> Self;
 }
 
