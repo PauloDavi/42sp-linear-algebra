@@ -1,7 +1,7 @@
 use core::slice::{Iter, IterMut};
 use std::ops::{Add, Div, Index, IndexMut, Mul, Neg, Sub};
 
-use crate::Vector;
+use crate::{Vector, errors::MatrixInverseError};
 
 #[derive(Debug, PartialEq, Clone)]
 pub struct Matrix<K> {
@@ -431,9 +431,12 @@ where
         + From<i8>
         + PartialEq,
 {
-    pub fn inverse(&self) -> Result<Self, ()> {
+    pub fn inverse(&self) -> Result<Self, MatrixInverseError> {
         if !self.is_square() {
-            return Err(());
+            return Err(MatrixInverseError::NotSquare {
+                rows: self.rows,
+                columns: self.columns,
+            });
         }
 
         let n = self.rows;
@@ -446,7 +449,7 @@ where
         for i in 0..n {
             let pivot = a[i][i];
             if pivot == K::default() {
-                return Err(());
+                return Err(MatrixInverseError::Singular);
             }
 
             for j in 0..n {

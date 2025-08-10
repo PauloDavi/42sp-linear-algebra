@@ -1,6 +1,6 @@
 use std::fmt::{Display, Formatter, Result};
 
-use crate::{Matrix, Vector};
+use crate::{InterpolationError, LinearCombinationError, Matrix, MatrixInverseError, Vector};
 
 impl<K> Display for Vector<K>
 where
@@ -49,5 +49,51 @@ where
             write!(f, "]")?;
         }
         Ok(())
+    }
+}
+
+impl Display for LinearCombinationError {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+        match self {
+            LinearCombinationError::VectorsDimensionMismatch {
+                expected_len,
+                founded_len,
+            } => {
+                write!(
+                    f,
+                    "Os vetores possuem tamanhos diferentes: esperado {expected_len}, encontrado {founded_len}"
+                )
+            }
+        }
+    }
+}
+
+impl Display for MatrixInverseError {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+        match self {
+            MatrixInverseError::NotSquare { rows, columns } => {
+                write!(
+                    f,
+                    "Matriz deve ser quadrada para calcular a inversa: encontrada {}x{}",
+                    rows, columns
+                )
+            }
+            MatrixInverseError::Singular => {
+                write!(
+                    f,
+                    "Matriz é singular (determinante zero) e não possui inversa"
+                )
+            }
+        }
+    }
+}
+
+impl Display for InterpolationError {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+        match self {
+            InterpolationError::InvalidParameterT { t } => {
+                write!(f, "Parâmetro t ({t}) deve estar no intervalo [0, 1]")
+            }
+        }
     }
 }
