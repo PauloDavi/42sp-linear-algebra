@@ -25,13 +25,9 @@ include = [
 name = "linear_algebra_42"
 path = "src/lib.rs"
 
-[[example]]
-name = "basic"
-path = "examples/basic.rs"
-
-[[example]]
-name = "complex"
-path = "examples/complex.rs"
+[[bin]]
+name = "projection"
+path = "src/main.rs"
 
 [profile.release]
 opt-level = 3
