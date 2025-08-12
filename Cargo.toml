@@ -14,6 +14,7 @@ categories = ["science", "algorithms"]
 rust-version = "1.70"
 include = [
     "src/**/*",
+    "matrix_display/main.rs",
     "examples/**/*",
     "tests/**/*",
     "Cargo.toml",
@@ -27,7 +28,7 @@ path = "src/lib.rs"
 
 [[bin]]
 name = "projection"
-path = "src/main.rs"
+path = "matrix_display/main.rs"
 
 [profile.release]
 opt-level = 3
