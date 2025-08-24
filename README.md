@@ -1,6 +1,8 @@
 # Linear Algebra Library
 
-A complete Rust library for linear algebra operations, based on the 42 School Matrix project. Features vectors, matrices, complex numbers, and comprehensive trait system with type safety and performance.
+A complete Rust library for linear algebra operations, based on the 42 School Matrix project. Now published on [crates.io](https://crates.io/crates/linear_algebra_42)!
+
+Includes vectors, matrices, complex numbers, and a comprehensive trait system with type safety and high performance.
 
 ## Key Features
 
@@ -29,6 +31,8 @@ Add to your `Cargo.toml`:
 [dependencies]
 linear_algebra_42 = "0.1.0"
 ```
+
+Or always check the latest version at: [https://crates.io/crates/linear_algebra_42](https://crates.io/crates/linear_algebra_42)
 
 ### Basic Examples
 
@@ -104,11 +108,17 @@ cargo run --example basic      # Run basic example
 cargo run --example complex    # Run example with complex numbers
 ```
 
+## Bonus Project: `matrix_display`
+
+The [`matrix_display/`](./matrix_display) directory contains a bonus project: a CLI tool with options to generate files containing the matrix needed to use ./display. Useful for computer graphics, simulations, or image manipulation.
+
+Run the CLI to quickly generate rotation matrices and other display-related utilities.
+
 ## Project Context
 
-Implementation of the **42 School Matrix project** covering fundamental linear algebra concepts for computer graphics, machine learning, and engineering applications.
+Implementation of the **42 School Matrix project**, covering fundamental linear algebra concepts for computer graphics, machine learning, and engineering applications.
 
-**Features implemented**: Vector operations, matrix algebra, linear systems, complex numbers with conjugation, comprehensive trait system, and optimized algorithms.
+**Features implemented**: vector operations, matrix algebra, linear systems, complex numbers with conjugation, comprehensive trait system, and optimized algorithms.
 
 ## License
 
