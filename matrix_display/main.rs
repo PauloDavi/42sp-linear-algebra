@@ -222,3 +222,66 @@ fn main() {
     println!("Far plane: {far:.4}");
     println!("Output file: {}", args.output_file);
 }
+
+#[test]
+fn test_projection_matrix_fov_100() {
+    let m = projection((100.0f32).to_radians(), 1.0, 0.1, 100.0);
+
+    let expected = vec![
+        vec![0.839100, 0.0, 0.0, 0.0],
+        vec![0.0, 0.839100, 0.0, 0.0],
+        vec![0.0, 0.0, -1.001001, -1.0],
+        vec![0.0, 0.0, -0.100100, 0.0],
+    ];
+
+    for (row_e, row_r) in expected.iter().zip(m.iter()) {
+        for (val_e, val_r) in row_e.iter().zip(row_r.iter()) {
+            assert!(
+                (val_e - val_r).abs() < 1e-5,
+                "FOV 100: expected {val_e}, got {val_r}"
+            );
+        }
+    }
+}
+
+#[test]
+fn test_projection_matrix_fov_70() {
+    let m = projection((70.0f32).to_radians(), 1.0, 0.1, 100.0);
+
+    let expected = vec![
+        vec![1.428148, 0.0, 0.0, 0.0],
+        vec![0.0, 1.428148, 0.0, 0.0],
+        vec![0.0, 0.0, -1.001001, -1.0],
+        vec![0.0, 0.0, -0.100100, 0.0],
+    ];
+
+    for (row_e, row_r) in expected.iter().zip(m.iter()) {
+        for (val_e, val_r) in row_e.iter().zip(row_r.iter()) {
+            assert!(
+                (val_e - val_r).abs() < 1e-5,
+                "FOV 70: expected {val_e}, got {val_r}"
+            );
+        }
+    }
+}
+
+#[test]
+fn test_projection_matrix_fov_40() {
+    let m = projection((40.0f32).to_radians(), 1.0, 0.1, 100.0);
+
+    let expected = vec![
+        vec![2.747477, 0.0, 0.0, 0.0],
+        vec![0.0, 2.747477, 0.0, 0.0],
+        vec![0.0, 0.0, -1.001001, -1.0],
+        vec![0.0, 0.0, -0.100100, 0.0],
+    ];
+
+    for (row_e, row_r) in expected.iter().zip(m.iter()) {
+        for (val_e, val_r) in row_e.iter().zip(row_r.iter()) {
+            assert!(
+                (val_e - val_r).abs() < 1e-5,
+                "FOV 40: expected {val_e}, got {val_r}"
+            );
+        }
+    }
+}

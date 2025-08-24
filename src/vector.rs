@@ -1,7 +1,10 @@
 use core::slice::{Iter, IterMut};
 use std::ops::{Add, Index, IndexMut, Mul, Sub};
 
-use crate::traits::{Conjugate, Magnitude, Zero};
+use crate::{
+    traits::{Conjugate, Magnitude, Zero},
+    Complex,
+};
 
 /// Represents a generic mathematical vector with elements of type `K`.
 ///
@@ -211,6 +214,19 @@ where
     type Output = Self;
     fn mul(self, scalar: K) -> Self::Output {
         self.scl_new(scalar)
+    }
+}
+
+impl Mul<f32> for Vector<Complex> {
+    type Output = Vector<Complex>;
+
+    fn mul(self, rhs: f32) -> Vector<Complex> {
+        Vector::from(
+            self.data
+                .into_iter()
+                .map(|c| c * rhs)
+                .collect::<Vec<Complex>>(),
+        )
     }
 }
 
