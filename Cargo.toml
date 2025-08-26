@@ -1,6 +1,6 @@
 [package]
 name = "linear_algebra_42"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 authors = ["Paulo Davi Alencar de Freitas Araújo <araujo.paulo.davi@gmail.com>"]
 description = "A linear algebra library in Rust"

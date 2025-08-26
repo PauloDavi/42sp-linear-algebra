@@ -29,7 +29,7 @@ Includes vectors, matrices, complex numbers, and a comprehensive trait system wi
 Add to your `Cargo.toml`:
 ```toml
 [dependencies]
-linear_algebra_42 = "0.1.0"
+linear_algebra_42 = "0.1.1"
 ```
 
 Or always check the latest version at: [https://crates.io/crates/linear_algebra_42](https://crates.io/crates/linear_algebra_42)
