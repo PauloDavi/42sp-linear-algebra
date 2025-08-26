@@ -1,8 +1,8 @@
 use std::ops::{Add, Mul};
 
 use crate::{
-    Vector,
     traits::{Magnitude, Zero},
+    Vector,
 };
 
 pub fn angle_cos<K>(u: &Vector<K>, v: &Vector<K>) -> f32

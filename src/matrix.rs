@@ -508,6 +508,8 @@ where
     K: Copy
         + Zero
         + One
+        + Negative
+        + PartialOrd
         + Add<Output = K>
         + Sub<Output = K>
         + Div<Output = K>
@@ -522,32 +524,22 @@ where
             });
         }
 
-        let n = self.rows;
-        let mut a = self.data.clone();
-        let mut inv = vec![vec![K::zero(); n]; n];
-        for (i, row) in inv.iter_mut().enumerate().take(n) {
-            row[i] = K::one();
+        let det = self.determinant();
+        if det == K::zero() {
+            return Err(MatrixInverseError::Singular);
         }
 
+        let n = self.rows;
+        let mut inv = vec![vec![K::zero(); n]; n];
+
         for i in 0..n {
-            let pivot = a[i][i];
-            if pivot == K::zero() {
-                return Err(MatrixInverseError::Singular);
-            }
-
             for j in 0..n {
-                a[i][j] = a[i][j] / pivot;
-                inv[i][j] = inv[i][j] / pivot;
-            }
-
-            for k in 0..n {
-                if k != i {
-                    let factor = a[k][i];
-                    for j in 0..n {
-                        a[k][j] = a[k][j] - factor * a[i][j];
-                        inv[k][j] = inv[k][j] - factor * inv[i][j];
-                    }
-                }
+                let fact = if (i + j) % 2 == 0 {
+                    K::one()
+                } else {
+                    K::negative_one()
+                };
+                inv[j][i] = (fact * self.sub_matrix(i, j).determinant()) / det;
             }
         }
 
@@ -562,44 +554,23 @@ where
 impl<K> Matrix<K>
 where
     K: Copy
+        + One
+        + Zero
         + PartialOrd
+        + Add<Output = K>
         + Sub<Output = K>
         + Div<Output = K>
         + Mul<Output = K>
+        + Neg<Output = K>
         + Magnitude<Output = f32>,
 {
-    pub fn rank(&mut self) -> usize {
+    pub fn rank(&self) -> usize {
         let mut rank = 0;
-        let mut row = 0;
-
-        for col in 0..self.columns {
-            let mut pivot_row = row;
-            while pivot_row < self.rows && (self.data[pivot_row][col].magnitude() < 1e-10) {
-                pivot_row += 1;
-            }
-
-            if pivot_row < self.rows {
-                if pivot_row != row {
-                    self.data.swap(pivot_row, row);
-                }
-
-                let pivot_val = self.data[row][col];
-                for j in col..self.columns {
-                    self.data[row][j] = self.data[row][j] / pivot_val;
-                }
-
-                for i in (row + 1)..self.rows {
-                    let factor = self.data[i][col];
-                    for j in col..self.columns {
-                        self.data[i][j] = self.data[i][j] - factor * self.data[row][j];
-                    }
-                }
-
+        for row in self.row_echelon().iter() {
+            if row.iter().any(|&element| element != K::zero()) {
                 rank += 1;
-                row += 1;
             }
         }
-
         rank
     }
 }

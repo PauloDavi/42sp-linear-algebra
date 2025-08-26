@@ -1,4 +1,4 @@
-use linear_algebra_42::{Matrix, Vector, angle_cos, cross_product, lerp, linear_combination};
+use linear_algebra_42::{angle_cos, cross_product, lerp, linear_combination, Matrix, Vector};
 
 fn main() {
     println!("=== Vector Demonstration ===");
@@ -278,12 +278,12 @@ fn main() {
     println!("\nGeneric matrix:\n{u}\nInverse:\n{}", u.inverse().unwrap());
 
     println!("\n=== Matrix Rank Demonstration ===");
-    let mut u = Matrix::from([[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]]);
+    let u = Matrix::from([[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]]);
     println!("Identity matrix:\n{u}\nRank: {}", u.rank());
 
-    let mut u = Matrix::from([[1., 2., 0., 0.], [2., 4., 0., 0.], [-1., 2., 1., 1.]]);
+    let u = Matrix::from([[1., 2., 0., 0.], [2., 4., 0., 0.], [-1., 2., 1., 1.]]);
     println!("\nMatrix 3x4:\n{u}\nRank: {}", u.rank());
 
-    let mut u = Matrix::from([[8., 5., -2.], [4., 7., 20.], [7., 6., 1.], [21., 18., 7.]]);
+    let u = Matrix::from([[8., 5., -2.], [4., 7., 20.], [7., 6., 1.], [21., 18., 7.]]);
     println!("\nMatrix 4x3:\n{u}\nRank: {}", u.rank());
 }

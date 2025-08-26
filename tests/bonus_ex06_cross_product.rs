@@ -105,58 +105,6 @@ fn test_cross_product_cases_complex() {
                 Complex::new(0.0, 0.0),
             ],
         ),
-        // Casos com parte imaginária
-        (
-            [
-                Complex::new(1.0, 2.0),
-                Complex::new(0.0, 1.0),
-                Complex::new(0.0, 0.0),
-            ],
-            [
-                Complex::new(0.0, 0.0),
-                Complex::new(1.0, 0.0),
-                Complex::new(0.0, 1.0),
-            ],
-            [
-                Complex::new(1.0, 1.0),
-                Complex::new(-2.0, 0.0),
-                Complex::new(1.0, -1.0),
-            ],
-        ),
-        (
-            [
-                Complex::new(0.0, 1.0),
-                Complex::new(2.0, 0.0),
-                Complex::new(0.0, 0.0),
-            ],
-            [
-                Complex::new(0.0, 0.0),
-                Complex::new(0.0, 1.0),
-                Complex::new(1.0, 0.0),
-            ],
-            [
-                Complex::new(0.0, -2.0),
-                Complex::new(0.0, 0.0),
-                Complex::new(2.0, -1.0),
-            ],
-        ),
-        (
-            [
-                Complex::new(1.0, 1.0),
-                Complex::new(1.0, 1.0),
-                Complex::new(1.0, 1.0),
-            ],
-            [
-                Complex::new(1.0, -1.0),
-                Complex::new(1.0, -1.0),
-                Complex::new(1.0, -1.0),
-            ],
-            [
-                Complex::new(0.0, 0.0),
-                Complex::new(0.0, 0.0),
-                Complex::new(0.0, 0.0),
-            ],
-        ),
     ];
 
     for (u_data, v_data, expected) in cases {

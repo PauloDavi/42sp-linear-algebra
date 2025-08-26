@@ -13,7 +13,7 @@ fn test_rank_cases() {
     ];
 
     for (data, expected) in cases {
-        let mut matrix = Matrix::from(data);
+        let matrix = Matrix::from(data);
         let result = matrix.rank();
         assert_eq!(result, expected);
     }
@@ -24,7 +24,7 @@ fn test_rank_cases_2() {
     let cases = [([[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]], 3)];
 
     for (data, expected) in cases {
-        let mut matrix = Matrix::from(data);
+        let matrix = Matrix::from(data);
         let result = matrix.rank();
         assert_eq!(result, expected);
     }
