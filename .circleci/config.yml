@@ -8,4 +8,4 @@ jobs:
     machine: true
     resource_class: paulodavi/testi
     steps:
-      - run: pwd && ls -l
+      - run: pwd && ls /home/pdavi -l
