@@ -8,4 +8,4 @@ jobs:
     machine: true
     resource_class: paulodavi/testi
     steps:
-      - run: echo "Hi I'm on Runners!"
+      - run: ls ~ && pwd
