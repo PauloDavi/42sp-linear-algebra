@@ -9,3 +9,4 @@ jobs:
     resource_class: paulodavi/testi
     steps:
       - run: uname -n
+      - run: adb devices
